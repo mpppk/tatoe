@@ -1,12 +1,21 @@
 import { BlitzPage, Link } from "blitz"
-import { Button, Container, makeStyles, Typography } from "@material-ui/core"
+import { Button, Container, makeStyles, Typography, Link as MUILink } from "@material-ui/core"
+import TwitterIcon from "@material-ui/icons/Twitter"
 import React from "react"
 import { Header } from "../../components/Header"
 
 const useStyles = makeStyles((theme) => ({
   tweetButtonWrapper: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
     display: "flex",
-    justifyContent: "flex-end",
+    justifyContent: "center",
+  },
+  tweetButton: {
+    backgroundColor: "#00acee",
+  },
+  subHeader: {
+    marginTop: theme.spacing(1),
   },
 }))
 
@@ -23,7 +32,12 @@ const Compare: BlitzPage = () => {
         <Typography variant={"h5"}>{text}</Typography>
         <Link href={`https://twitter.com/intent/tweet?text=${tweetText}`}>
           <div className={classes.tweetButtonWrapper}>
-            <Button color="primary" variant={"contained"}>
+            <Button
+              className={classes.tweetButton}
+              startIcon={<TwitterIcon />}
+              color="primary"
+              variant={"contained"}
+            >
               Tweet
             </Button>
           </div>
@@ -33,10 +47,32 @@ const Compare: BlitzPage = () => {
         {/*<div>山寺宏一を他で例える</div>*/}
         {/*<div>atcoderのレーティングランキングを見る</div>*/}
         {/*<div>touristを他で例える</div>*/}
-        <div>2020年の安打数ランキングを見る</div>
-        <div>近本光司を他で例える</div>
-        <div>ガンダムの人気キャラクターのランキングを見る</div>
-        <div>カミーユを他で例える</div>
+        <Typography className={classes.subHeader} variant={"h6"}>
+          関連ランキング
+        </Typography>
+        <Typography>
+          <Link href={"/"}>
+            <MUILink>2020年の安打数ランキング</MUILink>
+          </Link>
+        </Typography>
+        <Typography>
+          <Link href={"/"}>
+            <MUILink>ガンダムの人気キャラクター</MUILink>
+          </Link>
+        </Typography>
+        <Typography className={classes.subHeader} variant={"h6"}>
+          他で例える
+        </Typography>
+        <Typography>
+          <Link href={"/"}>
+            <MUILink>近本光司を他で例える</MUILink>
+          </Link>
+        </Typography>
+        <Typography>
+          <Link href={"/"}>
+            <MUILink>カミーユを他で例える</MUILink>
+          </Link>
+        </Typography>
       </Container>
     </>
   )

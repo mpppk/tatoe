@@ -8,18 +8,34 @@ import {
   Container,
   IconButton,
   List,
+  Link as MUILink,
   ListItem,
   ListItemText,
   makeStyles,
   Typography,
 } from "@material-ui/core"
 import React, { useState } from "react"
+import clsx from "clsx"
 import LooksOneIcon from "@material-ui/icons/LooksOne"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import { Header } from "../../../components/Header"
 
 const useStyles = makeStyles((theme) => ({
+  card: {
+    marginTop: theme.spacing(1),
+  },
+  expand: {
+    transform: "rotate(0deg)",
+    marginLeft: "auto",
+    transition: theme.transitions.create("transform", {
+      duration: theme.transitions.duration.shortest,
+    }),
+  },
+  expandOpen: {
+    transform: "rotate(180deg)",
+  },
   editButtonWrapper: {
+    marginTop: theme.spacing(1),
     display: "flex",
     justifyContent: "flex-end",
   },
@@ -34,9 +50,14 @@ interface CompareListItemProps {
 const CompareListItem: React.FC<CompareListItemProps> = (props) => {
   return (
     <Link href={props.url}>
-      <ListItem>
-        <ListItemText primary={`${props.rankingName}の${props.itemName}ぐらい`} />
-      </ListItem>
+      <MUILink>
+        <ListItem>
+          <ListItemText
+            primary={`${props.rankingName}の${props.itemName}ぐらい`}
+            color={"primary"}
+          />
+        </ListItem>
+      </MUILink>
     </Link>
   )
 }
@@ -48,9 +69,10 @@ interface ItemCardProps {
 }
 
 const ItemCard: React.FC<ItemCardProps> = (props) => {
+  const classes = useStyles()
   const [expand, setExpand] = useState(false)
   return (
-    <Card>
+    <Card className={classes.card}>
       <CardHeader
         avatar={
           <Avatar aria-label="rank1">
@@ -58,7 +80,11 @@ const ItemCard: React.FC<ItemCardProps> = (props) => {
           </Avatar>
         }
         action={
-          <IconButton aria-label="expand more" onClick={() => setExpand(!expand)}>
+          <IconButton
+            className={clsx(classes.expand, { [classes.expandOpen]: expand })}
+            aria-label="expand more"
+            onClick={() => setExpand(!expand)}
+          >
             <ExpandMoreIcon />
           </IconButton>
         }
@@ -67,8 +93,13 @@ const ItemCard: React.FC<ItemCardProps> = (props) => {
       />
       <Collapse in={expand} timeout="auto" unmountOnExit>
         <List dense={true}>
-          {props.compares.map((c) => (
-            <CompareListItem rankingName={c.rankingName} itemName={c.itemName} url={c.url} />
+          {props.compares.map((c, i) => (
+            <CompareListItem
+              key={c.rankingName + i}
+              rankingName={c.rankingName}
+              itemName={c.itemName}
+              url={c.url}
+            />
           ))}
         </List>
       </Collapse>
@@ -111,8 +142,12 @@ const Ranking: BlitzPage = () => {
             </Button>
           </div>
         </Link>
-        <Typography variant={"body1"}>Created by User1</Typography>
-        <Typography variant={"body1"}>Updated by User2</Typography>
+        <Typography variant={"body1"}>
+          Created by <MUILink>User1</MUILink>
+        </Typography>
+        <Typography variant={"body1"}>
+          Updated by <MUILink>User2</MUILink>
+        </Typography>
       </Container>
     </>
   )
