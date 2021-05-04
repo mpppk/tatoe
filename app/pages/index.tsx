@@ -12,17 +12,35 @@ const Home: BlitzPage = () => {
         <List dense={true}>
           <Link href={"/r/1"}>
             <ListItem>
-              <ListItemText primary="XXXランキング" />
+              <ListItemText primary="2020年の安打数ランキング" />
             </ListItem>
           </Link>
           <Link href={"/r/2"}>
             <ListItem>
-              <ListItemText primary="XXXランキング" />
+              <ListItemText primary="ガンダムの人気キャラクターランキング" />
             </ListItem>
           </Link>
           <Link href={"/r/3"}>
             <ListItem>
-              <ListItemText primary="XXXランキング" />
+              <ListItemText primary="声優知名度ランキング" />
+            </ListItem>
+          </Link>
+        </List>
+        <Typography variant={"h5"}>人気ランキング</Typography>
+        <List dense={true}>
+          <Link href={"/r/1"}>
+            <ListItem>
+              <ListItemText primary="2020年の安打数ランキング" />
+            </ListItem>
+          </Link>
+          <Link href={"/r/2"}>
+            <ListItem>
+              <ListItemText primary="ガンダムの人気キャラクターランキング" />
+            </ListItem>
+          </Link>
+          <Link href={"/r/3"}>
+            <ListItem>
+              <ListItemText primary="声優知名度ランキング" />
             </ListItem>
           </Link>
         </List>

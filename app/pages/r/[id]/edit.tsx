@@ -10,6 +10,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
+interface ItemFormProps {
+  rank: number
+  defaultValue: string
+}
+
+const ItemForm: React.FC<ItemFormProps> = (props) => {
+  const classes = useStyles()
+  return (
+    <div className={classes.rankEditWrapper}>
+      <TextField label={`${props.rank}位`} fullWidth defaultValue={props.defaultValue} />
+      <DeleteIcon />
+    </div>
+  )
+}
+
 const RankingEdit = () => {
   const classes = useStyles()
 
@@ -20,20 +35,17 @@ const RankingEdit = () => {
         <Typography variant={"h5"}>XXXランキング</Typography>
         <TextField label="タイトル" fullWidth defaultValue={"2020年の安打数"} />
         <TextField label="説明" fullWidth defaultValue={"2020年の安打数ランキングです"} />
-        <div className={classes.rankEditWrapper}>
-          <TextField label="1位" fullWidth defaultValue={"XXX"} />
-          <DeleteIcon />
-        </div>
-        <div className={classes.rankEditWrapper}>
-          <TextField label="2位" fullWidth defaultValue={"XXX"} />
-          <DeleteIcon />
-        </div>
-        <div className={classes.rankEditWrapper}>
-          <TextField label="3位" fullWidth defaultValue={"XXX"} />
-          <DeleteIcon />
-        </div>
+        <ItemForm rank={1} defaultValue={"XXX"} />
+        <ItemForm rank={2} defaultValue={"XXX"} />
+        <ItemForm rank={3} defaultValue={"XXX"} />
+        <Button color={"inherit"} variant={"outlined"}>
+          Add Item
+        </Button>
+        <Button color={"inherit"} variant={"outlined"}>
+          Cancel
+        </Button>
         <Button color={"primary"} variant={"outlined"}>
-          Add
+          Save
         </Button>
       </Container>
     </>

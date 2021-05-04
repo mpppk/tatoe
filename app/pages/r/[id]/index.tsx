@@ -25,7 +25,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const RankCard = () => {
+interface CompareListItemProps {
+  rankingName: string
+  itemName: string
+  url: string
+}
+
+const CompareListItem: React.FC<CompareListItemProps> = (props) => {
+  return (
+    <Link href={props.url}>
+      <ListItem>
+        <ListItemText primary={`${props.rankingName}の${props.itemName}ぐらい`} />
+      </ListItem>
+    </Link>
+  )
+}
+
+interface ItemCardProps {
+  name: string
+  subheader: string
+  compares: CompareListItemProps[]
+}
+
+const ItemCard: React.FC<ItemCardProps> = (props) => {
   const [expand, setExpand] = useState(false)
   return (
     <Card>
@@ -40,21 +62,14 @@ const RankCard = () => {
             <ExpandMoreIcon />
           </IconButton>
         }
-        title={<Typography variant={"h6"}>Title</Typography>}
-        // subheader="YYYランキング"
+        title={<Typography variant={"h6"}>{props.name}</Typography>}
+        subheader={props.subheader}
       />
       <Collapse in={expand} timeout="auto" unmountOnExit>
         <List dense={true}>
-          <Link href={"/c/xxx"}>
-            <ListItem>
-              <ListItemText primary="ZZZのWWWぐらい" />
-            </ListItem>
-          </Link>
-          <Link href={"/c/xxx"}>
-            <ListItem>
-              <ListItemText primary="ZZZのWWWぐらい" />
-            </ListItem>
-          </Link>
+          {props.compares.map((c) => (
+            <CompareListItem rankingName={c.rankingName} itemName={c.itemName} url={c.url} />
+          ))}
         </List>
       </Collapse>
     </Card>
@@ -63,15 +78,32 @@ const RankCard = () => {
 
 const Ranking: BlitzPage = () => {
   const classes = useStyles()
+  const compares: CompareListItemProps[] = [
+    {
+      rankingName: "ガンダム人気キャラクター",
+      itemName: "カミーユ",
+      url: "/c/xxx",
+    },
+    {
+      rankingName: "人気声優",
+      itemName: "山寺宏一",
+      url: "/c/xxx",
+    },
+    {
+      rankingName: "Spotify国内再生数",
+      itemName: "夜に駆ける／YOASOBI",
+      url: "/c/xxx",
+    },
+  ]
   return (
     <>
       <Header />
       <Container>
-        <Typography variant={"h5"}>XXXランキング</Typography>
-        <Typography variant={"subtitle1"}>XXXランキングの説明です</Typography>
-        <RankCard />
-        <RankCard />
-        <RankCard />
+        <Typography variant={"h5"}>2020年の安打数ランキング</Typography>
+        <Typography variant={"subtitle1"}>2020年の安打数ランキングの説明です</Typography>
+        <ItemCard name={"大島洋平"} subheader={"146本"} compares={compares} />
+        <ItemCard name={"梶谷隆幸"} subheader={"140本"} compares={compares} />
+        <ItemCard name={"近本光司"} subheader={"139本"} compares={compares} />
         <Link href={`/r/1/edit`}>
           <div className={classes.editButtonWrapper}>
             <Button color={"inherit"} variant={"contained"}>
