@@ -3,8 +3,6 @@ import {
   Avatar,
   Button,
   Card,
-  CardActions,
-  CardContent,
   CardHeader,
   Collapse,
   Container,
@@ -12,12 +10,20 @@ import {
   List,
   ListItem,
   ListItemText,
+  makeStyles,
   Typography,
 } from "@material-ui/core"
 import React, { useState } from "react"
 import LooksOneIcon from "@material-ui/icons/LooksOne"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
-import { Header } from "../../components/AppBar"
+import { Header } from "../../../components/Header"
+
+const useStyles = makeStyles((theme) => ({
+  editButtonWrapper: {
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+}))
 
 const RankCard = () => {
   const [expand, setExpand] = useState(false)
@@ -51,16 +57,12 @@ const RankCard = () => {
           </Link>
         </List>
       </Collapse>
-      {/*<CardContent>*/}
-      {/*</CardContent>*/}
-      {/*<CardActions>*/}
-      {/*  <Button size="small">Learn More</Button>*/}
-      {/*</CardActions>*/}
     </Card>
   )
 }
 
 const Ranking: BlitzPage = () => {
+  const classes = useStyles()
   return (
     <>
       <Header />
@@ -70,6 +72,15 @@ const Ranking: BlitzPage = () => {
         <RankCard />
         <RankCard />
         <RankCard />
+        <Link href={`/r/1/edit`}>
+          <div className={classes.editButtonWrapper}>
+            <Button color={"inherit"} variant={"contained"}>
+              Edit
+            </Button>
+          </div>
+        </Link>
+        <Typography variant={"body1"}>Created by User1</Typography>
+        <Typography variant={"body1"}>Updated by User2</Typography>
       </Container>
     </>
   )

@@ -1,7 +1,7 @@
 import { BlitzPage, Link } from "blitz"
 import { Container, List, ListItem, ListItemText, Typography } from "@material-ui/core"
 import React from "react"
-import { Header } from "../components/AppBar"
+import { Header } from "../components/Header"
 
 const Home: BlitzPage = () => {
   return (

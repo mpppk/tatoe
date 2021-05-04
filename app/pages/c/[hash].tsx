@@ -1,7 +1,7 @@
 import { BlitzPage, Link } from "blitz"
 import { Button, Container, makeStyles, Typography } from "@material-ui/core"
 import React from "react"
-import { Header } from "../../components/AppBar"
+import { Header } from "../../components/Header"
 
 const useStyles = makeStyles((theme) => ({
   tweetButtonWrapper: {
