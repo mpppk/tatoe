@@ -1,5 +1,7 @@
-import { ReactNode } from "react"
+import React, { ReactNode } from "react"
 import { Head } from "blitz"
+import { Header } from "../../components/Header"
+import { Container } from "@material-ui/core"
 
 type LayoutProps = {
   title?: string
@@ -14,7 +16,8 @@ const Layout = ({ title, children }: LayoutProps) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {children}
+      <Header />
+      <Container>{children}</Container>
     </>
   )
 }

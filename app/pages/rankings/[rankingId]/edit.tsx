@@ -1,0 +1,71 @@
+import { Suspense } from "react"
+import { Head, Link, useRouter, useQuery, useMutation, useParam, BlitzPage, Routes } from "blitz"
+import Layout from "app/core/layouts/Layout"
+import getRanking from "app/rankings/queries/getRanking"
+import updateRanking from "app/rankings/mutations/updateRanking"
+import { RankingForm, FORM_ERROR } from "app/rankings/components/RankingForm"
+
+export const EditRanking = () => {
+  const router = useRouter()
+  const rankingId = useParam("rankingId", "number")
+  const [ranking, { setQueryData }] = useQuery(getRanking, { id: rankingId })
+  const [updateRankingMutation] = useMutation(updateRanking)
+
+  return (
+    <>
+      <Head>
+        <title>Edit Ranking {ranking.id}</title>
+      </Head>
+
+      <div>
+        <h1>Edit Ranking {ranking.id}</h1>
+        <pre>{JSON.stringify(ranking)}</pre>
+
+        <RankingForm
+          submitText="Update Ranking"
+          // TODO use a zod schema for form validation
+          //  - Tip: extract mutation's schema into a shared `validations.ts` file and
+          //         then import and use it here
+          // schema={UpdateRanking}
+          initialValues={ranking}
+          onSubmit={async (values) => {
+            try {
+              const updated = await updateRankingMutation({
+                id: ranking.id,
+                ...values,
+              })
+              await setQueryData(updated)
+              router.push(Routes.ShowRankingPage({ rankingId: updated.id }))
+            } catch (error) {
+              console.error(error)
+              return {
+                [FORM_ERROR]: error.toString(),
+              }
+            }
+          }}
+        />
+      </div>
+    </>
+  )
+}
+
+const EditRankingPage: BlitzPage = () => {
+  return (
+    <div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <EditRanking />
+      </Suspense>
+
+      <p>
+        <Link href={Routes.RankingsPage()}>
+          <a>Rankings</a>
+        </Link>
+      </p>
+    </div>
+  )
+}
+
+EditRankingPage.authenticate = true
+EditRankingPage.getLayout = (page) => <Layout>{page}</Layout>
+
+export default EditRankingPage
