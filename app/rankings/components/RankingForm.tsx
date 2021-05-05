@@ -41,7 +41,8 @@ const RankTextField: React.FC<RankTextFieldProps> = (props) => {
 
 export function RankingForm<S extends z.ZodType<any, any>>(props: FormProps<S>) {
   const classes = useStyles()
-  const [maxRank, setMaxRank] = useState(3)
+  const defaultRankNum = props.initialValues?.items?.length ?? 3
+  const [maxRank, setMaxRank] = useState(defaultRankNum)
   const seq = Array.from({ length: maxRank }, (v, k) => k)
   const handleMoreRankButton = setMaxRank.bind(null, maxRank + 1)
 

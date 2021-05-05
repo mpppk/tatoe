@@ -22,7 +22,6 @@ const NewRankingPage: BlitzPage = () => {
         // schema={CreateRanking}
         initialValues={{ items: [] }}
         onSubmit={async (values) => {
-          console.log("values", values)
           try {
             const ranking = await createRankingMutation(values)
             router.push(`/rankings/${ranking.id}`)

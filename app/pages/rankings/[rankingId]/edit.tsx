@@ -11,28 +11,38 @@ export const EditRanking = () => {
   const [ranking, { setQueryData }] = useQuery(getRanking, { id: rankingId })
   const [updateRankingMutation] = useMutation(updateRanking)
 
+  console.log("ranking", ranking)
+
   return (
     <>
       <Head>
-        <title>Edit Ranking {ranking.id}</title>
+        <title>{ranking.title}を編集</title>
       </Head>
 
       <div>
-        <h1>Edit Ranking {ranking.id}</h1>
-        <pre>{JSON.stringify(ranking)}</pre>
+        <h1>{ranking.title}</h1>
 
         <RankingForm
-          submitText="Update Ranking"
+          submitText="更新"
           // TODO use a zod schema for form validation
           //  - Tip: extract mutation's schema into a shared `validations.ts` file and
           //         then import and use it here
           // schema={UpdateRanking}
           initialValues={ranking}
           onSubmit={async (values) => {
+            const newValues = { ...values }
+            delete newValues.updatedAt
+            delete newValues.createdAt
+            delete newValues.rankingId
             try {
               const updated = await updateRankingMutation({
                 id: ranking.id,
-                ...values,
+                ...newValues,
+                items: values.items.map((item, index) => {
+                  const item2 = { ...item }
+                  delete item2.rankingId
+                  return { ...item2, rank: index + 1 }
+                }),
               })
               await setQueryData(updated)
               router.push(Routes.ShowRankingPage({ rankingId: updated.id }))
