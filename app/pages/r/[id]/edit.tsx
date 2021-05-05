@@ -3,7 +3,7 @@ import { Button, Container, makeStyles, TextField, Typography } from "@material-
 import DeleteIcon from "@material-ui/icons/Delete"
 import React from "react"
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((_theme) => ({
   rankEditWrapper: {
     display: "flex",
     alignItems: "center",
@@ -26,8 +26,6 @@ const ItemForm: React.FC<ItemFormProps> = (props) => {
 }
 
 const RankingEdit = () => {
-  const classes = useStyles()
-
   return (
     <>
       <Header />

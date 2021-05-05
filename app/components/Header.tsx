@@ -89,7 +89,7 @@ const ProfileButton: React.FC<ProfileButtonProps> = (props) => {
 
 export const Header = () => {
   const classes = useStyles()
-  const [user, setUser] = useState({ name: "test" } as User | null)
+  const [user] = useState({ name: "test" } as User | null)
   const emptyHandler = () => {}
   return (
     <Toolbar>
