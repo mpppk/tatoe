@@ -13,7 +13,6 @@ const NewRankingPage: BlitzPage = () => {
       <Typography variant={"h5"} gutterBottom>
         ランキングを作る
       </Typography>
-      {/*<h1>Create New Ranking</h1>*/}
 
       <RankingForm
         submitText="作成"

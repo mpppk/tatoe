@@ -1,26 +1,42 @@
-import { BlitzPage, Link } from "blitz"
+import React, { useState } from "react"
+import { Link } from "blitz"
 import {
   Avatar,
-  Button,
   Card,
   CardHeader,
   Collapse,
-  Container,
   IconButton,
-  List,
   Link as MUILink,
+  List,
   ListItem,
   ListItemText,
   makeStyles,
   Typography,
 } from "@material-ui/core"
-import React, { useState } from "react"
-import clsx from "clsx"
 import LooksOneIcon from "@material-ui/icons/LooksOne"
+import clsx from "clsx"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
-import { Header } from "../../../components/Header"
+import {
+  Filter4,
+  Filter5,
+  Filter6,
+  Filter7,
+  Filter8,
+  Filter9,
+  Looks3,
+  LooksTwo,
+} from "@material-ui/icons"
 
 const useStyles = makeStyles((theme) => ({
+  firstAvatar: {
+    background: "gold",
+  },
+  secondAvatar: {
+    background: "silver",
+  },
+  thirdAvatar: {
+    background: "brown",
+  },
   card: {
     marginTop: theme.spacing(1),
   },
@@ -34,14 +50,9 @@ const useStyles = makeStyles((theme) => ({
   expandOpen: {
     transform: "rotate(180deg)",
   },
-  editButtonWrapper: {
-    marginTop: theme.spacing(1),
-    display: "flex",
-    justifyContent: "flex-end",
-  },
 }))
 
-interface CompareListItemProps {
+export interface CompareListItemProps {
   rankingName: string
   itemName: string
   url: string
@@ -49,6 +60,7 @@ interface CompareListItemProps {
 
 const CompareListItem: React.FC<CompareListItemProps> = (props) => {
   return (
+    // FIXME
     <Link href={props.url}>
       <MUILink>
         <ListItem>
@@ -62,23 +74,68 @@ const CompareListItem: React.FC<CompareListItemProps> = (props) => {
   )
 }
 
+interface RankIconProps {
+  rank: number
+}
+
+const RankAvatar: React.FC<RankIconProps> = (props) => {
+  const getRankColor = (rank: number) => {
+    switch (rank) {
+      case 1:
+        return "gold"
+      case 2:
+        return "silver"
+      case 3:
+        return "brown"
+    }
+  }
+  const style = props.rank <= 3 ? { backgroundColor: getRankColor(props.rank) } : {}
+  return (
+    <Avatar style={style} aria-label="rank1">
+      <RankIcon rank={props.rank} />
+    </Avatar>
+  )
+}
+
+const RankIcon: React.FC<RankIconProps> = (props) => {
+  switch (props.rank) {
+    case 1:
+      return <LooksOneIcon />
+    case 2:
+      return <LooksTwo />
+    case 3:
+      return <Looks3 />
+    case 4:
+      return <Filter4 />
+    case 5:
+      return <Filter5 />
+    case 6:
+      return <Filter6 />
+    case 7:
+      return <Filter7 />
+    case 8:
+      return <Filter8 />
+    case 9:
+      return <Filter9 />
+    default:
+      return <span>{props.rank}</span>
+  }
+}
+
 interface ItemCardProps {
   name: string
+  rank: number
   subheader: string
   compares: CompareListItemProps[]
 }
 
-const ItemCard: React.FC<ItemCardProps> = (props) => {
+export const RankingItemCard: React.FC<ItemCardProps> = (props) => {
   const classes = useStyles()
   const [expand, setExpand] = useState(false)
   return (
     <Card className={classes.card}>
       <CardHeader
-        avatar={
-          <Avatar aria-label="rank1">
-            <LooksOneIcon />
-          </Avatar>
-        }
+        avatar={<RankAvatar rank={props.rank} />}
         action={
           <IconButton
             className={clsx(classes.expand, { [classes.expandOpen]: expand })}
@@ -106,51 +163,3 @@ const ItemCard: React.FC<ItemCardProps> = (props) => {
     </Card>
   )
 }
-
-const Ranking: BlitzPage = () => {
-  const classes = useStyles()
-  const compares: CompareListItemProps[] = [
-    {
-      rankingName: "ガンダム人気キャラクター",
-      itemName: "カミーユ",
-      url: "/c/xxx",
-    },
-    {
-      rankingName: "人気声優",
-      itemName: "山寺宏一",
-      url: "/c/xxx",
-    },
-    {
-      rankingName: "Spotify国内再生数",
-      itemName: "夜に駆ける／YOASOBI",
-      url: "/c/xxx",
-    },
-  ]
-  return (
-    <>
-      <Header />
-      <Container>
-        <Typography variant={"h5"}>2020年の安打数ランキング</Typography>
-        <Typography variant={"subtitle1"}>2020年の安打数ランキングの説明です</Typography>
-        <ItemCard name={"大島洋平"} subheader={"146本"} compares={compares} />
-        <ItemCard name={"梶谷隆幸"} subheader={"140本"} compares={compares} />
-        <ItemCard name={"近本光司"} subheader={"139本"} compares={compares} />
-        <Link href={`/r/1/edit`}>
-          <div className={classes.editButtonWrapper}>
-            <Button color={"inherit"} variant={"contained"}>
-              Edit
-            </Button>
-          </div>
-        </Link>
-        <Typography variant={"body1"}>
-          Created by <MUILink>User1</MUILink>
-        </Typography>
-        <Typography variant={"body1"}>
-          Updated by <MUILink>User2</MUILink>
-        </Typography>
-      </Container>
-    </>
-  )
-}
-
-export default Ranking

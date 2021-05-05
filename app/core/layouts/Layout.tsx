@@ -17,7 +17,8 @@ const Layout = ({ title, children }: LayoutProps) => {
       </Head>
 
       <Header />
-      <Container>{children}</Container>
+      {/* FIXME */}
+      <Container>{children as any}</Container>
     </>
   )
 }

@@ -1,15 +1,17 @@
-import { Suspense } from "react"
+import React, { Suspense } from "react"
 import { Head, Link, usePaginatedQuery, useRouter, BlitzPage, Routes } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import getRankings from "app/rankings/queries/getRankings"
+import { Button, Link as MUILink, List, Typography } from "@material-ui/core"
+import { LinkListItem } from "../../core/components/LinkListItem"
 
-const ITEMS_PER_PAGE = 100
+const ITEMS_PER_PAGE = 10
 
 export const RankingsList = () => {
   const router = useRouter()
   const page = Number(router.query.page) || 0
   const [{ rankings, hasMore }] = usePaginatedQuery(getRankings, {
-    orderBy: { id: "asc" },
+    orderBy: { id: "desc" },
     skip: ITEMS_PER_PAGE * page,
     take: ITEMS_PER_PAGE,
   })
@@ -19,22 +21,22 @@ export const RankingsList = () => {
 
   return (
     <div>
-      <ul>
+      <List dense={true}>
         {rankings.map((ranking) => (
-          <li key={ranking.id}>
-            <Link href={Routes.ShowRankingPage({ rankingId: ranking.id })}>
-              <a>{ranking.title}</a>
-            </Link>
-          </li>
+          <LinkListItem
+            key={ranking.id}
+            href={Routes.ShowRankingPage({ rankingId: ranking.id })}
+            text={ranking.title}
+          />
         ))}
-      </ul>
+      </List>
 
-      <button disabled={page === 0} onClick={goToPreviousPage}>
-        Previous
-      </button>
-      <button disabled={!hasMore} onClick={goToNextPage}>
-        Next
-      </button>
+      <Button disabled={page === 0} onClick={goToPreviousPage}>
+        前のページ
+      </Button>
+      <Button disabled={!hasMore} onClick={goToNextPage}>
+        次のページ
+      </Button>
     </div>
   )
 }
@@ -47,16 +49,16 @@ const RankingsPage: BlitzPage = () => {
       </Head>
 
       <div>
-        <p>
-          <Link href={Routes.NewRankingPage()}>
-            <a>Create Ranking</a>
-          </Link>
-        </p>
-
+        <Typography variant={"h5"}>新着ランキング</Typography>
         <Suspense fallback={<div>Loading...</div>}>
           <RankingsList />
         </Suspense>
       </div>
+      <p>
+        <Link href={Routes.NewRankingPage()}>
+          <MUILink>ランキングを作る</MUILink>
+        </Link>
+      </p>
     </>
   )
 }
