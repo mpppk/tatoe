@@ -16,14 +16,14 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: yarn install, build, and test
-        run: |
-          yarn install
-          yarn lint
-          yarn test
-          yarn build
+      - run: yarn install
+      - run: yarn lint
+      - run: yarn test
         env:
-          CI: true
+          DATABASE_URL: "file:./db_test.sqlite"
+      - run: yarn build
+        env:
+          DATABASE_URL: "file:./db_test.sqlite"
 #  cypress:
 #    runs-on: ubuntu-16.04
 #    steps:
