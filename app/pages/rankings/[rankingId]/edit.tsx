@@ -38,6 +38,7 @@ export const EditRanking = () => {
               .map((item) => item.id)
               .filter((id) => !newValues.items.map((i) => i.id).includes(id))
             try {
+              await deleteRankingItemsMutation({ idList: deleteItemIDList })
               const updated = await updateRankingMutation({
                 id: ranking.id,
                 ...newValues,
@@ -48,7 +49,6 @@ export const EditRanking = () => {
                 }),
               })
               await setQueryData(updated)
-              await deleteRankingItemsMutation({ idList: deleteItemIDList })
               router.push(Routes.ShowRankingPage({ rankingId: updated.id }))
             } catch (error) {
               console.error(error)
