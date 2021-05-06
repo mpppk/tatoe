@@ -2,7 +2,7 @@ import { Link, Routes } from "blitz"
 import { Button, Link as MUILink, makeStyles, Typography } from "@material-ui/core"
 import React from "react"
 import { CompareListItemProps, RankingItemCard } from "./RankingItemCard"
-import { Ranking as RankingType } from "../model"
+import { Ranking as RankingType } from "../validations"
 import { BaseModel } from "../../core/baseModel"
 
 const useStyles = makeStyles((theme) => ({

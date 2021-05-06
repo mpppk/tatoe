@@ -1,8 +1,10 @@
-import { Link, useRouter, useMutation, BlitzPage, Routes } from "blitz"
+import { useRouter, useMutation, BlitzPage } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import createRanking from "app/rankings/mutations/createRanking"
 import { RankingForm, FORM_ERROR } from "app/rankings/components/RankingForm"
 import { Typography } from "@material-ui/core"
+import { CreateRanking } from "../../rankings/validations"
+import { reRankItems } from "../../ranking-items/validations"
 
 const NewRankingPage: BlitzPage = () => {
   const router = useRouter()
@@ -16,14 +18,14 @@ const NewRankingPage: BlitzPage = () => {
 
       <RankingForm
         submitText="作成"
-        // TODO use a zod schema for form validation
-        //  - Tip: extract mutation's schema into a shared `validations.ts` file and
-        //         then import and use it here
-        // schema={CreateRanking}
+        schema={CreateRanking}
         initialValues={{ items: [] }}
-        onSubmit={async (values) => {
+        onSubmit={async (rankingForm) => {
           try {
-            const ranking = await createRankingMutation(values)
+            const ranking = await createRankingMutation({
+              ...rankingForm,
+              items: reRankItems(rankingForm.items),
+            })
             router.push(`/rankings/${ranking.id}`)
           } catch (error) {
             console.error(error)

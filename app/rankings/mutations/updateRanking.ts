@@ -1,8 +1,8 @@
 import { resolver } from "blitz"
 import db from "db"
 import * as z from "zod"
-import { rankingSchema } from "../model"
-import { rankingItemSchema } from "../../ranking-items/model"
+import { rankingSchema } from "../validations"
+import { rankingItemSchema } from "../../ranking-items/validations"
 
 const itemsSchema = rankingItemSchema
   .extend({

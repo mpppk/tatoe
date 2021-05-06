@@ -1,12 +1,6 @@
 import { resolver } from "blitz"
 import db from "db"
-import * as z from "zod"
-
-const CreateRankingItem = z
-  .object({
-    name: z.string(),
-  })
-  .nonstrict()
+import { CreateRankingItem } from "../validations"
 
 export default resolver.pipe(
   resolver.zod(CreateRankingItem),
