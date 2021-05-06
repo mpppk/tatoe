@@ -4,14 +4,14 @@ import Layout from "app/core/layouts/Layout"
 import getRanking from "app/rankings/queries/getRanking"
 import updateRanking from "app/rankings/mutations/updateRanking"
 import { RankingForm, FORM_ERROR } from "app/rankings/components/RankingForm"
+import deleteRankingItems from "../../../ranking-items/mutations/deleteRankingItems"
 
 export const EditRanking = () => {
   const router = useRouter()
   const rankingId = useParam("rankingId", "number")
   const [ranking, { setQueryData }] = useQuery(getRanking, { id: rankingId })
   const [updateRankingMutation] = useMutation(updateRanking)
-
-  console.log("ranking", ranking)
+  const [deleteRankingItemsMutation] = useMutation(deleteRankingItems)
 
   return (
     <>
@@ -34,6 +34,9 @@ export const EditRanking = () => {
             delete newValues.updatedAt
             delete newValues.createdAt
             delete newValues.rankingId
+            const deleteItemIDList = ranking.items
+              .map((item) => item.id)
+              .filter((id) => !newValues.items.map((i) => i.id).includes(id))
             try {
               const updated = await updateRankingMutation({
                 id: ranking.id,
@@ -45,6 +48,7 @@ export const EditRanking = () => {
                 }),
               })
               await setQueryData(updated)
+              await deleteRankingItemsMutation({ idList: deleteItemIDList })
               router.push(Routes.ShowRankingPage({ rankingId: updated.id }))
             } catch (error) {
               console.error(error)
