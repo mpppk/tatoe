@@ -1,21 +1,6 @@
 import { resolver } from "blitz"
 import db from "db"
-import * as z from "zod"
-import { rankingSchema } from "../validations"
-import { rankingItemSchema } from "../../ranking-items/validations"
-
-const itemsSchema = rankingItemSchema
-  .extend({
-    id: rankingItemSchema.shape.id.optional(),
-    rankingId: rankingItemSchema.shape.rankingId.optional(),
-  })
-  .nonstrict()
-  .array()
-
-const UpdateRanking = rankingSchema
-  .extend({ id: z.number().optional(), items: itemsSchema })
-  .omit({ updatedAt: true, createdAt: true })
-  .nonstrict()
+import { UpdateRanking } from "../validations"
 
 export default resolver.pipe(
   resolver.zod(UpdateRanking),

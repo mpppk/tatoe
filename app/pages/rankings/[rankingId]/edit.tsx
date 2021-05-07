@@ -5,6 +5,7 @@ import getRanking from "app/rankings/queries/getRanking"
 import updateRanking from "app/rankings/mutations/updateRanking"
 import { RankingForm, FORM_ERROR } from "app/rankings/components/RankingForm"
 import deleteRankingItems from "../../../ranking-items/mutations/deleteRankingItems"
+import { toUpdateRankingFromForm, UpdateRankingForm } from "../../../rankings/validations"
 
 export const EditRanking = () => {
   const router = useRouter()
@@ -24,30 +25,16 @@ export const EditRanking = () => {
 
         <RankingForm
           submitText="更新"
-          // TODO use a zod schema for form validation
-          //  - Tip: extract mutation's schema into a shared `validations.ts` file and
-          //         then import and use it here
-          // schema={UpdateRanking}
+          schema={UpdateRankingForm}
           initialValues={ranking}
-          onSubmit={async (values) => {
-            const newValues = { ...values }
-            delete newValues.updatedAt
-            delete newValues.createdAt
-            delete newValues.rankingId
+          onSubmit={async (rankingForm) => {
+            const newRanking = toUpdateRankingFromForm(ranking, rankingForm)
             const deleteItemIDList = ranking.items
               .map((item) => item.id)
-              .filter((id) => !newValues.items.map((i) => i.id).includes(id))
+              .filter((id) => !newRanking.items.map((i) => i.id).includes(id))
             try {
               await deleteRankingItemsMutation({ idList: deleteItemIDList })
-              const updated = await updateRankingMutation({
-                id: ranking.id,
-                ...newValues,
-                items: values.items.map((item, index) => {
-                  const item2 = { ...item }
-                  delete item2.rankingId
-                  return { ...item2, rank: index + 1 }
-                }),
-              })
+              const updated = await updateRankingMutation(newRanking)
               await setQueryData(updated)
               router.push(Routes.ShowRankingPage({ rankingId: updated.id }))
             } catch (error) {

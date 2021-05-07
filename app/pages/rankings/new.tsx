@@ -19,7 +19,7 @@ const NewRankingPage: BlitzPage = () => {
       <RankingForm
         submitText="作成"
         schema={CreateRanking}
-        initialValues={{ items: [] }}
+        initialValues={{ items: [{ name: "", rank: 1 }] }}
         onSubmit={async (rankingForm) => {
           try {
             const ranking = await createRankingMutation({
