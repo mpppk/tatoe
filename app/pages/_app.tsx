@@ -11,7 +11,10 @@ import { ErrorBoundary } from "react-error-boundary"
 import LoginForm from "app/auth/components/LoginForm"
 
 import CssBaseline from "@material-ui/core/CssBaseline"
-import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles"
+import {
+  ThemeProvider,
+  unstable_createMuiStrictModeTheme as createMuiTheme,
+} from "@material-ui/core/styles"
 import React from "react"
 
 //You can customize this as you want and even move it out to a separate file
