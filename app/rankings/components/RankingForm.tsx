@@ -7,6 +7,7 @@ import { Form as FinalForm } from "react-final-form"
 import { AppTextField } from "../../core/components/AppTextField"
 import arrayMutators from "final-form-arrays"
 import { FieldArray } from "react-final-form-arrays"
+import { RankingItem } from "../../ranking-items/validations"
 
 export { FORM_ERROR } from "app/core/components/Form"
 
@@ -27,13 +28,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-interface RankTextFieldProps {
-  namePrefix: string
-  rank: number
-  errorText?: string
-  onClickDeleteButton: () => void
-}
-
 interface DeleteButtonProps {
   onClickDeleteButton: () => void
   disabled?: boolean
@@ -48,58 +42,45 @@ const DeleteButton = (props: DeleteButtonProps) => {
   )
 }
 
-interface RankFieldsProps extends RankTextFieldProps {
+interface RankFieldsProps {
   namePrefix: string
-  error: Record<"name" | "description", string>
+  rank: number
+  error?: Partial<Record<keyof RankingItem, string>>
+  onClickDeleteButton: () => void
 }
 
 const RankFields: React.FC<RankFieldsProps> = (props) => {
-  return (
-    <>
-      <RankTextField
-        namePrefix={props.namePrefix}
-        rank={props.rank}
-        onClickDeleteButton={props.onClickDeleteButton}
-        errorText={props?.error?.name}
-      />
-      <RankDescriptionTextField
-        namePrefix={props.namePrefix}
-        rank={props.rank}
-        onClickDeleteButton={props.onClickDeleteButton}
-        errorText={props?.error?.description}
-      />
-    </>
-  )
-}
-
-const RankDescriptionTextField: React.FC<RankTextFieldProps> = (props) => {
+  console.log(props.error)
   const classes = useStyles()
   return (
-    <div className={classes.rankTextFieldWrapper}>
+    <>
+      <div className={classes.rankTextFieldWrapper}>
+        <AppTextField
+          error={props?.error?.title !== undefined}
+          helperText={props?.error?.title}
+          name={props.namePrefix + ".title"}
+          label={`${props.rank}位`}
+          fullWidth
+        />
+        <DeleteButton disabled={props.rank === 1} onClickDeleteButton={props.onClickDeleteButton} />
+      </div>
       <AppTextField
-        error={props.errorText !== undefined}
-        helperText={props.errorText}
-        name={props.namePrefix + ".description"}
+        error={props?.error?.subtitle !== undefined}
+        helperText={props?.error?.subtitle}
+        name={props.namePrefix + ".subtitle"}
         label={`${props.rank}位の説明`}
         fullWidth
       />
-    </div>
-  )
-}
-
-const RankTextField: React.FC<RankTextFieldProps> = (props) => {
-  const classes = useStyles()
-  return (
-    <div className={classes.rankTextFieldWrapper}>
       <AppTextField
-        error={props.errorText !== undefined}
-        helperText={props.errorText}
-        name={props.namePrefix + ".name"}
-        label={`${props.rank}位`}
+        error={props?.error?.description !== undefined}
+        helperText={props?.error?.description}
+        name={props.namePrefix + ".description"}
+        label={`${props.rank}位の詳細な説明`}
         fullWidth
+        multiline
+        rows={2}
       />
-      <DeleteButton disabled={props.rank === 1} onClickDeleteButton={props.onClickDeleteButton} />
-    </div>
+    </>
   )
 }
 
@@ -131,6 +112,7 @@ export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(props: F
           delete err.items
         }
         delete err.items
+        console.log(err)
         return (
           <form onSubmit={handleSubmit}>
             {submitError && (

@@ -3,7 +3,7 @@ import Layout from "app/core/layouts/Layout"
 import createRanking from "app/rankings/mutations/createRanking"
 import { RankingForm, FORM_ERROR } from "app/rankings/components/RankingForm"
 import { Typography } from "@material-ui/core"
-import { CreateRanking } from "../../rankings/validations"
+import { CreateRankingForm } from "../../rankings/validations"
 import { reRankItems } from "../../ranking-items/validations"
 
 const NewRankingPage: BlitzPage = () => {
@@ -18,8 +18,8 @@ const NewRankingPage: BlitzPage = () => {
 
       <RankingForm
         submitText="作成"
-        schema={CreateRanking}
-        initialValues={{ items: [{ name: "", description: "", rank: 1 }] }}
+        schema={CreateRankingForm}
+        initialValues={{ items: [{ title: "" }] }}
         onSubmit={async (rankingForm) => {
           try {
             const ranking = await createRankingMutation({

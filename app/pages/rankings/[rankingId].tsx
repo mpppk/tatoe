@@ -1,5 +1,5 @@
 import { Suspense } from "react"
-import { Head, Link, useRouter, useQuery, useParam, BlitzPage, useMutation, Routes } from "blitz"
+import { Head, useRouter, useQuery, useParam, BlitzPage, useMutation, Routes } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import getRanking from "app/rankings/queries/getRanking"
 import deleteRanking from "app/rankings/mutations/deleteRanking"
@@ -42,7 +42,18 @@ export const ShowRanking = () => {
       <Head>
         <title>{ranking.title}ランキング</title>
       </Head>
-      <Ranking {...ranking} compares={compares} onClickDeleteButton={handleClickDeleteButton} />
+      <Ranking
+        id={ranking.id}
+        title={ranking.title}
+        description={ranking.description}
+        items={ranking.items.map((item) => ({
+          id: item.id,
+          title: item.title,
+          subtitle: item.subtitle,
+        }))}
+        compares={compares}
+        onClickDeleteButton={handleClickDeleteButton}
+      />
     </>
   )
 }
