@@ -3,7 +3,7 @@ import { Button, Link as MUILink, makeStyles, Typography } from "@material-ui/co
 import React from "react"
 import { CompareListItemProps, RankingItemCard } from "./RankingItemCard"
 import { Ranking as RankingType } from "../validations"
-import { BaseModel } from "../../core/baseModel"
+import { RankingItem } from "../../ranking-items/validations"
 
 const useStyles = makeStyles((theme) => ({
   buttonsWrapper: {
@@ -16,7 +16,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-type Props = Omit<RankingType, keyof BaseModel> & {
+type Props = Pick<RankingType, "id" | "title" | "description"> & {
+  items: Pick<RankingItem, "id" | "title" | "subtitle">[]
   compares: CompareListItemProps[]
   onClickDeleteButton: (rankingId: number) => void
 }
@@ -29,9 +30,9 @@ export const Ranking: React.FC<Props> = (props) => {
       {props.items.map((item, rank) => (
         <RankingItemCard
           key={item.id}
-          name={item.name}
+          title={item.title}
           rank={rank + 1}
-          subheader={"146本"}
+          subheader={item.subtitle ?? ""}
           compares={props.compares}
         />
       ))}

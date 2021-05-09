@@ -123,7 +123,7 @@ const RankIcon: React.FC<RankIconProps> = (props) => {
 }
 
 interface ItemCardProps {
-  name: string
+  title: string
   rank: number
   subheader: string
   compares: CompareListItemProps[]
@@ -145,7 +145,7 @@ export const RankingItemCard: React.FC<ItemCardProps> = (props) => {
             <ExpandMoreIcon />
           </IconButton>
         }
-        title={<Typography variant={"h6"}>{props.name}</Typography>}
+        title={<Typography variant={"h6"}>{props.title}</Typography>}
         subheader={props.subheader}
       />
       <Collapse in={expand} timeout="auto" unmountOnExit>

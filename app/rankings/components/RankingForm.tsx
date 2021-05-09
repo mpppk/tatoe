@@ -7,6 +7,7 @@ import { Form as FinalForm } from "react-final-form"
 import { AppTextField } from "../../core/components/AppTextField"
 import arrayMutators from "final-form-arrays"
 import { FieldArray } from "react-final-form-arrays"
+import { RankingItem } from "../../ranking-items/validations"
 
 export { FORM_ERROR } from "app/core/components/Form"
 
@@ -27,13 +28,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-interface RankTextFieldProps {
-  name: string
-  rank: number
-  errorText?: string
-  onClickDeleteButton: () => void
-}
-
 interface DeleteButtonProps {
   onClickDeleteButton: () => void
   disabled?: boolean
@@ -48,19 +42,45 @@ const DeleteButton = (props: DeleteButtonProps) => {
   )
 }
 
-const RankTextField: React.FC<RankTextFieldProps> = (props) => {
+interface RankFieldsProps {
+  namePrefix: string
+  rank: number
+  error?: Partial<Record<keyof RankingItem, string>>
+  onClickDeleteButton: () => void
+}
+
+const RankFields: React.FC<RankFieldsProps> = (props) => {
+  console.log(props.error)
   const classes = useStyles()
   return (
-    <div key={"RankTextField" + props.rank} className={classes.rankTextFieldWrapper}>
+    <>
+      <div className={classes.rankTextFieldWrapper}>
+        <AppTextField
+          error={props?.error?.title !== undefined}
+          helperText={props?.error?.title}
+          name={props.namePrefix + ".title"}
+          label={`${props.rank}位`}
+          fullWidth
+        />
+        <DeleteButton disabled={props.rank === 1} onClickDeleteButton={props.onClickDeleteButton} />
+      </div>
       <AppTextField
-        error={props.errorText !== undefined}
-        helperText={props.errorText}
-        name={props.name}
-        label={`${props.rank}位`}
+        error={props?.error?.subtitle !== undefined}
+        helperText={props?.error?.subtitle}
+        name={props.namePrefix + ".subtitle"}
+        label={`${props.rank}位の説明`}
         fullWidth
       />
-      <DeleteButton disabled={props.rank === 1} onClickDeleteButton={props.onClickDeleteButton} />
-    </div>
+      <AppTextField
+        error={props?.error?.description !== undefined}
+        helperText={props?.error?.description}
+        name={props.namePrefix + ".description"}
+        label={`${props.rank}位の詳細な説明`}
+        fullWidth
+        multiline
+        rows={2}
+      />
+    </>
   )
 }
 
@@ -81,13 +101,20 @@ export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(props: F
       render={({
         handleSubmit,
         submitting,
+        errors,
         submitError,
         form: {
           mutators: { push, pop },
         },
       }) => {
+        const err = { ...errors }
+        if (Array.isArray(err.items) && err.items.length === 0) {
+          delete err.items
+        }
+        delete err.items
+        console.log(err)
         return (
-          <form onSubmit={handleSubmit} className="form">
+          <form onSubmit={handleSubmit}>
             {submitError && (
               <div role="alert" style={{ color: "red" }}>
                 {submitError}
@@ -100,21 +127,26 @@ export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(props: F
               name="items"
               validate={(items) => {
                 if (!props.schema) return
-                const result = props.schema.shape.items.safeParse(items)
-                return result.success ? null : result.error.formErrors.fieldErrors
+                return items.reduce((err, item, index) => {
+                  const result = props.schema?.shape.items.element.safeParse(item)
+                  if (!result.success) {
+                    err[index] = result.error.formErrors.fieldErrors
+                  }
+                  return err
+                }, {})
               }}
             >
               {({ fields, meta }) => {
-                const handleMoreRankButton = () => push("items", undefined)
+                const handleMoreRankButton = () => push("items", {})
                 return (
                   <>
                     {fields.map((name, index) => (
-                      <RankTextField
-                        key={name + index}
-                        name={`${name}.name`}
-                        onClickDeleteButton={() => fields.remove(index)}
+                      <RankFields
+                        key={"RankFields" + index}
+                        namePrefix={name}
                         rank={index + 1}
-                        errorText={meta.error?.[index]}
+                        onClickDeleteButton={() => fields.remove(index)}
+                        error={meta.error?.[index]}
                       />
                     ))}
                     <div className={classes.buttonWrapper}>
@@ -128,8 +160,7 @@ export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(props: F
                       {props.submitText && (
                         <Button
                           type="submit"
-                          disabled={submitting}
-                          className="submit-button"
+                          disabled={submitting || (err && Object.keys(err).length > 0)}
                           variant={"contained"}
                           color={"primary"}
                         >

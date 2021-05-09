@@ -2,6 +2,7 @@ import * as z from "zod"
 import { baseSchema, baseSchemaKeyObject, deleteBaseSchema } from "../core/baseModel"
 import {
   CreateRankingItem,
+  CreateRankingItemForm,
   rankingItemSchema,
   toUpdateRankingItemsFromForms,
   UpdateRankingItem,
@@ -13,7 +14,6 @@ export const rankingSchema = z
     id: z.number().positive(),
     title: z.string(),
     description: z.string(),
-    note: z.string().nullable(),
     items: rankingItemSchema.array().min(1),
   })
   .merge(baseSchema)
@@ -28,6 +28,10 @@ export const CreateRanking = rankingSchema
   })
 export type CreateRankingModel = z.infer<typeof CreateRanking>
 
+export const CreateRankingForm = CreateRanking.extend({
+  items: CreateRankingItemForm.array().min(1),
+})
+
 export const UpdateRanking = rankingSchema
   .extend({ items: UpdateRankingItem.array() })
   .omit(baseSchemaKeyObject)
@@ -35,7 +39,6 @@ export const UpdateRanking = rankingSchema
 export const UpdateRankingForm = rankingSchema.partial().extend({
   title: rankingSchema.shape.title,
   description: rankingSchema.shape.description,
-  note: rankingSchema.shape.note,
   items: UpdateRankingItemForm.array(),
 })
 

@@ -70,7 +70,6 @@ model Ranking {
   updatedAt   DateTime      @updatedAt
   title       String
   description String
-  note        String?
   items       RankingItem[]
 }
 
@@ -78,7 +77,8 @@ model RankingItem {
   id          Int      @id @default(autoincrement())
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  name        String
+  title       String
+  subtitle    String?
   description String?
   rank        Int
   ranking     Ranking  @relation(fields: [rankingId], references: [id])
