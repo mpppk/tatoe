@@ -26,6 +26,7 @@ export const CreateRanking = rankingSchema
   .extend({
     items: CreateRankingItem.array().min(1),
   })
+export type CreateRankingModel = z.infer<typeof CreateRanking>
 
 export const UpdateRanking = rankingSchema
   .extend({ items: UpdateRankingItem.array() })
