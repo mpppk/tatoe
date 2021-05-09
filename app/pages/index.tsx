@@ -1,4 +1,4 @@
-import { BlitzPage, Link } from "blitz"
+import { BlitzPage, Link, Routes } from "blitz"
 import {
   Button,
   Container,
@@ -50,7 +50,7 @@ const Home: BlitzPage = () => {
           </Link>
         </List>
         <div className={classes.moreButtonWrapper}>
-          <Link href={"/"}>
+          <Link href={Routes.RankingsPage()}>
             <Button color={"inherit"}>もっと見る</Button>
           </Link>
         </div>
