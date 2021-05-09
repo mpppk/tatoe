@@ -13,7 +13,6 @@ export const rankingSchema = z
     id: z.number().positive(),
     title: z.string(),
     description: z.string(),
-    note: z.string().nullable(),
     items: rankingItemSchema.array().min(1),
   })
   .merge(baseSchema)
@@ -35,7 +34,6 @@ export const UpdateRanking = rankingSchema
 export const UpdateRankingForm = rankingSchema.partial().extend({
   title: rankingSchema.shape.title,
   description: rankingSchema.shape.description,
-  note: rankingSchema.shape.note,
   items: UpdateRankingItemForm.array(),
 })
 

@@ -70,7 +70,6 @@ model Ranking {
   updatedAt   DateTime      @updatedAt
   title       String
   description String
-  note        String?
   items       RankingItem[]
 }
 
