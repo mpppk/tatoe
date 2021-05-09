@@ -7,6 +7,7 @@ export const rankingItemSchema = z
     id: z.number(),
     rankingId: z.number(),
     name: z.string(),
+    description: z.string().nullable(),
     rank: z.number(),
   })
   .merge(baseSchema)
@@ -28,6 +29,7 @@ type UpdateRankingItemModel = z.infer<typeof UpdateRankingItem>
 
 export const UpdateRankingItemForm = rankingItemSchema.partial().extend({
   name: rankingItemSchema.shape.name,
+  description: rankingItemSchema.shape.description,
 })
 type UpdateRankingItemFormModel = z.infer<typeof UpdateRankingItemForm>
 

@@ -75,11 +75,12 @@ model Ranking {
 }
 
 model RankingItem {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name      String
-  rank      Int
-  ranking   Ranking  @relation(fields: [rankingId], references: [id])
-  rankingId Int
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  name        String
+  description String?
+  rank        Int
+  ranking     Ranking  @relation(fields: [rankingId], references: [id])
+  rankingId   Int
 }

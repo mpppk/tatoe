@@ -71,10 +71,9 @@ export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(props: F
       initialValues={props.initialValues}
       validate={(values) => {
         if (!props.schema) return
-        try {
-          props.schema.parse(values)
-        } catch (error) {
-          return error.formErrors.fieldErrors
+        const result = props.schema.safeParse(values)
+        if (!result.success) {
+          return result.error.formErrors.fieldErrors
         }
       }}
       mutators={{ ...arrayMutators }}
@@ -88,7 +87,7 @@ export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(props: F
         },
       }) => {
         return (
-          <form {...props} onSubmit={handleSubmit} className="form">
+          <form onSubmit={handleSubmit} className="form">
             {submitError && (
               <div role="alert" style={{ color: "red" }}>
                 {submitError}
@@ -99,15 +98,10 @@ export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(props: F
             <AppTextField name="description" label={"説明"} fullWidth />
             <FieldArray
               name="items"
-              validate={(values) => {
+              validate={(items) => {
                 if (!props.schema) return
-                const schema = props.schema.shape.items
-                try {
-                  schema.parse(values)
-                } catch (error) {
-                  console.log(error)
-                  return error.formErrors.fieldErrors
-                }
+                const result = props.schema.shape.items.safeParse(items)
+                return result.success ? null : result.error.formErrors.fieldErrors
               }}
             >
               {({ fields, meta }) => {
