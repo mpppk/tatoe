@@ -126,6 +126,11 @@ export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(props: F
           mutators: { push, pop },
         },
       }) => {
+        const err = { ...errors }
+        if (Array.isArray(err.items) && err.items.length === 0) {
+          delete err.items
+        }
+        delete err.items
         return (
           <form onSubmit={handleSubmit}>
             {submitError && (
@@ -173,7 +178,7 @@ export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(props: F
                       {props.submitText && (
                         <Button
                           type="submit"
-                          disabled={submitting || (errors && Object.keys(errors).length > 0)}
+                          disabled={submitting || (err && Object.keys(err).length > 0)}
                           variant={"contained"}
                           color={"primary"}
                         >

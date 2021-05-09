@@ -1,14 +1,17 @@
 import * as z from "zod"
 import { baseSchema, baseSchemaKeyObject, deleteBaseSchema } from "../core/baseModel"
-import UpdateRanking from "../rankings/mutations/updateRanking"
 
-export const rankingItemSchema = z
-  .object({
-    id: z.number(),
-    rankingId: z.number(),
-    name: z.string(),
-    description: z.string().nullable(),
-    rank: z.number(),
+const baseRankingItemSchema = z.object({
+  id: z.number(),
+  rankingId: z.number(),
+  name: z.string(),
+  description: z.string(),
+  rank: z.number(),
+})
+
+export const rankingItemSchema = baseRankingItemSchema
+  .extend({
+    description: baseRankingItemSchema.shape.description.nullable(),
   })
   .merge(baseSchema)
 
@@ -29,7 +32,6 @@ type UpdateRankingItemModel = z.infer<typeof UpdateRankingItem>
 
 export const UpdateRankingItemForm = rankingItemSchema.partial().extend({
   name: rankingItemSchema.shape.name,
-  description: rankingItemSchema.shape.description,
 })
 type UpdateRankingItemFormModel = z.infer<typeof UpdateRankingItemForm>
 
@@ -43,7 +45,7 @@ const toUpdateRankingItemFromForm = (
   rank: number,
   form: UpdateRankingItemFormModel
 ): UpdateRankingItemModel => {
-  const ret = { ...form, rank }
+  const ret = { ...form, rank, description: form.description ?? null }
   delete ret.rankingId
   return deleteBaseSchema(ret)
 }
