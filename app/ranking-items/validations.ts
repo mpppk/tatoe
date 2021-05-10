@@ -4,9 +4,9 @@ import { baseSchema, baseSchemaKeyObject, deleteBaseSchema } from "../core/baseM
 const baseRankingItemSchema = z.object({
   id: z.number(),
   rankingId: z.number(),
-  title: z.string(),
-  subtitle: z.string(),
-  description: z.string(),
+  title: z.string().nonempty().max(50),
+  subtitle: z.string().nonempty().max(100),
+  description: z.string().nonempty().max(100),
   rank: z.number(),
 })
 

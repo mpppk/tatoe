@@ -12,8 +12,8 @@ import {
 export const rankingSchema = z
   .object({
     id: z.number().positive(),
-    title: z.string(),
-    description: z.string(),
+    title: z.string().nonempty().max(50),
+    description: z.string().nonempty().max(100),
     items: rankingItemSchema.array().min(1),
   })
   .merge(baseSchema)
