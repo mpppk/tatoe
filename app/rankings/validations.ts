@@ -31,6 +31,7 @@ export type CreateRankingModel = z.infer<typeof CreateRanking>
 export const CreateRankingForm = CreateRanking.extend({
   items: CreateRankingItemForm.array().min(1),
 })
+export type CreateRankingFormModel = z.infer<typeof CreateRankingForm>
 
 export const UpdateRanking = rankingSchema
   .extend({ items: UpdateRankingItem.array() })

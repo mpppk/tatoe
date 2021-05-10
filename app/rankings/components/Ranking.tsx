@@ -6,6 +6,9 @@ import { Ranking as RankingType } from "../validations"
 import { RankingItem } from "../../ranking-items/validations"
 
 const useStyles = makeStyles((theme) => ({
+  description: {
+    overflowWrap: "break-word",
+  },
   buttonsWrapper: {
     marginTop: theme.spacing(1),
     display: "flex",
@@ -23,10 +26,13 @@ type Props = Pick<RankingType, "id" | "title" | "description"> & {
 }
 
 export const Ranking: React.FC<Props> = (props) => {
+  const classes = useStyles()
   return (
     <>
       <Typography variant={"h5"}>{props.title}</Typography>
-      <Typography variant={"subtitle1"}>{props.description}</Typography>
+      <Typography className={classes.description} variant={"subtitle1"}>
+        {props.description}
+      </Typography>
       {props.items.map((item, rank) => (
         <RankingItemCard
           key={item.id}
