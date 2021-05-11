@@ -1,18 +1,32 @@
 import { paginate, resolver } from "blitz"
 import db, { Prisma } from "db"
+import * as z from "zod"
 
-interface GetRankingsInput
-  extends Pick<Prisma.RankingFindManyArgs, "where" | "orderBy" | "skip" | "take"> {}
+const GetRankings = z.object({
+  take: z.number().positive().optional(),
+  skip: z.number().nonnegative().optional(),
+})
 
 export default resolver.pipe(
+  resolver.zod(GetRankings),
   resolver.authorize(),
-  async ({ where, orderBy, skip = 0, take = 100 }: GetRankingsInput) => {
-    // TODO: in multi-tenant app, you must add validation to ensure correct tenant
-    const { items: rankings, hasMore, nextPage, count } = await paginate({
+  async ({ skip = 0, take = 10 }) => {
+    const orderBy: Prisma.RankingFindManyArgs["orderBy"] = { id: "desc" }
+    const where = {}
+    const {
+      items: rankings,
+      hasMore,
+      nextPage,
+      count,
+    } = await paginate({
       skip,
       take,
       count: () => db.ranking.count({ where }),
-      query: (paginateArgs) => db.ranking.findMany({ ...paginateArgs, where, orderBy }),
+      query: (paginateArgs) =>
+        db.ranking.findMany({
+          ...paginateArgs,
+          orderBy,
+        }),
     })
 
     return {

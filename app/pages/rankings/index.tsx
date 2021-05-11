@@ -11,7 +11,6 @@ export const RankingsList = () => {
   const router = useRouter()
   const page = Number(router.query.page) || 0
   const [{ rankings, hasMore }] = usePaginatedQuery(getRankings, {
-    orderBy: { id: "desc" },
     skip: ITEMS_PER_PAGE * page,
     take: ITEMS_PER_PAGE,
   })

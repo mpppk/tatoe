@@ -21,12 +21,25 @@ const useStyles = makeStyles((theme) => ({
 
 type Props = Pick<RankingType, "id" | "title" | "description"> & {
   items: Pick<RankingItem, "id" | "title" | "subtitle">[]
-  compares: CompareListItemProps[]
+  rankings: RankingType[]
   onClickDeleteButton: (rankingId: number) => void
+}
+
+const toCompares = (rankings: RankingType[], index: number): CompareListItemProps[] => {
+  return rankings
+    .map((ranking) => {
+      return {
+        rankingName: ranking.title,
+        itemName: ranking.items?.[index]?.title ?? "",
+        url: "/",
+      }
+    })
+    .filter((c) => c.itemName !== "")
 }
 
 export const Ranking: React.FC<Props> = (props) => {
   const classes = useStyles()
+  console.log(props.rankings)
   return (
     <>
       <Typography variant={"h5"}>{props.title}</Typography>
@@ -39,7 +52,7 @@ export const Ranking: React.FC<Props> = (props) => {
           title={item.title}
           rank={rank + 1}
           subheader={item.subtitle ?? ""}
-          compares={props.compares}
+          compares={toCompares(props.rankings, rank)}
         />
       ))}
       <RankingFooter onClickDeleteButton={props.onClickDeleteButton} rankingId={props.id} />
