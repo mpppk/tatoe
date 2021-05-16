@@ -1,23 +1,41 @@
-import { BlitzPage, Link, Routes } from "blitz"
+import { BlitzPage, Link, Routes, useQuery } from "blitz"
 import {
   Button,
   Container,
-  Link as MUILink,
   List,
   ListItem,
   ListItemText,
   makeStyles,
   Typography,
 } from "@material-ui/core"
-import React from "react"
+import React, { Suspense } from "react"
 import { Header } from "../components/Header"
+import getRankings from "../rankings/queries/getRankings"
+import { LinkListItem } from "../core/components/LinkListItem"
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((_theme) => ({
   moreButtonWrapper: {
     display: "flex",
     justifyContent: "flex-end",
   },
 }))
+
+interface LatestRankingsProps {}
+
+const LatestRankings: React.FC<LatestRankingsProps> = () => {
+  const [rankings] = useQuery(getRankings, { take: 5 })
+  return (
+    <List dense={true}>
+      {rankings.rankings.map((ranking) => (
+        <LinkListItem
+          key={ranking.id}
+          href={Routes.ShowRankingPage({ rankingId: ranking.id })}
+          text={ranking.title}
+        />
+      ))}
+    </List>
+  )
+}
 
 const Home: BlitzPage = () => {
   const classes = useStyles()
@@ -26,29 +44,9 @@ const Home: BlitzPage = () => {
       <Header />
       <Container>
         <Typography variant={"h5"}>新着ランキング</Typography>
-        <List dense={true}>
-          <Link href={"/r/1"}>
-            <MUILink>
-              <ListItem>
-                <ListItemText primary="2020年の安打数ランキング" />
-              </ListItem>
-            </MUILink>
-          </Link>
-          <Link href={"/r/2"}>
-            <MUILink>
-              <ListItem>
-                <ListItemText primary="ガンダムの人気キャラクターランキング" />
-              </ListItem>
-            </MUILink>
-          </Link>
-          <Link href={"/r/3"}>
-            <MUILink>
-              <ListItem>
-                <ListItemText primary="声優知名度ランキング" />
-              </ListItem>
-            </MUILink>
-          </Link>
-        </List>
+        <Suspense fallback={<div>loading...</div>}>
+          <LatestRankings />
+        </Suspense>
         <div className={classes.moreButtonWrapper}>
           <Link href={Routes.RankingsPage()}>
             <Button color={"inherit"}>もっと見る</Button>
@@ -56,31 +54,15 @@ const Home: BlitzPage = () => {
         </div>
         <Typography variant={"h5"}>人気ランキング</Typography>
         <List dense={true}>
-          <Link href={"/r/1"}>
-            <MUILink>
-              <ListItem>
-                <ListItemText primary="2020年の安打数ランキング" />
-              </ListItem>
-            </MUILink>
-          </Link>
-          <Link href={"/r/2"}>
-            <MUILink>
-              <ListItem>
-                <ListItemText primary="ガンダムの人気キャラクターランキング" />
-              </ListItem>
-            </MUILink>
-          </Link>
-          <Link href={"/r/3"}>
-            <MUILink>
-              <ListItem>
-                <ListItemText primary="声優知名度ランキング" />
-              </ListItem>
-            </MUILink>
-          </Link>
+          <ListItem>
+            <ListItemText primary="Coming soon..." />
+          </ListItem>
         </List>
         <div className={classes.moreButtonWrapper}>
           <Link href={"/"}>
-            <Button color={"inherit"}>もっと見る</Button>
+            <Button disabled={true} color={"inherit"}>
+              もっと見る
+            </Button>
           </Link>
         </div>
       </Container>
