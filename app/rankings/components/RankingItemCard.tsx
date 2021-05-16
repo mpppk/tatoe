@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Link } from "blitz"
+import { Link, Routes } from "blitz"
 import {
   Avatar,
   Card,
@@ -53,19 +53,19 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export interface CompareListItemProps {
-  rankingName: string
-  itemName: string
-  url: string
+  cRankingName: string
+  cItemName: string
+  href: ReturnType<typeof Routes.ComparePage>
 }
 
 const CompareListItem: React.FC<CompareListItemProps> = (props) => {
   return (
     // FIXME
-    <Link href={props.url}>
+    <Link href={props.href}>
       <MUILink>
         <ListItem>
           <ListItemText
-            primary={`${props.rankingName}の${props.itemName}ぐらい`}
+            primary={`${props.cRankingName}の${props.cItemName}ぐらい`}
             color={"primary"}
           />
         </ListItem>
@@ -151,12 +151,7 @@ export const RankingItemCard: React.FC<ItemCardProps> = (props) => {
       <Collapse in={expand} timeout="auto" unmountOnExit>
         <List dense={true}>
           {props.compares.map((c, i) => (
-            <CompareListItem
-              key={c.rankingName + i}
-              rankingName={c.rankingName}
-              itemName={c.itemName}
-              url={c.url}
-            />
+            <CompareListItem key={c.cRankingName + i} {...c} />
           ))}
         </List>
       </Collapse>
