@@ -25,16 +25,30 @@ type Props = Pick<RankingType, "id" | "title" | "description"> & {
   onClickDeleteButton: (rankingId: number) => void
 }
 
-const toCompares = (rankings: RankingType[], index: number): CompareListItemProps[] => {
+const toCompares = (
+  rankings: RankingType[],
+  index: number,
+  orgRankingId: number,
+  orgItemId: number
+): CompareListItemProps[] => {
   return rankings
     .map((ranking) => {
+      const cItemId = ranking.items?.[index]?.id ?? 0
+      const cItemName = ranking.items?.[index]?.title ?? ""
+      const href = Routes.ComparePage({
+        rankingId: orgRankingId,
+        cRankingId: ranking.id,
+        itemId: orgItemId,
+        cItemId,
+      })
       return {
-        rankingName: ranking.title,
-        itemName: ranking.items?.[index]?.title ?? "",
-        url: "/",
+        cRankingName: ranking.title,
+        cItemId,
+        cItemName,
+        href,
       }
     })
-    .filter((c) => c.itemName !== "")
+    .filter((c) => c.cItemName !== "")
 }
 
 export const Ranking: React.FC<Props> = (props) => {
@@ -52,7 +66,7 @@ export const Ranking: React.FC<Props> = (props) => {
           title={item.title}
           rank={rank + 1}
           subheader={item.subtitle ?? ""}
-          compares={toCompares(props.rankings, rank)}
+          compares={toCompares(props.rankings, rank, props.id, item.id)}
         />
       ))}
       <RankingFooter onClickDeleteButton={props.onClickDeleteButton} rankingId={props.id} />
