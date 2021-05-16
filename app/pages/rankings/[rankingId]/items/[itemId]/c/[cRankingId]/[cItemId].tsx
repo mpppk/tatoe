@@ -1,8 +1,8 @@
-import { BlitzPage, Head, useParams, useQuery, Link, useRouter } from "blitz"
+import { BlitzPage, Head, useParams, useQuery, Link, useRouter, Routes } from "blitz"
 import Layout from "../../../../../../../core/layouts/Layout"
 import getRanking from "../../../../../../../rankings/queries/getRanking"
 import React, { useEffect, Suspense } from "react"
-import { Button, makeStyles, Typography } from "@material-ui/core"
+import { Button, makeStyles, Typography, Link as MUILink } from "@material-ui/core"
 import TwitterIcon from "@material-ui/icons/Twitter"
 
 interface Params {
@@ -53,6 +53,68 @@ const TweetButton: React.FC<TweetButtonProps> = (props) => {
   )
 }
 
+interface AppLinkProps {
+  href: string | ReturnType<typeof Routes.RankingsPage>
+}
+
+const AppLink: React.FC<AppLinkProps> = (props) => {
+  return (
+    <Link href={props.href}>
+      <MUILink>{props.children}</MUILink>
+    </Link>
+  )
+}
+
+interface RankingLinkProps {
+  id: number
+  title: string
+}
+
+const RankingLink: React.FC<RankingLinkProps> = (props) => {
+  return (
+    <>
+      <AppLink href={Routes.ShowRankingPage({ rankingId: props.id })}>{props.title}</AppLink>
+    </>
+  )
+}
+
+interface RankingItemLinkProps {
+  rankingId: number
+  title: string
+}
+
+const RankingItemLink: React.FC<RankingItemLinkProps> = (props) => {
+  return (
+    <>
+      <AppLink href={Routes.ShowRankingPage({ rankingId: props.rankingId })}>{props.title}</AppLink>
+    </>
+  )
+}
+
+interface CompareTextProps {
+  rankingId: number
+  rankingTitle: string
+  itemId: number
+  itemTitle: string
+  cRankingId: number
+  cRankingTitle: string
+  cItemId: number
+  cItemTitle: string
+}
+
+const CompareText: React.FC<CompareTextProps> = (props) => {
+  return (
+    <Typography variant={"h5"}>
+      <RankingLink id={props.rankingId} title={props.rankingTitle} />の
+      <RankingItemLink rankingId={props.rankingId} title={props.itemTitle} />を
+      <RankingLink id={props.cRankingId} title={props.cRankingTitle} />
+      で例えると
+      <RankingItemLink rankingId={props.cRankingId} title={props.cItemTitle} />
+      ぐらいです
+    </Typography>
+  )
+}
+
 const Compare: React.FC = () => {
   const classes = useStyles()
   const router = useRouter()
@@ -82,10 +144,18 @@ const Compare: React.FC = () => {
       <Head>
         <title>xxx</title>
       </Head>
-      <Typography variant={"h5"}>
-        「{ranking?.title}」の「{item?.title}」を「{cRanking?.title}」で例えると「{cItem?.title}
-        」ぐらいです
-      </Typography>
+      {ranking && item && cRanking && cItem ? (
+        <CompareText
+          rankingId={ranking.id}
+          rankingTitle={ranking.title}
+          itemId={item.id}
+          itemTitle={item.title}
+          cRankingId={cRanking.id}
+          cRankingTitle={cRanking.title}
+          cItemId={cItem.id}
+          cItemTitle={cItem.title}
+        />
+      ) : null}
       <div className={classes.tweetButtonWrapper}>
         <TweetButton text={tweetText} />
       </div>

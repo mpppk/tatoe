@@ -53,7 +53,6 @@ const toCompares = (
 
 export const Ranking: React.FC<Props> = (props) => {
   const classes = useStyles()
-  console.log(props.rankings)
   return (
     <>
       <Typography variant={"h5"}>{props.title}</Typography>
