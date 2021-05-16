@@ -1,7 +1,11 @@
 import {
   Avatar,
   Button,
+  Drawer,
   IconButton,
+  List,
+  ListItem,
+  ListItemText,
   makeStyles,
   Menu,
   MenuItem,
@@ -10,7 +14,7 @@ import {
 } from "@material-ui/core"
 import MenuIcon from "@material-ui/icons/Menu"
 import React, { useState } from "react"
-import { Link } from "@blitzjs/core"
+import { Link, Routes } from "blitz"
 
 interface User {
   name: string
@@ -30,6 +34,38 @@ const useStyles = makeStyles((theme) => ({
     margin: 10,
   },
 }))
+
+interface AppDrawerProps {
+  open: boolean
+  onClose: () => void
+}
+
+const AppDrawer: React.FC<AppDrawerProps> = (props) => {
+  return (
+    <Drawer anchor="left" open={props.open} onClose={props.onClose}>
+      <div role="presentation" onClick={props.onClose} onKeyDown={props.onClose}>
+        <List>
+          {/*FIXME*/}
+          <Link href={"/"}>
+            <ListItem button>
+              <ListItemText primary={"tatoeとは"} />
+            </ListItem>
+          </Link>
+          <Link href={Routes.RankingsPage()}>
+            <ListItem button>
+              <ListItemText primary={"新着ランキングを見る"} />
+            </ListItem>
+          </Link>
+          <Link href={Routes.NewRankingPage()}>
+            <ListItem button>
+              <ListItemText primary={"ランキングを作る"} />
+            </ListItem>
+          </Link>
+        </List>
+      </div>
+    </Drawer>
+  )
+}
 
 interface IProfileListProps {
   anchorEl: null | HTMLElement
@@ -88,12 +124,21 @@ const ProfileButton: React.FC<ProfileButtonProps> = (props) => {
 }
 
 export const Header = () => {
+  const [open, setOpen] = useState(false)
+  const closeDrawer = setOpen.bind(null, false)
   const classes = useStyles()
   const [user] = useState({ name: "test" } as User | null)
   const emptyHandler = () => {}
   return (
     <Toolbar>
-      <IconButton edge="start" className={classes.menuButton} color={"inherit"} aria-label="menu">
+      <AppDrawer open={open} onClose={closeDrawer} />
+      <IconButton
+        edge="start"
+        className={classes.menuButton}
+        color={"inherit"}
+        aria-label="menu"
+        onClick={setOpen.bind(null, !open)}
+      >
         <MenuIcon />
       </IconButton>
       <Link href={"/"}>
