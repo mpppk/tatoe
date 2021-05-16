@@ -1,9 +1,10 @@
 import { BlitzPage, Head, useParams, useQuery, Link, useRouter, Routes } from "blitz"
 import Layout from "../../../../../../../core/layouts/Layout"
 import getRanking from "../../../../../../../rankings/queries/getRanking"
-import React, { useEffect, Suspense } from "react"
+import React, { Suspense } from "react"
 import { Button, makeStyles, Typography, Link as MUILink } from "@material-ui/core"
 import TwitterIcon from "@material-ui/icons/Twitter"
+import { RankingItem } from "../../../../../../../ranking-items/validations"
 
 interface Params {
   rankingId: number
@@ -28,6 +29,13 @@ const useStyles = makeStyles((theme) => ({
   },
   subHeader: {
     marginTop: theme.spacing(1),
+  },
+  itemInfoWrapper: {
+    marginBottom: theme.spacing(1),
+  },
+  itemSubTitle: {
+    fontStyle: "oblique",
+    // color: "gray",
   },
 }))
 
@@ -115,11 +123,29 @@ const CompareText: React.FC<CompareTextProps> = (props) => {
   )
 }
 
+interface RankingItemProps {
+  rankingId: number
+  rankingTitle: string
+  item: Pick<RankingItem, "id" | "title" | "subtitle" | "rank">
+}
+
+const RankingItemInfo: React.FC<RankingItemProps> = (props) => {
+  const classes = useStyles()
+  return (
+    <>
+      <div className={classes.itemInfoWrapper}>
+        <Typography variant={"h6"}>{props.item.title}</Typography>
+        <RankingLink id={props.rankingId} title={props.rankingTitle} />の{props.item.rank}位(
+        <span className={classes.itemSubTitle}>{props.item.subtitle}</span>)
+      </div>
+    </>
+  )
+}
+
 const Compare: React.FC = () => {
   const classes = useStyles()
   const router = useRouter()
   const params = useAppParams()
-  useEffect(() => {}, [params.rankingId, params.itemId, params.cRankingId, params.cItemId])
   const [ranking] = useQuery(
     getRanking,
     { id: params.rankingId },
@@ -138,11 +164,11 @@ const Compare: React.FC = () => {
       : undefined
   const text = `「${ranking?.title}」の「${item?.title}」を「${cRanking?.title}」で例えると「${cItem?.title}」ぐらいです`
   const tweetText = text + "\nhttps://tatoe.nibo.sh" + router.asPath
-  console.log("tweet", tweetText)
+  const title = item && cRanking ? `${item.title}を${cRanking.title}で例える` : "tatoe"
   return (
     <>
       <Head>
-        <title>xxx</title>
+        <title>{title}</title>
       </Head>
       {ranking && item && cRanking && cItem ? (
         <CompareText
@@ -159,6 +185,12 @@ const Compare: React.FC = () => {
       <div className={classes.tweetButtonWrapper}>
         <TweetButton text={tweetText} />
       </div>
+      {ranking && item ? (
+        <RankingItemInfo rankingId={ranking.id} rankingTitle={ranking.title} item={item} />
+      ) : null}
+      {cRanking && cItem ? (
+        <RankingItemInfo rankingId={cRanking.id} rankingTitle={cRanking.title} item={cItem} />
+      ) : null}
     </>
   )
 }
@@ -166,9 +198,6 @@ const Compare: React.FC = () => {
 const ComparePage: BlitzPage = () => {
   return (
     <>
-      <Head>
-        <title>xxx</title>
-      </Head>
       <Suspense fallback={<div>Loading...</div>}>
         <Compare />
       </Suspense>
