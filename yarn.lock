@@ -484,21 +484,21 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@blitzjs/babel-preset@0.36.2":
-  version "0.36.2"
-  resolved "https://registry.yarnpkg.com/@blitzjs/babel-preset/-/babel-preset-0.36.2.tgz#ccbd8343ce021381903d4d2f445f4b1ea0858920"
-  integrity sha512-UHt5g4iIBxMqEhvf000Axg3lAaq6pS/V1w6L4ao8QNAi/glW1xYWsMedB8I+CA2O3S6bMf4qmG/0G/3yLDzlAw==
+"@blitzjs/babel-preset@0.36.3":
+  version "0.36.3"
+  resolved "https://registry.yarnpkg.com/@blitzjs/babel-preset/-/babel-preset-0.36.3.tgz#0795acb7f70e89bd4eb21670b1eb9886130818f8"
+  integrity sha512-0OBnQJSGEy+rSaXGWDKqjdvXvbTmaH5vov3YluMCWr9wQ6MK/4hLcZ/w1ScV1u6fZZnsqkOMf7c6PETds0L7hw==
   dependencies:
     "@babel/helper-module-imports" "^7.0.0"
     babel-plugin-superjson-next "0.3.0"
 
-"@blitzjs/cli@0.36.2":
-  version "0.36.2"
-  resolved "https://registry.yarnpkg.com/@blitzjs/cli/-/cli-0.36.2.tgz#140dbe7a342ca60a06d2cfaa97dc7f556fe5f6b0"
-  integrity sha512-jzie3EH3otdCUpppB2topfKfSmwDDAFPIF871JIycOz/aAOW1BdblNE1q50XSGMH30vdbwsUJVB4uvQMuvH3Fg==
+"@blitzjs/cli@0.36.3":
+  version "0.36.3"
+  resolved "https://registry.yarnpkg.com/@blitzjs/cli/-/cli-0.36.3.tgz#10484220cbecf1e2c4953200d16c984570a41bcb"
+  integrity sha512-JWxqNKc4pjuF41atA7jm0Ug6oqpV87V4Jfy5u/cWtPRW4uRpZG5BETGmQGEN5oLUesPYewF8M5AwjzljDBJscw==
   dependencies:
-    "@blitzjs/display" "0.36.2"
-    "@blitzjs/repl" "0.36.2"
+    "@blitzjs/display" "0.36.3"
+    "@blitzjs/repl" "0.36.3"
     "@oclif/command" "1.8.0"
     "@oclif/config" "1.17.0"
     "@oclif/plugin-autocomplete" "0.3.0"
@@ -528,22 +528,22 @@
     tsconfig-paths "3.9.0"
     v8-compile-cache "2.2.0"
 
-"@blitzjs/config@0.36.2":
-  version "0.36.2"
-  resolved "https://registry.yarnpkg.com/@blitzjs/config/-/config-0.36.2.tgz#23d21917beef6bf52eca25d7033ccf28256aec17"
-  integrity sha512-MPVb89jsyzdn0Wj0q0AZWnSGPu49O8quoOZKEPLILsGE6WmddcF2bINOUcgeL3U+RtyVjne4cohX0I0QfFkaQQ==
+"@blitzjs/config@0.36.3":
+  version "0.36.3"
+  resolved "https://registry.yarnpkg.com/@blitzjs/config/-/config-0.36.3.tgz#944a9d7e4d76a7bdb1e45cedd3c27ba69c2d655d"
+  integrity sha512-cqehx1b4oL+llX6qMDR2LupLcK+sWujVJkbID3+SGZEjswj2RKW7c/rB4Q+/mXHQmoW3FRXHIfaU1j2kqGfk2Q==
   dependencies:
     esbuild "^0.11.12"
     fs-extra "^9.1.0"
     pkg-dir "^5.0.0"
 
-"@blitzjs/core@0.36.2":
-  version "0.36.2"
-  resolved "https://registry.yarnpkg.com/@blitzjs/core/-/core-0.36.2.tgz#6c49687fe6c43e9fc9f40d79720fddf15b37bd9a"
-  integrity sha512-kzT3pjO09NDzNYQIk7LHgkjs3iBblv/sk8M+a59dXRh7Oee55k20e8nMX77604a9bsrLdbKPTxrlb062+AxqXg==
+"@blitzjs/core@0.36.3":
+  version "0.36.3"
+  resolved "https://registry.yarnpkg.com/@blitzjs/core/-/core-0.36.3.tgz#c741a91e3cdf932b93cef07d7a5cee0eca6d0fc8"
+  integrity sha512-g2ayWjcVgYuoge4XHORqCGcDA4Ef76xsFzumCHowaEpZ7yHyN9HOfRl+VVTgU/iQUXLwu+lcQW5ADLce0HeCCA==
   dependencies:
-    "@blitzjs/config" "0.36.2"
-    "@blitzjs/display" "0.36.2"
+    "@blitzjs/config" "0.36.3"
+    "@blitzjs/display" "0.36.3"
     "@types/secure-password" "3.1.0"
     b64-lite "^1.4.0"
     bad-behavior "^1.0.1"
@@ -555,7 +555,7 @@
     jsonwebtoken "8.5.1"
     lodash.frompairs "4.0.1"
     nanoid "^3.1.20"
-    next "npm:@blitzjs/next@10.2.3-0.36.2"
+    next "npm:@blitzjs/next@10.2.3-0.36.3"
     npm-which "^3.0.1"
     null-loader "4.0.1"
     passport "0.4.1"
@@ -563,25 +563,25 @@
     secure-password "4.0.0"
     superjson "1.7.2"
 
-"@blitzjs/display@0.36.2":
-  version "0.36.2"
-  resolved "https://registry.yarnpkg.com/@blitzjs/display/-/display-0.36.2.tgz#e4a4adadaf750e1e97bc98e66209d52a8caa315a"
-  integrity sha512-zM+Zfh6eI9+h98yHls4helyxwUaK38th6gjfhPe8WXpcs0uc4EgvHKQK/4r3xMfn1JxoZBeeFnOgk98dR6jfjA==
+"@blitzjs/display@0.36.3":
+  version "0.36.3"
+  resolved "https://registry.yarnpkg.com/@blitzjs/display/-/display-0.36.3.tgz#7f61a1e7818e2c1801b216e3805bc705bced880d"
+  integrity sha512-dlaFAqh82n9SlFKyEyaabtvD0vZYwfSpa8m6AWbuLXUDJQkHdYUW8gRWVVxKTr1reJgnO90JCoGkHNLkApGMTA==
   dependencies:
-    "@blitzjs/config" "0.36.2"
-    "@blitzjs/display" "0.36.2"
+    "@blitzjs/config" "0.36.3"
+    "@blitzjs/display" "0.36.3"
     chalk "^4.1.0"
     console-table-printer "^2.7.5"
     ora "^5.3.0"
     readline "1.3.0"
     tslog "^3.1.1"
 
-"@blitzjs/file-pipeline@0.36.2":
-  version "0.36.2"
-  resolved "https://registry.yarnpkg.com/@blitzjs/file-pipeline/-/file-pipeline-0.36.2.tgz#a657c6544c169ae518c6ee4a9fc21f85d70e404d"
-  integrity sha512-v4jfdcV/2KVNsPR6g0lVjUBaKdXLkTNbwZialJzllvspwCbi5NpVKll8DhngAaelrZWSkN54b7RehhXKH7sa0A==
+"@blitzjs/file-pipeline@0.36.3":
+  version "0.36.3"
+  resolved "https://registry.yarnpkg.com/@blitzjs/file-pipeline/-/file-pipeline-0.36.3.tgz#791246f24e4fc60636ce9fa3935619bbc48918a7"
+  integrity sha512-xGo42+6MWbirDBSO8YSpDY9nYynWX9EGJLdu97drhj83bYZjoB30BSqwXIgpYuhaZgDpztcmE/zzP4lOrLca2A==
   dependencies:
-    "@blitzjs/display" "0.36.2"
+    "@blitzjs/display" "0.36.3"
     chalk "^4.1.0"
     chokidar "3.5.1"
     flush-write-stream "2.0.0"
@@ -600,14 +600,14 @@
     vinyl-file "3.0.0"
     vinyl-fs "3.0.3"
 
-"@blitzjs/generator@0.36.2":
-  version "0.36.2"
-  resolved "https://registry.yarnpkg.com/@blitzjs/generator/-/generator-0.36.2.tgz#099cafa1b74777367f63dba42ccdba5030687008"
-  integrity sha512-14jYH+sFsKLUhx6V8bn5CS45h2ro4llpRw3fuaGD7UhSbHZZISI5OGqUXsTx1tY+CXRMTsgHnXjnnTEVgARR/A==
+"@blitzjs/generator@0.36.3":
+  version "0.36.3"
+  resolved "https://registry.yarnpkg.com/@blitzjs/generator/-/generator-0.36.3.tgz#93054e208702c5e8bd69252358ab4cb209865edc"
+  integrity sha512-T7CIsnKKhwrsg4yci9C/zvEQVOHNqKdAFPtwZ+RN1QdmaOe9GHLPo/cBqxIAjXJ1sIpKDJ0Gs0n6CTZkC7LT3w==
   dependencies:
     "@babel/core" "7.12.10"
     "@babel/plugin-transform-typescript" "7.12.1"
-    "@blitzjs/display" "0.36.2"
+    "@blitzjs/display" "0.36.3"
     "@mrleebo/prisma-ast" "^0.2.3"
     "@types/jscodeshift" "0.7.2"
     chalk "^4.1.0"
@@ -625,26 +625,26 @@
     username "^5.1.0"
     vinyl "2.2.1"
 
-"@blitzjs/repl@0.36.2":
-  version "0.36.2"
-  resolved "https://registry.yarnpkg.com/@blitzjs/repl/-/repl-0.36.2.tgz#e1116f583e56dc80a56cc11bf795134ff25f6732"
-  integrity sha512-vk/C5P1qO0JhlSmvUxIca/okITGk3tWklpot96kRizjEwepxJ+4ZAJkherie9QSAapYi0/bxpBFJF3OMipqBLw==
+"@blitzjs/repl@0.36.3":
+  version "0.36.3"
+  resolved "https://registry.yarnpkg.com/@blitzjs/repl/-/repl-0.36.3.tgz#c216f106f131b805b965475d3c6ca6648bd3a689"
+  integrity sha512-vcAfzAhA7RN2AilD6Fp6JOoyJIoZctO/2sRVQBQHJzVB7AJm5eMOvm54k+OkCntwPL2kj7pGkeiDBRIfM7GKRg==
   dependencies:
-    "@blitzjs/config" "0.36.2"
+    "@blitzjs/config" "0.36.3"
     chokidar "3.5.1"
     globby "11.0.2"
     pkg-dir "^5.0.0"
     progress "^2.0.3"
 
-"@blitzjs/server@0.36.2":
-  version "0.36.2"
-  resolved "https://registry.yarnpkg.com/@blitzjs/server/-/server-0.36.2.tgz#4e9b6d570fa0f502d8c2626e152eb7314bf0babd"
-  integrity sha512-InXDa6A9erO4mcCV0V4Nt51dYSRvzOAdDaxlSChnicXoOqoJ5sSt4rlVICh273brsU6tBIaEUN7um6wCQS2R1A==
+"@blitzjs/server@0.36.3":
+  version "0.36.3"
+  resolved "https://registry.yarnpkg.com/@blitzjs/server/-/server-0.36.3.tgz#e65055f34211a118bfd127a09e47bf2a4aa79530"
+  integrity sha512-BmCrN8M27XlalFpeb7GVHi+wMcX3gcSDk31twULJVk/Hc09AtTqApgSzq/32PzME2c5lneMzyplofIMQ6RDbaQ==
   dependencies:
-    "@blitzjs/config" "0.36.2"
-    "@blitzjs/core" "0.36.2"
-    "@blitzjs/display" "0.36.2"
-    "@blitzjs/file-pipeline" "0.36.2"
+    "@blitzjs/config" "0.36.3"
+    "@blitzjs/core" "0.36.3"
+    "@blitzjs/display" "0.36.3"
+    "@blitzjs/file-pipeline" "0.36.3"
     cross-spawn "7.0.3"
     detect-port "1.3.0"
     esbuild "^0.11.12"
@@ -2405,18 +2405,18 @@ bl@^4.0.3, bl@^4.1.0:
     inherits "^2.0.4"
     readable-stream "^3.4.0"
 
-blitz@0.36.2:
-  version "0.36.2"
-  resolved "https://registry.yarnpkg.com/blitz/-/blitz-0.36.2.tgz#fb7fba508e40302d9cc6c86939e5497d6e6f65d9"
-  integrity sha512-o9IXMnXl74xTGOtORKOcT21EIdRJe0jMVseVlIuYQY/OotEkWTQuUdu06wi6RnicVUoormR4C4uq36cbsg9mnQ==
+blitz@0.36.3:
+  version "0.36.3"
+  resolved "https://registry.yarnpkg.com/blitz/-/blitz-0.36.3.tgz#235d5cfe3e0c5a00680d33434291a913b5670ef1"
+  integrity sha512-Fvid48tYuDOFES+lwbBO2Gf7p+0uD4cAbom0mVLdhwGIyPbbtxn9mtU4brHHRKzcTSz/xx0OLh5Nj2METviaWQ==
   dependencies:
-    "@blitzjs/babel-preset" "0.36.2"
-    "@blitzjs/cli" "0.36.2"
-    "@blitzjs/config" "0.36.2"
-    "@blitzjs/core" "0.36.2"
-    "@blitzjs/display" "0.36.2"
-    "@blitzjs/generator" "0.36.2"
-    "@blitzjs/server" "0.36.2"
+    "@blitzjs/babel-preset" "0.36.3"
+    "@blitzjs/cli" "0.36.3"
+    "@blitzjs/config" "0.36.3"
+    "@blitzjs/core" "0.36.3"
+    "@blitzjs/display" "0.36.3"
+    "@blitzjs/generator" "0.36.3"
+    "@blitzjs/server" "0.36.3"
     "@testing-library/jest-dom" "5.11.9"
     "@testing-library/react" "11.2.5"
     "@testing-library/react-hooks" "^4.0.1"
@@ -2424,7 +2424,7 @@ blitz@0.36.2:
     chalk "^4.1.0"
     cross-spawn "7.0.3"
     envinfo "^7.7.3"
-    eslint-config-blitz "0.36.2"
+    eslint-config-blitz "0.36.3"
     jest "^26.6.3"
     jest-watch-typeahead "^0.6.1"
     os-name "^4.0.0"
@@ -3938,10 +3938,10 @@ escodegen@^2.0.0:
   optionalDependencies:
     source-map "~0.6.1"
 
-eslint-config-blitz@0.36.2:
-  version "0.36.2"
-  resolved "https://registry.yarnpkg.com/eslint-config-blitz/-/eslint-config-blitz-0.36.2.tgz#47227db3ce2d24a786105847414ca77920bae081"
-  integrity sha512-jca+x9eqDtoOXAZItBScDLrSkjmxEHI/MewPvSgiteyNd76ZH4ArQgXVKSIVS74WU97i3IjUSM27qmp1l+ZatQ==
+eslint-config-blitz@0.36.3:
+  version "0.36.3"
+  resolved "https://registry.yarnpkg.com/eslint-config-blitz/-/eslint-config-blitz-0.36.3.tgz#f3cd891f2e2f57dc661c1da6092532be2b028684"
+  integrity sha512-PGznTYqaqcNGryRO1QccMElyUbmzGhyl8wsd2f/cj9Xiz5rpyPPYkJBNLxTVvHi+SdyejreUl+uEMkQLn8I9Pg==
   dependencies:
     "@typescript-eslint/eslint-plugin" "4.17.0"
     "@typescript-eslint/parser" "^4.20.0"
@@ -7145,10 +7145,10 @@ new-github-issue-url@^0.2.1:
   resolved "https://registry.yarnpkg.com/new-github-issue-url/-/new-github-issue-url-0.2.1.tgz#e17be1f665a92de465926603e44b9f8685630c1d"
   integrity sha512-md4cGoxuT4T4d/HDOXbrUHkTKrp/vp+m3aOA7XXVYwNsUNMK49g3SQicTSeV5GIz/5QVGAeYRAOlyp9OvlgsYA==
 
-"next@npm:@blitzjs/next@10.2.3-0.36.2":
-  version "10.2.3-0.36.2"
-  resolved "https://registry.yarnpkg.com/@blitzjs/next/-/next-10.2.3-0.36.2.tgz#c9de8dd1e5f5c8d2130fd35e3258e0804f9d2c81"
-  integrity sha512-4JMXuLjO6udmhZIfKf1ComupsJ4bDfHHOPWSXXVOVzoDTFCljdFti91jwZH5NftZzn2BhNuQfFFq8Qo/vjFBRA==
+"next@npm:@blitzjs/next@10.2.3-0.36.3":
+  version "10.2.3-0.36.3"
+  resolved "https://registry.yarnpkg.com/@blitzjs/next/-/next-10.2.3-0.36.3.tgz#b36668deb14f78371150c3fa8891558f2e13f7f2"
+  integrity sha512-vXuqddm0h0M0W2gxSdyb/CzmVneZjxVprumd9OuHTkp+7PzS2YZeoW4au3pI6aXplurqE4o04GiVlXRzgKL2Eg==
   dependencies:
     "@babel/runtime" "7.12.5"
     "@hapi/accept" "5.0.2"
