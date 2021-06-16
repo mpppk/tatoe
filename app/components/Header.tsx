@@ -14,7 +14,7 @@ import {
 } from "@material-ui/core"
 import MenuIcon from "@material-ui/icons/Menu"
 import React, { useState } from "react"
-import { Link, Routes } from "blitz"
+import { Link, Routes, useRouter } from "blitz"
 
 interface User {
   name: string
@@ -128,7 +128,10 @@ export const Header = () => {
   const closeDrawer = setOpen.bind(null, false)
   const classes = useStyles()
   const [user] = useState({ name: "test" } as User | null)
-  const emptyHandler = () => {}
+  const router = useRouter()
+  const handleClickLogOut = () => {
+    router.push(Routes.LogOutPage())
+  }
   return (
     <Toolbar>
       <AppDrawer open={open} onClose={closeDrawer} />
@@ -149,7 +152,7 @@ export const Header = () => {
       {user === null ? (
         <Button color="inherit">Login</Button>
       ) : (
-        <ProfileButton onClickLogout={emptyHandler} />
+        <ProfileButton onClickLogout={handleClickLogOut} />
       )}
     </Toolbar>
   )
