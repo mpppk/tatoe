@@ -1,6 +1,7 @@
 import { Routes, useMutation, useRouter } from "blitz"
 import logout from "../mutations/logout"
-import { useEffect } from "react"
+import React, { useEffect } from "react"
+import firebase from "../firebaseClient"
 
 const LogOutPage: React.FC = () => {
   const [logoutMutation] = useMutation(logout)
@@ -8,13 +9,14 @@ const LogOutPage: React.FC = () => {
   useEffect(() => {
     const f = async () => {
       try {
+        await firebase.auth().signOut()
         await logoutMutation()
       } finally {
         await router.push(Routes.LoginPage())
       }
     }
     f()
-  })
+  }, [logoutMutation, router])
   return <div>logout...</div>
 }
 

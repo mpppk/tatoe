@@ -15,7 +15,7 @@ import {
   ThemeProvider,
   unstable_createMuiStrictModeTheme as createMuiTheme,
 } from "@material-ui/core/styles"
-import React from "react"
+import React, { Suspense } from "react"
 
 //You can customize this as you want and even move it out to a separate file
 const theme = createMuiTheme({
@@ -29,16 +29,18 @@ export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <ErrorBoundary
-        FallbackComponent={RootErrorFallback}
-        resetKeys={[router.asPath]}
-        onReset={useQueryErrorResetBoundary().reset}
-      >
-        {getLayout(<Component {...pageProps} />)}
-      </ErrorBoundary>
-    </ThemeProvider>
+    <Suspense fallback={<div>loading app...</div>}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <ErrorBoundary
+          FallbackComponent={RootErrorFallback}
+          resetKeys={[router.asPath]}
+          onReset={useQueryErrorResetBoundary().reset}
+        >
+          {getLayout(<Component {...pageProps} />)}
+        </ErrorBoundary>
+      </ThemeProvider>
+    </Suspense>
   )
 }
 

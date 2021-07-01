@@ -1,7 +1,7 @@
 import { resolver, SecurePassword, AuthenticationError } from "blitz"
 import db from "db"
 import { Login } from "../validations"
-import admin from "firebase-admin"
+import admin from "../firebaseAdminClient"
 
 // export const authenticateUser = async (rawEmail: string, rawPassword: string) => {
 //   const email = rawEmail.toLowerCase().trim()
@@ -25,7 +25,6 @@ export const authenticateUser = async (idToken: string) => {
   // const email = rawEmail.toLowerCase().trim()
   // const password = rawPassword.trim()
   const decodedIdToken = await admin.auth().verifyIdToken(idToken)
-  console.log("token", decodedIdToken)
   let user = await db.user.findFirst({ where: { id: decodedIdToken.uid } })
   if (!user) {
     user = await db.user.create({ data: { id: decodedIdToken.uid, name: decodedIdToken.aud } })
@@ -40,7 +39,7 @@ export default resolver.pipe(resolver.zod(Login), async (data, ctx) => {
   // This throws an error if credentials are invalid
   const user = await authenticateUser(data.idToken)
 
-  await ctx.session.$create({ userId: user.id })
+  await ctx.session.$create({ userId: user.id, role: "USER" })
 
   return user
 })

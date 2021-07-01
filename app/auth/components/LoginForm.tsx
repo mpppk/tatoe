@@ -22,14 +22,16 @@ const uiConfig = {
   // },
   callbacks: {
     signInSuccessWithAuthResult: (authResult: any, redirectUrl?: string): boolean => {
-      console.log("auth result", authResult)
-      console.log("redirectUrl", redirectUrl)
       return false
     },
   },
 }
 
-const AppFirebaseAuth: React.FC = () => {
+interface AppFirebaseAuthProps {
+  onSuccess: () => void
+}
+
+const AppFirebaseAuth: React.FC = (props) => {
   // Do not SSR FirebaseUI, because it is not supported.
   // https://github.com/firebase/firebaseui-web/issues/213
   const [renderAuth, setRenderAuth] = useState(false)
@@ -56,18 +58,17 @@ export const LoginForm = (props: LoginFormProps) => {
   const session = useSession()
 
   useEffect(() => {
-    console.log(session)
-    if (session.userId === null) {
+    if (session.userId !== null) {
       return
     }
     firebase.auth().onAuthStateChanged(async (user) => {
-      console.log("user", user)
+      console.log("state change", user)
       const idToken = await firebase.auth().currentUser?.getIdToken()
-      if (user && idToken && session.userId === null) {
+      if (idToken && session.userId === null) {
         await loginMutation({ idToken })
       }
     })
-  })
+  }, [session, loginMutation])
 
   return (
     <div>

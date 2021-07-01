@@ -3,6 +3,7 @@ import firebase from "firebase/app"
 import "firebase/auth"
 
 if (typeof window !== "undefined" && !firebase.apps.length) {
+  // if (typeof window !== "undefined" && !firebase.apps.length) {
   const config = {
     apiKey: "AIzaSyCurYBAUC07pg-MmeWQ1_pXrhXV7d9ksJk",
     authDomain: "tatoe-app.firebaseapp.com",
