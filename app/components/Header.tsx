@@ -13,12 +13,8 @@ import {
   Typography,
 } from "@material-ui/core"
 import MenuIcon from "@material-ui/icons/Menu"
-import React, { useState } from "react"
-import { Link, Routes } from "blitz"
-
-interface User {
-  name: string
-}
+import React, { useState, Suspense } from "react"
+import { Link, Routes, useRouter, useSession } from "blitz"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -127,30 +123,36 @@ export const Header = () => {
   const [open, setOpen] = useState(false)
   const closeDrawer = setOpen.bind(null, false)
   const classes = useStyles()
-  const [user] = useState({ name: "test" } as User | null)
-  const emptyHandler = () => {}
+  const session = useSession()
+
+  const router = useRouter()
+  const handleClickLogOut = () => {
+    router.push(Routes.LogOutPage())
+  }
   return (
     <Toolbar>
-      <AppDrawer open={open} onClose={closeDrawer} />
-      <IconButton
-        edge="start"
-        className={classes.menuButton}
-        color={"inherit"}
-        aria-label="menu"
-        onClick={setOpen.bind(null, !open)}
-      >
-        <MenuIcon />
-      </IconButton>
-      <Link href={"/"}>
-        <Typography variant="h6" className={classes.title}>
-          tatoe
-        </Typography>
-      </Link>
-      {user === null ? (
-        <Button color="inherit">Login</Button>
-      ) : (
-        <ProfileButton onClickLogout={emptyHandler} />
-      )}
+      <Suspense fallback={<div>loading header...</div>}>
+        <AppDrawer open={open} onClose={closeDrawer} />
+        <IconButton
+          edge="start"
+          className={classes.menuButton}
+          color={"inherit"}
+          aria-label="menu"
+          onClick={setOpen.bind(null, !open)}
+        >
+          <MenuIcon />
+        </IconButton>
+        <Link href={"/"}>
+          <Typography variant="h6" className={classes.title}>
+            tatoe
+          </Typography>
+        </Link>
+        {session.userId ? (
+          <ProfileButton onClickLogout={handleClickLogOut} />
+        ) : (
+          <Button color="inherit">Login</Button>
+        )}
+      </Suspense>
     </Toolbar>
   )
 }

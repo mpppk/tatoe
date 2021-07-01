@@ -1,12 +1,9 @@
 -- CreateTable
 CREATE TABLE "User" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "id" TEXT NOT NULL PRIMARY KEY,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
-    "name" TEXT,
-    "email" TEXT NOT NULL,
-    "hashedPassword" TEXT,
-    "role" TEXT NOT NULL DEFAULT 'USER'
+    "name" TEXT
 );
 
 -- CreateTable
@@ -20,7 +17,7 @@ CREATE TABLE "Session" (
     "antiCSRFToken" TEXT,
     "publicData" TEXT,
     "privateData" TEXT,
-    "userId" INTEGER,
+    "userId" TEXT,
     FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
@@ -33,12 +30,31 @@ CREATE TABLE "Token" (
     "type" TEXT NOT NULL,
     "expiresAt" DATETIME NOT NULL,
     "sentTo" TEXT NOT NULL,
-    "userId" INTEGER NOT NULL,
+    "userId" TEXT NOT NULL,
     FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- CreateIndex
-CREATE UNIQUE INDEX "User.email_unique" ON "User"("email");
+-- CreateTable
+CREATE TABLE "Ranking" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL,
+    "title" TEXT NOT NULL,
+    "description" TEXT NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "RankingItem" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL,
+    "title" TEXT NOT NULL,
+    "subtitle" TEXT,
+    "description" TEXT,
+    "rank" INTEGER NOT NULL,
+    "rankingId" INTEGER NOT NULL,
+    FOREIGN KEY ("rankingId") REFERENCES "Ranking" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Session.handle_unique" ON "Session"("handle");
