@@ -16,10 +16,6 @@ import MenuIcon from "@material-ui/icons/Menu"
 import React, { useState, Suspense } from "react"
 import { Link, Routes, useRouter, useSession } from "blitz"
 
-// interface User {
-//   name: string
-// }
-
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -128,7 +124,6 @@ export const Header = () => {
   const closeDrawer = setOpen.bind(null, false)
   const classes = useStyles()
   const session = useSession()
-  console.log("session", session)
 
   const router = useRouter()
   const handleClickLogOut = () => {

@@ -70,4 +70,6 @@ const Home: BlitzPage = () => {
   )
 }
 
+Home.authenticate = { redirectTo: Routes.LoginPage() }
+
 export default Home

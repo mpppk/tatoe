@@ -12,7 +12,7 @@ const LogOutPage: React.FC = () => {
         await firebase.auth().signOut()
         await logoutMutation()
       } finally {
-        await router.push(Routes.LoginPage())
+        await router.push(Routes.Home())
       }
     }
     f()
