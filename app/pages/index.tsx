@@ -37,7 +37,7 @@ const LatestRankings: React.FC<LatestRankingsProps> = () => {
   )
 }
 
-const Home: BlitzPage = () => {
+const Top: BlitzPage = () => {
   const classes = useStyles()
   return (
     <>
@@ -70,6 +70,6 @@ const Home: BlitzPage = () => {
   )
 }
 
-Home.authenticate = { redirectTo: Routes.LoginPage() }
+Top.authenticate = false
 
-export default Home
+export default Top
