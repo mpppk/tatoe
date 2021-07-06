@@ -50,7 +50,6 @@ interface RankFieldsProps {
 }
 
 const RankFields: React.FC<RankFieldsProps> = (props) => {
-  console.log(props.error)
   const classes = useStyles()
   return (
     <>
