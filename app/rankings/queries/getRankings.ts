@@ -7,33 +7,29 @@ const GetRankings = z.object({
   skip: z.number().nonnegative().optional(),
 })
 
-export default resolver.pipe(
-  resolver.zod(GetRankings),
-  resolver.authorize(),
-  async ({ skip = 0, take = 10 }) => {
-    const orderBy: Prisma.RankingFindManyArgs["orderBy"] = { id: "desc" }
-    const where = {}
-    const {
-      items: rankings,
-      hasMore,
-      nextPage,
-      count,
-    } = await paginate({
-      skip,
-      take,
-      count: () => db.ranking.count({ where }),
-      query: (paginateArgs) =>
-        db.ranking.findMany({
-          ...paginateArgs,
-          orderBy,
-        }),
-    })
+export default resolver.pipe(resolver.zod(GetRankings), async ({ skip = 0, take = 10 }) => {
+  const orderBy: Prisma.RankingFindManyArgs["orderBy"] = { id: "desc" }
+  const where = {}
+  const {
+    items: rankings,
+    hasMore,
+    nextPage,
+    count,
+  } = await paginate({
+    skip,
+    take,
+    count: () => db.ranking.count({ where }),
+    query: (paginateArgs) =>
+      db.ranking.findMany({
+        ...paginateArgs,
+        orderBy,
+      }),
+  })
 
-    return {
-      rankings,
-      nextPage,
-      hasMore,
-      count,
-    }
+  return {
+    rankings,
+    nextPage,
+    hasMore,
+    count,
   }
-)
+})
