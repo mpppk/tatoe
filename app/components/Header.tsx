@@ -150,7 +150,9 @@ export const Header = () => {
         {session.userId ? (
           <ProfileButton onClickLogout={handleClickLogOut} />
         ) : (
-          <Button color="inherit">Login</Button>
+          <Link href={Routes.LoginPage()}>
+            <Button color="inherit">Login</Button>
+          </Link>
         )}
       </Suspense>
     </Toolbar>

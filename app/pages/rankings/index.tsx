@@ -62,7 +62,6 @@ const RankingsPage: BlitzPage = () => {
   )
 }
 
-RankingsPage.authenticate = true
 RankingsPage.getLayout = (page) => <Layout>{page}</Layout>
 
 export default RankingsPage
