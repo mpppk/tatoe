@@ -9,11 +9,17 @@ import {
   UpdateRankingItemForm,
 } from "../ranking-items/validations"
 
+export const userBaseSchema = z.object({
+  id: z.string().nonempty(),
+  name: z.string().nonempty(),
+})
+
 export const rankingSchema = z
   .object({
     id: z.number().positive(),
     title: z.string().nonempty().max(50),
     description: z.string().nonempty().max(100),
+    owner: userBaseSchema,
     items: rankingItemSchema.array().min(1),
   })
   .merge(baseSchema)
@@ -21,9 +27,11 @@ export const rankingSchema = z
 export const CreateRanking = rankingSchema
   .omit({
     id: true,
+    owner: true,
     ...baseSchemaKeyObject,
   })
   .extend({
+    ownerId: z.string(),
     items: CreateRankingItem.array().min(1),
   })
 export type CreateRankingModel = z.infer<typeof CreateRanking>

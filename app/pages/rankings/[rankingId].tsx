@@ -37,6 +37,7 @@ export const ShowRanking = () => {
           title: item.title,
           subtitle: item.subtitle,
         }))}
+        owner={ranking.owner}
         rankings={otherRankings}
         onClickDeleteButton={handleClickDeleteButton}
       />

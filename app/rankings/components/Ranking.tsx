@@ -4,6 +4,7 @@ import React from "react"
 import { CompareListItemProps, RankingItemCard } from "./RankingItemCard"
 import { Ranking as RankingType } from "../validations"
 import { RankingItem } from "../../ranking-items/validations"
+import { User } from "../../../types"
 
 const useStyles = makeStyles((theme) => ({
   description: {
@@ -19,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-type Props = Pick<RankingType, "id" | "title" | "description"> & {
+type Props = Pick<RankingType, "id" | "title" | "description" | "owner"> & {
   items: Pick<RankingItem, "id" | "title" | "subtitle">[]
   rankings: RankingType[]
   onClickDeleteButton: (rankingId: number) => void
@@ -68,13 +69,18 @@ export const Ranking: React.FC<Props> = (props) => {
           compares={toCompares(props.rankings, rank, props.id, item.id)}
         />
       ))}
-      <RankingFooter onClickDeleteButton={props.onClickDeleteButton} rankingId={props.id} />
+      <RankingFooter
+        onClickDeleteButton={props.onClickDeleteButton}
+        rankingId={props.id}
+        owner={props.owner}
+      />
     </>
   )
 }
 
 interface RankingFooterProps {
   rankingId: number
+  owner: User
   onClickDeleteButton: (rankingId: number) => void
 }
 export const RankingFooter: React.FC<RankingFooterProps> = (props) => {
@@ -96,7 +102,7 @@ export const RankingFooter: React.FC<RankingFooterProps> = (props) => {
         </div>
       </Link>
       <Typography variant={"body1"}>
-        Created by <MUILink>User1</MUILink>
+        Created by <MUILink>{props.owner.name}</MUILink>
       </Typography>
       <Typography variant={"body1"}>
         Updated by <MUILink>User2</MUILink>

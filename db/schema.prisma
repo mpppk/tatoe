@@ -16,13 +16,14 @@ model User {
   id        String   @id
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  name      String?
+  name      String
   //  email          String   @unique
   //  hashedPassword String?
   role      String   @default("USER")
 
   tokens   Token[]
   sessions Session[]
+  Ranking  Ranking[]
 }
 
 model Session {
@@ -71,6 +72,8 @@ model Ranking {
   title       String
   description String
   items       RankingItem[]
+  owner       User          @relation(fields: [ownerId], references: [id])
+  ownerId     String
 }
 
 model RankingItem {
