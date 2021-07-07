@@ -27,9 +27,11 @@ export const rankingSchema = z
 export const CreateRanking = rankingSchema
   .omit({
     id: true,
+    owner: true,
     ...baseSchemaKeyObject,
   })
   .extend({
+    ownerId: z.string(),
     items: CreateRankingItem.array().min(1),
   })
 export type CreateRankingModel = z.infer<typeof CreateRanking>

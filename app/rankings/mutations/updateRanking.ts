@@ -9,7 +9,7 @@ export default resolver.pipe(
     // TODO: in multi-tenant app, you must add validation to ensure correct tenant
     const ranking = await db.ranking.update({
       where: { id },
-      include: { items: true },
+      include: { items: true, owner: true },
       data: {
         ...data,
         items: {
@@ -19,6 +19,7 @@ export default resolver.pipe(
             update: item,
           })),
         },
+        owner: {},
       },
     })
 
