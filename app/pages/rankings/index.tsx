@@ -2,12 +2,12 @@ import React, { Suspense } from "react"
 import { Head, Link, usePaginatedQuery, useRouter, BlitzPage, Routes } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import getRankings from "app/rankings/queries/getRankings"
-import { Button, Link as MUILink, List, Typography } from "@material-ui/core"
-import { LinkListItem } from "../../core/components/LinkListItem"
+import { Button, Link as MUILink, Typography } from "@material-ui/core"
+import { RankingList } from "../../rankings/components/RankingList"
 
 const ITEMS_PER_PAGE = 10
 
-export const RankingsList = () => {
+export const PaginatedRankingList = () => {
   const router = useRouter()
   const page = Number(router.query.page) || 0
   const [{ rankings, hasMore }] = usePaginatedQuery(getRankings, {
@@ -20,16 +20,7 @@ export const RankingsList = () => {
 
   return (
     <div>
-      <List dense={true}>
-        {rankings.map((ranking) => (
-          <LinkListItem
-            key={ranking.id}
-            href={Routes.ShowRankingPage({ rankingId: ranking.id })}
-            text={ranking.title}
-          />
-        ))}
-      </List>
-
+      <RankingList rankings={rankings} />
       <Button disabled={page === 0} onClick={goToPreviousPage}>
         前のページ
       </Button>
@@ -50,7 +41,7 @@ const RankingsPage: BlitzPage = () => {
       <div>
         <Typography variant={"h5"}>新着ランキング</Typography>
         <Suspense fallback={<div>Loading...</div>}>
-          <RankingsList />
+          <PaginatedRankingList />
         </Suspense>
       </div>
       <p>

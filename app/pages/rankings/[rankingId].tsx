@@ -6,7 +6,7 @@ import deleteRanking from "app/rankings/mutations/deleteRanking"
 import { Ranking } from "app/rankings/components/Ranking"
 import getRandomRankings from "../../rankings/queries/getRandomRankings"
 
-export const ShowRanking = () => {
+export const RankingDetails = () => {
   const router = useRouter()
   const rankingId = useParam("rankingId", "number")
   const [deleteRankingMutation] = useMutation(deleteRanking)
@@ -45,17 +45,16 @@ export const ShowRanking = () => {
   )
 }
 
-const ShowRankingPage: BlitzPage = () => {
+const RankingPage: BlitzPage = () => {
   return (
     <div>
       <Suspense fallback={<div>Loading...</div>}>
-        <ShowRanking />
+        <RankingDetails />
       </Suspense>
     </div>
   )
 }
 
-ShowRankingPage.authenticate = true
-ShowRankingPage.getLayout = (page) => <Layout>{page}</Layout>
+RankingPage.getLayout = (page) => <Layout>{page}</Layout>
 
-export default ShowRankingPage
+export default RankingPage
