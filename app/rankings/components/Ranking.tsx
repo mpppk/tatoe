@@ -102,7 +102,10 @@ export const RankingFooter: React.FC<RankingFooterProps> = (props) => {
         </div>
       </Link>
       <Typography variant={"body1"}>
-        Created by <MUILink>{props.owner.name}</MUILink>
+        Created by{" "}
+        <Link href={Routes.UserPage({ userId: props.owner.id })}>
+          <MUILink>{props.owner.name}</MUILink>
+        </Link>
       </Typography>
       <Typography variant={"body1"}>
         Updated by <MUILink>User2</MUILink>

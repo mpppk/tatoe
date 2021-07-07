@@ -36,7 +36,7 @@ export const EditRanking = () => {
               await deleteRankingItemsMutation({ idList: deleteItemIDList })
               const updated = await updateRankingMutation(newRanking)
               await setQueryData(updated)
-              router.push(Routes.ShowRankingPage({ rankingId: updated.id }))
+              router.push(Routes.RankingPage({ rankingId: updated.id }))
             } catch (error) {
               console.error(error)
               return {

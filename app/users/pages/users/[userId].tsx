@@ -11,9 +11,7 @@ const UserPage: BlitzPage = () => {
 
   return (
     <>
-      <Typography variant={"h5"}>基本情報</Typography>
-      <div>id: {user.id}</div>
-      <div>name: {user.name}</div>
+      <Typography variant={"h4"}>{user.name}</Typography>
       <Typography variant={"h5"}>作ったランキング</Typography>
       <RankingList rankings={user.rankings} />
     </>

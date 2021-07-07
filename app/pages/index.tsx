@@ -29,7 +29,7 @@ const LatestRankings: React.FC<LatestRankingsProps> = () => {
       {rankings.rankings.map((ranking) => (
         <LinkListItem
           key={ranking.id}
-          href={Routes.ShowRankingPage({ rankingId: ranking.id })}
+          href={Routes.RankingPage({ rankingId: ranking.id })}
           text={ranking.title}
         />
       ))}

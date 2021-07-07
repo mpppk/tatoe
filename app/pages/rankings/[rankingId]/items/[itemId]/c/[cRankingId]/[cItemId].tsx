@@ -81,7 +81,7 @@ interface RankingLinkProps {
 const RankingLink: React.FC<RankingLinkProps> = (props) => {
   return (
     <>
-      <AppLink href={Routes.ShowRankingPage({ rankingId: props.id })}>{props.title}</AppLink>
+      <AppLink href={Routes.RankingPage({ rankingId: props.id })}>{props.title}</AppLink>
     </>
   )
 }
@@ -94,7 +94,7 @@ interface RankingItemLinkProps {
 const RankingItemLink: React.FC<RankingItemLinkProps> = (props) => {
   return (
     <>
-      <AppLink href={Routes.ShowRankingPage({ rankingId: props.rankingId })}>{props.title}</AppLink>
+      <AppLink href={Routes.RankingPage({ rankingId: props.rankingId })}>{props.title}</AppLink>
     </>
   )
 }
