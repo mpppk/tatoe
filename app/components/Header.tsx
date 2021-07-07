@@ -63,13 +63,14 @@ const AppDrawer: React.FC<AppDrawerProps> = (props) => {
   )
 }
 
-interface IProfileListProps {
+interface ProfileListProps {
   anchorEl: null | HTMLElement
+  onClickMyPage: () => void
   onClickLogout: () => void
   onClose: () => void
 }
 
-const ProfileMenu: React.FunctionComponent<IProfileListProps> = (props) => {
+const ProfileMenu: React.FunctionComponent<ProfileListProps> = (props) => {
   return (
     <Menu
       anchorEl={props.anchorEl}
@@ -77,13 +78,14 @@ const ProfileMenu: React.FunctionComponent<IProfileListProps> = (props) => {
       open={Boolean(props.anchorEl)}
       onClose={props.onClose}
     >
-      <MenuItem onClick={props.onClickLogout}>マイページ</MenuItem>
+      <MenuItem onClick={props.onClickMyPage}>マイページ</MenuItem>
       <MenuItem onClick={props.onClickLogout}>Logout</MenuItem>
     </Menu>
   )
 }
 
 interface ProfileButtonProps {
+  onClickMyPage: () => void
   onClickLogout: () => void
 }
 
@@ -95,6 +97,10 @@ const ProfileButton: React.FC<ProfileButtonProps> = (props) => {
     setAnchorEl(e.currentTarget)
   }
   const setNullAnchorEl = () => setAnchorEl(null)
+  const handleClickMyPage = () => {
+    setNullAnchorEl()
+    props.onClickMyPage()
+  }
   const handleClickLogout = () => {
     setNullAnchorEl()
     props.onClickLogout()
@@ -112,6 +118,7 @@ const ProfileButton: React.FC<ProfileButtonProps> = (props) => {
       </Button>
       <ProfileMenu
         anchorEl={anchorEl}
+        onClickMyPage={handleClickMyPage}
         onClickLogout={handleClickLogout}
         onClose={setNullAnchorEl}
       />
@@ -126,6 +133,9 @@ export const Header = () => {
   const session = useSession()
 
   const router = useRouter()
+  const handleClickMyPage = () => {
+    router.push(Routes.UserPage({ userId: session.userId as string }))
+  }
   const handleClickLogOut = () => {
     router.push(Routes.LogOutPage())
   }
@@ -148,7 +158,7 @@ export const Header = () => {
           </Typography>
         </Link>
         {session.userId ? (
-          <ProfileButton onClickLogout={handleClickLogOut} />
+          <ProfileButton onClickMyPage={handleClickMyPage} onClickLogout={handleClickLogOut} />
         ) : (
           <Link href={Routes.LoginPage()}>
             <Button color="inherit">Login</Button>
