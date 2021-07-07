@@ -9,7 +9,10 @@ const GetRanking = z.object({
 
 export default resolver.pipe(resolver.zod(GetRanking), resolver.authorize(), async ({ id }) => {
   // TODO: in multi-tenant app, you must add validation to ensure correct tenant
-  const ranking = await db.ranking.findFirst({ where: { id }, include: { items: true } })
+  const ranking = await db.ranking.findFirst({
+    where: { id },
+    include: { items: true, owner: true },
+  })
 
   if (!ranking) throw new NotFoundError()
 

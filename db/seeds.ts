@@ -1,6 +1,9 @@
 import db from "./index"
 import { reRankItems } from "../app/ranking-items/validations"
 import { CreateRankingFormModel } from "../app/rankings/validations"
+import { User } from "../types"
+
+const user: User = { id: "id1", name: "test-user1" }
 
 const rankings: CreateRankingFormModel[] = [
   {
@@ -19,6 +22,7 @@ const rankings: CreateRankingFormModel[] = [
       { title: "高橋 周平", subtitle: "120本" },
       { title: "丸 佳浩", subtitle: "120本" },
     ],
+    owner: user,
   },
   {
     title: "ガンダム人気キャラクター",
@@ -57,6 +61,7 @@ const rankings: CreateRankingFormModel[] = [
       { title: "アスラン・ザラ", subtitle: "機動戦士ガンダムSEED／機動戦士ガンダムSEED DESTINY" },
       { title: "ランバ・ラル", subtitle: "機動戦士ガンダム／機動戦士ガンダム THE ORIGIN" },
     ],
+    owner: user,
   },
   {
     title: "声優知名度",
@@ -73,6 +78,7 @@ const rankings: CreateRankingFormModel[] = [
       { title: "子安武人", subtitle: "26.76%" },
       { title: "花澤香菜", subtitle: "25.34%" },
     ],
+    owner: user,
   },
   {
     title: "2016 声優知名度",
@@ -89,6 +95,7 @@ const rankings: CreateRankingFormModel[] = [
       { title: "子安武人", subtitle: "26.76%" },
       { title: "花澤香菜", subtitle: "25.34%" },
     ],
+    owner: user,
   },
   {
     title: "2020 Spotify国内バイラルチャート",
@@ -108,10 +115,14 @@ const rankings: CreateRankingFormModel[] = [
       { title: "Chernobyl 2017", subtitle: "Meland x Hauken, Benjamin Beats" },
       { title: "春を告げる", subtitle: "yama" },
     ],
+    owner: user,
   },
 ]
 
 const seed = async () => {
+  // Insert User
+  await db.user.create({ data: user })
+
   for (let i = 0; i < rankings.length; i++) {
     const ranking = rankings[i]
     await db.ranking.create({
