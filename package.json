@@ -30,7 +30,7 @@
     "blitz": "0.38.4",
     "final-form": "4.20.2",
     "final-form-arrays": "3.0.2",
-    "firebase": "8.7.0",
+    "firebase": "8.7.1",
     "firebase-admin": "9.10.0",
     "mui-rff": "3.0.10",
     "prisma": "2.26.0",
