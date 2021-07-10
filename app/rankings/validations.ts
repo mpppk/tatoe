@@ -12,6 +12,7 @@ import {
 export const userBaseSchema = z.object({
   id: z.string().nonempty(),
   name: z.string().nonempty(),
+  pictureUrl: z.string().nonempty().nullable(),
 })
 
 export const rankingSchema = z
