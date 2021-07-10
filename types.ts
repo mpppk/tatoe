@@ -6,6 +6,7 @@ export type Role = "ADMIN" | "USER"
 export type User = {
   id: string
   name: string
+  pictureUrl: string | null
 }
 
 declare module "blitz" {
@@ -16,6 +17,8 @@ declare module "blitz" {
     isAuthorized: SimpleRolesIsAuthorized<Role>
     PublicData: {
       userId: User["id"]
+      name: User["name"]
+      pictureUrl: User["pictureUrl"]
       role: Role
     }
   }
