@@ -3,7 +3,7 @@ import { reRankItems } from "../app/ranking-items/validations"
 import { CreateRankingFormModel } from "../app/rankings/validations"
 import { User } from "../types"
 
-const user: User = { id: "id1", name: "test-user1" }
+const user: User = { id: "id1", name: "test-user1", pictureUrl: null }
 
 const rankings: CreateRankingFormModel[] = [
   {

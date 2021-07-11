@@ -85,6 +85,7 @@ const ProfileMenu: React.FunctionComponent<ProfileListProps> = (props) => {
 }
 
 interface ProfileButtonProps {
+  pictureUrl: string | undefined
   onClickMyPage: () => void
   onClickLogout: () => void
 }
@@ -114,7 +115,12 @@ const ProfileButton: React.FC<ProfileButtonProps> = (props) => {
         color="inherit"
         onClick={handleClickProfileButton}
       >
-        <Avatar aria-label="user profile avatar" alt="Avatar Icon" className={classes.avatar} />
+        <Avatar
+          aria-label="user profile avatar"
+          src={props.pictureUrl}
+          alt="Avatar Icon"
+          className={classes.avatar}
+        />
       </Button>
       <ProfileMenu
         anchorEl={anchorEl}
@@ -158,7 +164,11 @@ export const Header = () => {
           </Typography>
         </Link>
         {session.userId ? (
-          <ProfileButton onClickMyPage={handleClickMyPage} onClickLogout={handleClickLogOut} />
+          <ProfileButton
+            pictureUrl={session.pictureUrl ?? undefined}
+            onClickMyPage={handleClickMyPage}
+            onClickLogout={handleClickLogOut}
+          />
         ) : (
           <Link href={Routes.LoginPage()}>
             <Button color="inherit">Login</Button>
