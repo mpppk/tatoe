@@ -1,10 +1,10 @@
 import { BlitzPage, Head, useParams, useQuery, Link, useRouter, Routes } from "blitz"
-import Layout from "../../../../../../../core/layouts/Layout"
-import getRanking from "../../../../../../../rankings/queries/getRanking"
+import Layout from "../../../../../../../../core/layouts/Layout"
+import getRanking from "../../../../../../../queries/getRanking"
 import React, { Suspense } from "react"
 import { Button, makeStyles, Typography, Link as MUILink } from "@material-ui/core"
 import TwitterIcon from "@material-ui/icons/Twitter"
-import { RankingItem } from "../../../../../../../ranking-items/validations"
+import { RankingItem } from "../../../../../../../../ranking-items/validations"
 
 interface Params {
   rankingId: number

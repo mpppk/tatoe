@@ -3,7 +3,7 @@ import { Head, Link, usePaginatedQuery, useRouter, BlitzPage, Routes } from "bli
 import Layout from "app/core/layouts/Layout"
 import getRankings from "app/rankings/queries/getRankings"
 import { Button, Link as MUILink, Typography } from "@material-ui/core"
-import { RankingList } from "../../rankings/components/RankingList"
+import { RankingList } from "../../components/RankingList"
 
 const ITEMS_PER_PAGE = 10
 

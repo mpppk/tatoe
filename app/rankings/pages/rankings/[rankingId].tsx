@@ -4,7 +4,7 @@ import Layout from "app/core/layouts/Layout"
 import getRanking from "app/rankings/queries/getRanking"
 import deleteRanking from "app/rankings/mutations/deleteRanking"
 import { Ranking } from "app/rankings/components/Ranking"
-import getRandomRankings from "../../rankings/queries/getRandomRankings"
+import getRandomRankings from "../../queries/getRandomRankings"
 
 export const RankingDetails = () => {
   const router = useRouter()
