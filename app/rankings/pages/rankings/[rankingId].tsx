@@ -32,6 +32,7 @@ export const RankingDetails = () => {
         id={ranking.id}
         title={ranking.title}
         description={ranking.description}
+        source={ranking.source}
         items={ranking.items.map((item) => ({
           id: item.id,
           title: item.title,

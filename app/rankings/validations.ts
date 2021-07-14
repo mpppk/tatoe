@@ -20,6 +20,7 @@ export const rankingSchema = z
     id: z.number().positive(),
     title: z.string().nonempty().max(50),
     description: z.string().nonempty().max(100),
+    source: z.string().nullable(),
     owner: userBaseSchema,
     items: rankingItemSchema.array().min(1),
   })
