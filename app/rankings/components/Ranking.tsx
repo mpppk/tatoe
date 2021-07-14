@@ -1,10 +1,19 @@
-import { Link, Routes } from "blitz"
-import { Button, Link as MUILink, makeStyles, Typography } from "@material-ui/core"
+import { Link, Routes, useRouter, useSession } from "blitz"
+import {
+  IconButton,
+  Link as MUILink,
+  makeStyles,
+  Menu,
+  MenuItem,
+  Typography,
+} from "@material-ui/core"
 import React from "react"
 import { CompareListItemProps, RankingItemCard } from "./RankingItemCard"
 import { Ranking as RankingType } from "../validations"
 import { RankingItem } from "../../ranking-items/validations"
 import { User } from "../../../types"
+import MoreHorizIcon from "@material-ui/icons/MoreHoriz"
+import { useAnchor } from "../../core/hooks/useAnchor"
 
 const useStyles = makeStyles((theme) => ({
   description: {
@@ -23,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 type Props = Pick<RankingType, "id" | "title" | "description" | "owner"> & {
   items: Pick<RankingItem, "id" | "title" | "subtitle">[]
   rankings: RankingType[]
-  onClickDeleteButton: (rankingId: number) => void
+  onClickDeleteButton: () => void
 }
 
 const toCompares = (
@@ -52,17 +61,78 @@ const toCompares = (
     .filter((c) => c.cItemName !== "")
 }
 
-export const Ranking: React.FC<Props> = (props) => {
-  const classes = useStyles()
+interface RankingMenuProps {
+  anchorEl: HTMLElement | null
+  rankingId: number
+  onClickEdit: () => void
+  onClickDelete: () => void
+  onClose: () => void
+}
+
+const RankingMenu: React.FC<RankingMenuProps> = (props) => {
+  return (
+    <Menu
+      anchorEl={props.anchorEl}
+      keepMounted={true}
+      open={Boolean(props.anchorEl)}
+      onClose={props.onClose}
+    >
+      <MenuItem onClick={props.onClickEdit}>Edit</MenuItem>
+      <MenuItem onClick={props.onClickDelete}>Delete</MenuItem>
+    </Menu>
+  )
+}
+
+interface RankingMoreHoriz {
+  rankingId: number
+  onClickMenuDelete: () => void
+}
+
+const RankingMoreHoriz: React.FC<RankingMoreHoriz> = (props) => {
+  const router = useRouter()
+  const { anchorEl, setClickedElAsAnchor, clearAnchor } = useAnchor()
+  const handleEdit = () => {
+    clearAnchor()
+    router.push(Routes.EditRankingPage({ rankingId: props.rankingId }))
+  }
+  const handleDelete = () => {
+    clearAnchor()
+    props.onClickMenuDelete()
+  }
   return (
     <>
-      <Typography variant={"h5"}>{props.title}</Typography>
+      <IconButton onClick={setClickedElAsAnchor}>
+        <MoreHorizIcon />
+      </IconButton>
+      <RankingMenu
+        anchorEl={anchorEl}
+        rankingId={props.rankingId}
+        onClickEdit={handleEdit}
+        onClickDelete={handleDelete}
+        onClose={clearAnchor}
+      />
+    </>
+  )
+}
+
+export const Ranking: React.FC<Props> = (props) => {
+  const classes = useStyles()
+  const session = useSession()
+  return (
+    <>
+      <Typography variant={"h5"}>
+        {props.title}
+        {props.owner.id === session.userId ? (
+          <RankingMoreHoriz rankingId={props.id} onClickMenuDelete={props.onClickDeleteButton} />
+        ) : null}
+      </Typography>
       <Typography className={classes.description} variant={"subtitle1"}>
         {props.description}
       </Typography>
       {props.items.map((item, rank) => (
         <RankingItemCard
           key={item.id}
+          defaultExpand={rank === 0}
           title={item.title}
           rank={rank + 1}
           subheader={item.subtitle ?? ""}
@@ -83,24 +153,10 @@ interface RankingFooterProps {
   owner: User
   onClickDeleteButton: (rankingId: number) => void
 }
+
 export const RankingFooter: React.FC<RankingFooterProps> = (props) => {
-  const classes = useStyles()
   return (
     <>
-      <Link href={Routes.EditRankingPage({ rankingId: props.rankingId })}>
-        <div className={classes.buttonsWrapper}>
-          <Button className={classes.editButton} color={"inherit"} variant={"contained"}>
-            Edit
-          </Button>
-          <Button
-            color={"secondary"}
-            variant={"contained"}
-            onClick={props.onClickDeleteButton.bind(null, props.rankingId)}
-          >
-            Delete
-          </Button>
-        </div>
-      </Link>
       <Typography variant={"body1"}>
         Created by{" "}
         <Link href={Routes.UserPage({ userId: props.owner.id })}>

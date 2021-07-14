@@ -4,8 +4,8 @@ import Layout from "app/core/layouts/Layout"
 import getRanking from "app/rankings/queries/getRanking"
 import updateRanking from "app/rankings/mutations/updateRanking"
 import { RankingForm, FORM_ERROR } from "app/rankings/components/RankingForm"
-import deleteRankingItems from "../../../ranking-items/mutations/deleteRankingItems"
-import { toUpdateRankingFromForm, UpdateRankingForm } from "../../../rankings/validations"
+import deleteRankingItems from "../../../../ranking-items/mutations/deleteRankingItems"
+import { toUpdateRankingFromForm, UpdateRankingForm } from "../../../validations"
 
 export const EditRanking = () => {
   const router = useRouter()

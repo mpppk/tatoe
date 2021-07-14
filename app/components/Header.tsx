@@ -15,6 +15,7 @@ import {
 import MenuIcon from "@material-ui/icons/Menu"
 import React, { useState, Suspense } from "react"
 import { Link, Routes, useRouter, useSession } from "blitz"
+import { useAnchor } from "../core/hooks/useAnchor"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -93,17 +94,13 @@ interface ProfileButtonProps {
 const ProfileButton: React.FC<ProfileButtonProps> = (props) => {
   const classes = useStyles()
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-  const handleClickProfileButton = (e: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(e.currentTarget)
-  }
-  const setNullAnchorEl = () => setAnchorEl(null)
+  const { anchorEl, setClickedElAsAnchor, clearAnchor } = useAnchor()
   const handleClickMyPage = () => {
-    setNullAnchorEl()
+    clearAnchor()
     props.onClickMyPage()
   }
   const handleClickLogout = () => {
-    setNullAnchorEl()
+    clearAnchor()
     props.onClickLogout()
   }
 
@@ -113,7 +110,7 @@ const ProfileButton: React.FC<ProfileButtonProps> = (props) => {
         aria-controls="profile-menu"
         aria-haspopup="true"
         color="inherit"
-        onClick={handleClickProfileButton}
+        onClick={setClickedElAsAnchor}
       >
         <Avatar
           aria-label="user profile avatar"
@@ -126,7 +123,7 @@ const ProfileButton: React.FC<ProfileButtonProps> = (props) => {
         anchorEl={anchorEl}
         onClickMyPage={handleClickMyPage}
         onClickLogout={handleClickLogout}
-        onClose={setNullAnchorEl}
+        onClose={clearAnchor}
       />
     </div>
   )
