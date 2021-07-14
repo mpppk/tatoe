@@ -132,6 +132,7 @@ export const Ranking: React.FC<Props> = (props) => {
       {props.items.map((item, rank) => (
         <RankingItemCard
           key={item.id}
+          defaultExpand={rank === 0}
           title={item.title}
           rank={rank + 1}
           subheader={item.subtitle ?? ""}

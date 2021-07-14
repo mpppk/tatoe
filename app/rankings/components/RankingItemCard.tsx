@@ -127,11 +127,12 @@ interface ItemCardProps {
   rank: number
   subheader: string
   compares: CompareListItemProps[]
+  defaultExpand?: boolean
 }
 
 export const RankingItemCard: React.FC<ItemCardProps> = (props) => {
   const classes = useStyles()
-  const [expand, setExpand] = useState(false)
+  const [expand, setExpand] = useState(props.defaultExpand === true)
   return (
     <Card className={classes.card}>
       <CardHeader
