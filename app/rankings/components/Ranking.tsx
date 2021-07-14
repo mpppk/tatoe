@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-type Props = Pick<RankingType, "id" | "title" | "description" | "owner"> & {
+type Props = Pick<RankingType, "id" | "title" | "description" | "source" | "owner"> & {
   items: Pick<RankingItem, "id" | "title" | "subtitle">[]
   rankings: RankingType[]
   onClickDeleteButton: () => void
@@ -139,6 +139,9 @@ export const Ranking: React.FC<Props> = (props) => {
           compares={toCompares(props.rankings, rank, props.id, item.id)}
         />
       ))}
+      <Typography className={classes.description} variant={"subtitle1"}>
+        引用元: <MUILink href={props.source ?? "#"}>{props.source}</MUILink>
+      </Typography>
       <RankingFooter
         onClickDeleteButton={props.onClickDeleteButton}
         rankingId={props.id}
