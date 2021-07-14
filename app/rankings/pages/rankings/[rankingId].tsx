@@ -17,7 +17,7 @@ export const RankingDetails = () => {
   })
 
   const handleClickDeleteButton = async () => {
-    if (window.confirm("This will be deleted")) {
+    if (window.confirm(`${ranking.title}ランキングを削除しますか?`)) {
       await deleteRankingMutation({ id: ranking.id })
       router.push(Routes.RankingsPage())
     }

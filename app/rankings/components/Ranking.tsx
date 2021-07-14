@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 type Props = Pick<RankingType, "id" | "title" | "description" | "owner"> & {
   items: Pick<RankingItem, "id" | "title" | "subtitle">[]
   rankings: RankingType[]
-  onClickDeleteButton: (rankingId: number) => void
+  onClickDeleteButton: () => void
 }
 
 const toCompares = (
@@ -123,10 +123,7 @@ export const Ranking: React.FC<Props> = (props) => {
       <Typography variant={"h5"}>
         {props.title}
         {props.owner.id === session.userId ? (
-          <RankingMoreHoriz
-            rankingId={props.id}
-            onClickMenuDelete={() => {}} // FIXME
-          />
+          <RankingMoreHoriz rankingId={props.id} onClickMenuDelete={props.onClickDeleteButton} />
         ) : null}
       </Typography>
       <Typography className={classes.description} variant={"subtitle1"}>
