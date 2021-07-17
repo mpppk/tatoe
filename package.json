@@ -46,7 +46,7 @@
   "devDependencies": {
     "@types/preview-email": "2.0.1",
     "@types/react": "17.0.14",
-    "eslint": "7.30.0",
+    "eslint": "7.31.0",
     "husky": "7.0.1",
     "lint-staged": "11.0.1",
     "prettier": "2.3.2",
