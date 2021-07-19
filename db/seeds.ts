@@ -10,6 +10,7 @@ const rankings: CreateRankingFormModel[] = [
     title: "2020セリーグ安打数",
     description: "2020セリーグ安打数です",
     source: "https://npb.jp/bis/2020/stats/lb_h_c.html",
+    canBeEditedByAnotherUser: true,
     items: [
       { title: "大島 洋平", subtitle: "146本" },
       { title: "梶谷 隆幸", subtitle: "140本" },
@@ -29,6 +30,7 @@ const rankings: CreateRankingFormModel[] = [
     title: "ガンダム人気キャラクター",
     description: "ガンダム人気キャラクターです",
     source: "参考: https://www.nhk.or.jp/anime/gundam/ranking/",
+    canBeEditedByAnotherUser: true,
     items: [
       {
         title: "シャア・アズナブル（クワトロ・バジーナ／キャスバル・レム・ダイクン）",
@@ -70,6 +72,7 @@ const rankings: CreateRankingFormModel[] = [
     description: "2016 声優知名度です",
     source:
       "https://jp.xn--eqro0w6nu.net/directory/%E6%97%A5%E6%9C%AC%E3%81%AE%E5%A3%B0%E5%84%AA%20(%E7%B7%8F%E5%90%88)",
+    canBeEditedByAnotherUser: false,
     items: [
       { title: "山寺宏一", subtitle: "43.4%" },
       { title: "櫻井孝宏", subtitle: "35.35%" },
@@ -88,6 +91,7 @@ const rankings: CreateRankingFormModel[] = [
     description: "2020 Spotify国内バイラルチャートです",
     source:
       "https://open.spotify.com/playlist/37i9dQZF1DX63PbGTNfT1W?si=Jdy--JyBROyo4tLBH_z4Hw&nd=1",
+    canBeEditedByAnotherUser: false,
     items: [
       { title: "夜に駆ける", subtitle: "YOASOBI" },
       { title: "紅蓮華", subtitle: "LiSA" },

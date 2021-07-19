@@ -23,6 +23,7 @@ export const rankingSchema = z
     source: z.string().nullable(),
     owner: userBaseSchema,
     items: rankingItemSchema.array().min(1),
+    canBeEditedByAnotherUser: z.boolean(),
   })
   .merge(baseSchema)
 
@@ -40,6 +41,7 @@ export type CreateRankingModel = z.infer<typeof CreateRanking>
 
 export const CreateRankingForm = CreateRanking.extend({
   items: CreateRankingItemForm.array().min(1),
+  source: z.string().optional(),
 })
 export type CreateRankingFormModel = z.infer<typeof CreateRankingForm>
 

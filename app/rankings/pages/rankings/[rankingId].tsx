@@ -6,7 +6,7 @@ import deleteRanking from "app/rankings/mutations/deleteRanking"
 import { Ranking } from "app/rankings/components/Ranking"
 import getRandomRankings from "../../queries/getRandomRankings"
 
-export const RankingDetails = () => {
+const RankingPage: BlitzPage = () => {
   const router = useRouter()
   const rankingId = useParam("rankingId", "number")
   const [deleteRankingMutation] = useMutation(deleteRanking)
@@ -24,33 +24,26 @@ export const RankingDetails = () => {
   }
 
   return (
-    <>
-      <Head>
-        <title>{ranking.title}ランキング</title>
-      </Head>
-      <Ranking
-        id={ranking.id}
-        title={ranking.title}
-        description={ranking.description}
-        source={ranking.source}
-        items={ranking.items.map((item) => ({
-          id: item.id,
-          title: item.title,
-          subtitle: item.subtitle,
-        }))}
-        owner={ranking.owner}
-        rankings={otherRankings}
-        onClickDeleteButton={handleClickDeleteButton}
-      />
-    </>
-  )
-}
-
-const RankingPage: BlitzPage = () => {
-  return (
     <div>
       <Suspense fallback={<div>Loading...</div>}>
-        <RankingDetails />
+        <Head>
+          <title>{ranking.title}ランキング</title>
+        </Head>
+        <Ranking
+          id={ranking.id}
+          title={ranking.title}
+          description={ranking.description}
+          source={ranking.source}
+          canBeEditedByAnotherUser={ranking.canBeEditedByAnotherUser}
+          items={ranking.items.map((item) => ({
+            id: item.id,
+            title: item.title,
+            subtitle: item.subtitle,
+          }))}
+          owner={ranking.owner}
+          rankings={otherRankings}
+          onClickDeleteButton={handleClickDeleteButton}
+        />
       </Suspense>
     </div>
   )

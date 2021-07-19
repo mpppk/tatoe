@@ -1,13 +1,25 @@
-import { resolver } from "blitz"
+import { AuthorizationError, resolver } from "blitz"
 import db from "db"
 import { UpdateRanking } from "../validations"
+
+const isEditableRankingResolver = async (input, ctx) => {
+  const ranking = await db.ranking.findUnique({ where: { id: input.id } })
+  if (ranking === null) {
+    throw new AuthorizationError()
+  }
+  if (!ranking.canBeEditedByAnotherUser && ctx.session.userId !== ranking.ownerId) {
+    throw new AuthorizationError()
+  }
+  return input
+}
 
 export default resolver.pipe(
   resolver.zod(UpdateRanking),
   resolver.authorize(),
+  isEditableRankingResolver,
   async ({ id, ...data }) => {
     // TODO: in multi-tenant app, you must add validation to ensure correct tenant
-    const ranking = await db.ranking.update({
+    return await db.ranking.update({
       where: { id },
       include: { items: true, owner: true },
       data: {
@@ -22,7 +34,5 @@ export default resolver.pipe(
         owner: {},
       },
     })
-
-    return ranking
   }
 )

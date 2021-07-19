@@ -20,11 +20,16 @@ const NewRankingPage: BlitzPage = () => {
       <RankingForm
         submitText="作成"
         schema={CreateRankingForm}
-        initialValues={{ ownerId: session.userId!, items: [{ title: "" }] }}
+        initialValues={{
+          canBeEditedByAnotherUser: true,
+          ownerId: session.userId!,
+          items: [{ title: "" }],
+        }}
         onSubmit={async (rankingForm) => {
           try {
             const ranking = await createRankingMutation({
               ...rankingForm,
+              source: rankingForm.source ?? null,
               items: reRankItems(rankingForm.items),
             })
             router.push(`/rankings/${ranking.id}`)

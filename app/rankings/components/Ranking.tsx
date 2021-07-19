@@ -13,6 +13,7 @@ import { Ranking as RankingType } from "../validations"
 import { RankingItem } from "../../ranking-items/validations"
 import { User } from "../../../types"
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz"
+import LockIcon from "@material-ui/icons/Lock"
 import { useAnchor } from "../../core/hooks/useAnchor"
 
 const useStyles = makeStyles((theme) => ({
@@ -29,7 +30,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-type Props = Pick<RankingType, "id" | "title" | "description" | "source" | "owner"> & {
+type Props = Pick<
+  RankingType,
+  "id" | "title" | "description" | "canBeEditedByAnotherUser" | "source" | "owner"
+> & {
   items: Pick<RankingItem, "id" | "title" | "subtitle">[]
   rankings: RankingType[]
   onClickDeleteButton: () => void
@@ -64,6 +68,7 @@ const toCompares = (
 interface RankingMenuProps {
   anchorEl: HTMLElement | null
   rankingId: number
+  showDelete: boolean
   onClickEdit: () => void
   onClickDelete: () => void
   onClose: () => void
@@ -78,13 +83,14 @@ const RankingMenu: React.FC<RankingMenuProps> = (props) => {
       onClose={props.onClose}
     >
       <MenuItem onClick={props.onClickEdit}>Edit</MenuItem>
-      <MenuItem onClick={props.onClickDelete}>Delete</MenuItem>
+      {props.showDelete ? <MenuItem onClick={props.onClickDelete}>Delete</MenuItem> : null}
     </Menu>
   )
 }
 
 interface RankingMoreHoriz {
   rankingId: number
+  showDelete: boolean
   onClickMenuDelete: () => void
 }
 
@@ -107,6 +113,7 @@ const RankingMoreHoriz: React.FC<RankingMoreHoriz> = (props) => {
       <RankingMenu
         anchorEl={anchorEl}
         rankingId={props.rankingId}
+        showDelete={props.showDelete}
         onClickEdit={handleEdit}
         onClickDelete={handleDelete}
         onClose={clearAnchor}
@@ -118,12 +125,20 @@ const RankingMoreHoriz: React.FC<RankingMoreHoriz> = (props) => {
 export const Ranking: React.FC<Props> = (props) => {
   const classes = useStyles()
   const session = useSession()
+  const isOwnRanking = props.owner.id === session.userId
+  const showMoreHoriz = isOwnRanking || props.canBeEditedByAnotherUser
+  const showLockIcon = isOwnRanking && !props.canBeEditedByAnotherUser
   return (
     <>
       <Typography variant={"h5"}>
+        {showLockIcon ? <LockIcon /> : null}
         {props.title}
-        {props.owner.id === session.userId ? (
-          <RankingMoreHoriz rankingId={props.id} onClickMenuDelete={props.onClickDeleteButton} />
+        {showMoreHoriz ? (
+          <RankingMoreHoriz
+            showDelete={isOwnRanking}
+            rankingId={props.id}
+            onClickMenuDelete={props.onClickDeleteButton}
+          />
         ) : null}
       </Typography>
       <Typography className={classes.description} variant={"subtitle1"}>
@@ -140,7 +155,7 @@ export const Ranking: React.FC<Props> = (props) => {
         />
       ))}
       <Typography className={classes.description} variant={"subtitle1"}>
-        引用元: <MUILink href={props.source ?? "#"}>{props.source}</MUILink>
+        <MUILink href={props.source ?? "#"}>引用元</MUILink>
       </Typography>
       <RankingFooter
         onClickDeleteButton={props.onClickDeleteButton}
