@@ -142,8 +142,20 @@ export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(props: F
               </div>
             )}
 
-            <AppTextField name="title" label={"タイトル"} fullWidth />
-            <AppTextField name="description" label={"説明"} fullWidth />
+            <AppTextField
+              name="title"
+              label={"タイトル"}
+              error={errors?.["title"]?.[0] !== undefined}
+              helperText={errors?.["title"]?.[0]}
+              fullWidth
+            />
+            <AppTextField
+              name="description"
+              label={"説明"}
+              error={errors?.["description"]?.[0] !== undefined}
+              helperText={errors?.["description"]?.[0]}
+              fullWidth
+            />
             <AppTextField name="source" label={"引用元"} fullWidth />
             <FieldArray
               name="items"
