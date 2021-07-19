@@ -13,6 +13,7 @@ import { Ranking as RankingType } from "../validations"
 import { RankingItem } from "../../ranking-items/validations"
 import { User } from "../../../types"
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz"
+import LockIcon from "@material-ui/icons/Lock"
 import { useAnchor } from "../../core/hooks/useAnchor"
 
 const useStyles = makeStyles((theme) => ({
@@ -126,9 +127,11 @@ export const Ranking: React.FC<Props> = (props) => {
   const session = useSession()
   const isOwnRanking = props.owner.id === session.userId
   const showMoreHoriz = isOwnRanking || props.canBeEditedByAnotherUser
+  const showLockIcon = isOwnRanking && !props.canBeEditedByAnotherUser
   return (
     <>
       <Typography variant={"h5"}>
+        {showLockIcon ? <LockIcon /> : null}
         {props.title}
         {showMoreHoriz ? (
           <RankingMoreHoriz
@@ -152,7 +155,7 @@ export const Ranking: React.FC<Props> = (props) => {
         />
       ))}
       <Typography className={classes.description} variant={"subtitle1"}>
-        引用元: <MUILink href={props.source ?? "#"}>{props.source}</MUILink>
+        <MUILink href={props.source ?? "#"}>引用元</MUILink>
       </Typography>
       <RankingFooter
         onClickDeleteButton={props.onClickDeleteButton}

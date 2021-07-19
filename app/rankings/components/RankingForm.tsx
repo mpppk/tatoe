@@ -1,9 +1,9 @@
 import { FormProps } from "app/core/components/Form"
 import * as z from "zod"
 import React from "react"
-import { Button, IconButton, makeStyles } from "@material-ui/core"
+import { Button, Checkbox, FormControlLabel, IconButton, makeStyles } from "@material-ui/core"
 import DeleteIcon from "@material-ui/icons/Delete"
-import { Form as FinalForm } from "react-final-form"
+import { Field, Form as FinalForm } from "react-final-form"
 import { AppTextField } from "../../core/components/AppTextField"
 import arrayMutators from "final-form-arrays"
 import { FieldArray } from "react-final-form-arrays"
@@ -47,6 +47,28 @@ interface RankFieldsProps {
   rank: number
   error?: Partial<Record<keyof RankingItem, string>>
   onClickDeleteButton: () => void
+}
+
+interface CheckBoxFieldProps {
+  name: string
+  label: string
+}
+
+const CheckBoxField = (props: CheckBoxFieldProps) => {
+  return (
+    <Field
+      type="checkbox"
+      name={props.name}
+      render={({ input, _meta }) => {
+        return (
+          <FormControlLabel
+            control={<Checkbox checked={input.checked} color="primary" />}
+            label={props.label}
+          />
+        )
+      }}
+    />
+  )
 }
 
 const RankFields: React.FC<RankFieldsProps> = (props) => {
@@ -103,7 +125,7 @@ export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(props: F
         errors,
         submitError,
         form: {
-          mutators: { push, pop },
+          mutators: { push, _pop },
         },
       }) => {
         const err = { ...errors }
@@ -111,7 +133,7 @@ export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(props: F
           delete err.items
         }
         delete err.items
-        console.log(err)
+        console.log("err", err)
         return (
           <form onSubmit={handleSubmit}>
             {submitError && (
@@ -122,6 +144,7 @@ export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(props: F
 
             <AppTextField name="title" label={"タイトル"} fullWidth />
             <AppTextField name="description" label={"説明"} fullWidth />
+            <AppTextField name="source" label={"引用元"} fullWidth />
             <FieldArray
               name="items"
               validate={(items) => {
@@ -148,6 +171,10 @@ export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(props: F
                         error={meta.error?.[index]}
                       />
                     ))}
+                    <CheckBoxField
+                      name={"canBeEditedByAnotherUser"}
+                      label={"他ユーザによる編集を許可"}
+                    />
                     <div className={classes.buttonWrapper}>
                       <Button
                         className={classes.moreRankButton}
