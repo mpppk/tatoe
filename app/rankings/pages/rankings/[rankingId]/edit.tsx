@@ -1,5 +1,15 @@
 import { Suspense } from "react"
-import { Head, Link, useRouter, useQuery, useMutation, useParam, BlitzPage, Routes } from "blitz"
+import {
+  Head,
+  Link,
+  useRouter,
+  useQuery,
+  useMutation,
+  useParam,
+  BlitzPage,
+  Routes,
+  useSession,
+} from "blitz"
 import Layout from "app/core/layouts/Layout"
 import getRanking from "app/rankings/queries/getRanking"
 import updateRanking from "app/rankings/mutations/updateRanking"
@@ -50,11 +60,19 @@ export const EditRanking = () => {
   )
 }
 
+const DisallowEditing = () => {
+  return <>このランキングの編集は許可されていません</>
+}
+
 const EditRankingPage: BlitzPage = () => {
+  const session = useSession()
+  const rankingId = useParam("rankingId", "number")
+  const [ranking] = useQuery(getRanking, { id: rankingId })
+  const canEdit = ranking.canBeEditedByAnotherUser || session.userId === ranking.ownerId
   return (
     <div>
       <Suspense fallback={<div>Loading...</div>}>
-        <EditRanking />
+        {canEdit ? <EditRanking /> : <DisallowEditing />}
       </Suspense>
 
       <p>
