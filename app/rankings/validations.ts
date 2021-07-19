@@ -23,6 +23,7 @@ export const rankingSchema = z
     source: z.string().nullable(),
     owner: userBaseSchema,
     items: rankingItemSchema.array().min(1),
+    canBeEditedByAnotherUser: z.boolean(),
   })
   .merge(baseSchema)
 
