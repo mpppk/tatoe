@@ -1,6 +1,6 @@
 import { FormProps } from "app/core/components/Form"
 import * as z from "zod"
-import React from "react"
+import React, { useState } from "react"
 import { Button, Checkbox, FormControlLabel, IconButton, makeStyles } from "@material-ui/core"
 import DeleteIcon from "@material-ui/icons/Delete"
 import { Field, Form as FinalForm } from "react-final-form"
@@ -107,6 +107,7 @@ const RankFields: React.FC<RankFieldsProps> = (props) => {
 
 export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(props: FormProps<S>) {
   const classes = useStyles()
+  const [hasRankingItemError, setHasRankingItemError] = useState(true)
   return (
     <FinalForm
       initialValues={props.initialValues}
@@ -133,7 +134,6 @@ export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(props: F
           delete err.items
         }
         delete err.items
-        console.log("err", err)
         return (
           <form onSubmit={handleSubmit}>
             {submitError && (
@@ -142,20 +142,35 @@ export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(props: F
               </div>
             )}
 
-            <AppTextField name="title" label={"タイトル"} fullWidth />
-            <AppTextField name="description" label={"説明"} fullWidth />
+            <AppTextField
+              name="title"
+              label={"タイトル"}
+              error={errors?.["title"]?.[0] !== undefined}
+              helperText={errors?.["title"]?.[0]}
+              fullWidth
+            />
+            <AppTextField
+              name="description"
+              label={"説明"}
+              error={errors?.["description"]?.[0] !== undefined}
+              helperText={errors?.["description"]?.[0]}
+              fullWidth
+            />
             <AppTextField name="source" label={"引用元"} fullWidth />
             <FieldArray
               name="items"
               validate={(items) => {
                 if (!props.schema) return
-                return items.reduce((err, item, index) => {
+                const errs = items.reduce((err, item, index) => {
                   const result = props.schema?.shape.items.element.safeParse(item)
                   if (!result.success) {
                     err[index] = result.error.formErrors.fieldErrors
                   }
                   return err
                 }, {})
+                console.log("errs", errs)
+                setHasRankingItemError(Object.keys(errs).length !== 0)
+                return errs
               }}
             >
               {({ fields, meta }) => {
@@ -186,7 +201,11 @@ export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(props: F
                       {props.submitText && (
                         <Button
                           type="submit"
-                          disabled={submitting || (err && Object.keys(err).length > 0)}
+                          disabled={
+                            submitting ||
+                            (err && Object.keys(err).length > 0) ||
+                            hasRankingItemError
+                          }
                           variant={"contained"}
                           color={"primary"}
                         >
