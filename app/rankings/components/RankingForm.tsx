@@ -1,7 +1,15 @@
 import { FormProps } from "app/core/components/Form"
 import * as z from "zod"
 import React, { useState } from "react"
-import { Button, Checkbox, FormControlLabel, IconButton, makeStyles } from "@material-ui/core"
+import {
+  Button,
+  Checkbox,
+  ClickAwayListener,
+  FormControlLabel,
+  IconButton,
+  makeStyles,
+  Tooltip,
+} from "@material-ui/core"
 import DeleteIcon from "@material-ui/icons/Delete"
 import { Field, Form as FinalForm } from "react-final-form"
 import { AppTextField } from "../../core/components/AppTextField"
@@ -52,19 +60,47 @@ interface RankFieldsProps {
 interface CheckBoxFieldProps {
   name: string
   label: string
+  disabled?: boolean
 }
 
 const CheckBoxField = (props: CheckBoxFieldProps) => {
+  const [openCheckBoxToolTip, setOpenCheckBoxToolTip] = React.useState(false)
   return (
     <Field
       type="checkbox"
       name={props.name}
       render={({ input, _meta }) => {
+        const handleClick = () => {
+          if (props.disabled) {
+            setOpenCheckBoxToolTip(true)
+          }
+        }
         return (
-          <FormControlLabel
-            control={<Checkbox checked={input.checked} color="primary" />}
-            label={props.label}
-          />
+          <ClickAwayListener onClickAway={setOpenCheckBoxToolTip.bind(null, false)}>
+            <Tooltip
+              PopperProps={{
+                disablePortal: true,
+              }}
+              onClose={setOpenCheckBoxToolTip.bind(null, false)}
+              open={openCheckBoxToolTip}
+              arrow
+              disableFocusListener
+              disableHoverListener
+              disableTouchListener
+              title="他ユーザが作成したランキングでは変更できません"
+            >
+              <span onClick={handleClick}>
+                <FormControlLabel
+                  disabled={props.disabled}
+                  control={
+                    <Checkbox checked={input.checked} color="primary" disabled={props.disabled} />
+                  }
+                  label={props.label}
+                  onChange={(_, checked) => input.onChange(checked)}
+                />
+              </span>
+            </Tooltip>
+          </ClickAwayListener>
         )
       }}
     />
@@ -105,13 +141,16 @@ const RankFields: React.FC<RankFieldsProps> = (props) => {
   )
 }
 
-export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(props: FormProps<S>) {
+export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(
+  props: FormProps<S> & { disableToChangeEditability: boolean }
+) {
   const classes = useStyles()
   const [hasRankingItemError, setHasRankingItemError] = useState(true)
   return (
     <FinalForm
       initialValues={props.initialValues}
       validate={(values) => {
+        console.log(values)
         if (!props.schema) return
         const result = props.schema.safeParse(values)
         if (!result.success) {
@@ -189,6 +228,7 @@ export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(props: F
                     <CheckBoxField
                       name={"canBeEditedByAnotherUser"}
                       label={"他ユーザによる編集を許可"}
+                      disabled={props.disableToChangeEditability}
                     />
                     <div className={classes.buttonWrapper}>
                       <Button

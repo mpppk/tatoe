@@ -33,7 +33,7 @@ export default resolver.pipe(resolver.zod(GetRankings), async ({ take = 10, igno
   const OR = idList.map((id) => ({ id }))
   const rankings = await db.ranking.findMany({
     where: { OR },
-    include: { items: true, owner: true },
+    include: { items: true, owner: true, lastEditor: true },
   })
   rankings.forEach((ranking) => ranking.items.sort((a, b) => a.rank - b.rank))
   return rankings

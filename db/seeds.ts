@@ -24,7 +24,6 @@ const rankings: CreateRankingFormModel[] = [
       { title: "高橋 周平", subtitle: "120本" },
       { title: "丸 佳浩", subtitle: "120本" },
     ],
-    ownerId: user.id,
   },
   {
     title: "ガンダム人気キャラクター",
@@ -65,7 +64,6 @@ const rankings: CreateRankingFormModel[] = [
       { title: "アスラン・ザラ", subtitle: "機動戦士ガンダムSEED／機動戦士ガンダムSEED DESTINY" },
       { title: "ランバ・ラル", subtitle: "機動戦士ガンダム／機動戦士ガンダム THE ORIGIN" },
     ],
-    ownerId: user.id,
   },
   {
     title: "2016 声優知名度",
@@ -84,7 +82,6 @@ const rankings: CreateRankingFormModel[] = [
       { title: "子安武人", subtitle: "26.76%" },
       { title: "花澤香菜", subtitle: "25.34%" },
     ],
-    ownerId: user.id,
   },
   {
     title: "2020 Spotify国内バイラルチャート",
@@ -106,7 +103,6 @@ const rankings: CreateRankingFormModel[] = [
       { title: "Chernobyl 2017", subtitle: "Meland x Hauken, Benjamin Beats" },
       { title: "春を告げる", subtitle: "yama" },
     ],
-    ownerId: user.id,
   },
 ]
 
@@ -119,6 +115,8 @@ const seed = async () => {
     await db.ranking.create({
       data: {
         ...ranking,
+        ownerId: user.id,
+        lastEditorId: user.id,
         items: {
           create: reRankItems(ranking.items),
         },

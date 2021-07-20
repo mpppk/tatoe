@@ -22,6 +22,7 @@ export const rankingSchema = z
     description: z.string().nonempty().max(100),
     source: z.string().nullable(),
     owner: userBaseSchema,
+    lastEditor: userBaseSchema,
     items: rankingItemSchema.array().min(1),
     canBeEditedByAnotherUser: z.boolean(),
   })
@@ -31,10 +32,10 @@ export const CreateRanking = rankingSchema
   .omit({
     id: true,
     owner: true,
+    lastEditor: true,
     ...baseSchemaKeyObject,
   })
   .extend({
-    ownerId: z.string(),
     items: CreateRankingItem.array().min(1),
   })
 export type CreateRankingModel = z.infer<typeof CreateRanking>
@@ -46,8 +47,12 @@ export const CreateRankingForm = CreateRanking.extend({
 export type CreateRankingFormModel = z.infer<typeof CreateRankingForm>
 
 export const UpdateRanking = rankingSchema
+  .omit({
+    ...baseSchemaKeyObject,
+    owner: true,
+    lastEditor: true,
+  })
   .extend({ items: UpdateRankingItem.array() })
-  .omit(baseSchemaKeyObject)
 
 export const UpdateRankingForm = rankingSchema.partial().extend({
   title: rankingSchema.shape.title,

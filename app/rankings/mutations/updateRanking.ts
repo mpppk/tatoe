@@ -17,13 +17,17 @@ export default resolver.pipe(
   resolver.zod(UpdateRanking),
   resolver.authorize(),
   isEditableRankingResolver,
-  async ({ id, ...data }) => {
+  async ({ id, ...data }, ctx) => {
     // TODO: in multi-tenant app, you must add validation to ensure correct tenant
+    const ranking = await db.ranking.findUnique({ where: { id } })
     return await db.ranking.update({
       where: { id },
-      include: { items: true, owner: true },
+      include: { items: true, owner: true, lastEditor: true },
       data: {
         ...data,
+        // owner以外は変更できない。Owner以外が編集できている場合は必ずtrue
+        canBeEditedByAnotherUser:
+          ranking?.ownerId === ctx.session.userId ? data.canBeEditedByAnotherUser : true,
         items: {
           upsert: data.items.map((item) => ({
             where: { id: item.id || 0 },
@@ -31,7 +35,7 @@ export default resolver.pipe(
             update: item,
           })),
         },
-        owner: {},
+        lastEditorId: ctx.session.userId,
       },
     })
   }

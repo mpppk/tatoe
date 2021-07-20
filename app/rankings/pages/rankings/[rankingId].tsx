@@ -41,6 +41,7 @@ const RankingPage: BlitzPage = () => {
             subtitle: item.subtitle,
           }))}
           owner={ranking.owner}
+          lastEditor={ranking.lastEditor}
           rankings={otherRankings}
           onClickDeleteButton={handleClickDeleteButton}
         />

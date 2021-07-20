@@ -22,9 +22,10 @@ model User {
   //  hashedPassword String?
   role       String   @default("USER")
 
-  tokens   Token[]
-  sessions Session[]
-  rankings Ranking[]
+  tokens           Token[]
+  sessions         Session[]
+  rankings         Ranking[] @relation("rankings")
+  lastEditRankings Ranking[] @relation("lastEditRankings")
 }
 
 model Session {
@@ -74,8 +75,10 @@ model Ranking {
   description              String
   source                   String? // 引用元
   items                    RankingItem[]
-  owner                    User          @relation(fields: [ownerId], references: [id])
+  owner                    User          @relation("rankings", fields: [ownerId], references: [id])
   ownerId                  String
+  lastEditor               User          @relation("lastEditRankings", fields: [lastEditorId], references: [id])
+  lastEditorId             String
   canBeEditedByAnotherUser Boolean
 }
 
