@@ -30,15 +30,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-type Props = Pick<
-  RankingType,
-  "id" | "title" | "description" | "canBeEditedByAnotherUser" | "source" | "owner"
-> & {
-  items: Pick<RankingItem, "id" | "title" | "subtitle">[]
-  rankings: RankingType[]
-  onClickDeleteButton: () => void
-}
-
 const toCompares = (
   rankings: RankingType[],
   index: number,
@@ -122,6 +113,15 @@ const RankingMoreHoriz: React.FC<RankingMoreHoriz> = (props) => {
   )
 }
 
+type Props = Pick<
+  RankingType,
+  "id" | "title" | "description" | "canBeEditedByAnotherUser" | "source" | "owner" | "lastEditor"
+> & {
+  items: Pick<RankingItem, "id" | "title" | "subtitle">[]
+  rankings: RankingType[]
+  onClickDeleteButton: () => void
+}
+
 export const Ranking: React.FC<Props> = (props) => {
   const classes = useStyles()
   const session = useSession()
@@ -161,6 +161,7 @@ export const Ranking: React.FC<Props> = (props) => {
         onClickDeleteButton={props.onClickDeleteButton}
         rankingId={props.id}
         owner={props.owner}
+        lastEditor={props.lastEditor}
       />
     </>
   )
@@ -169,6 +170,7 @@ export const Ranking: React.FC<Props> = (props) => {
 interface RankingFooterProps {
   rankingId: number
   owner: User
+  lastEditor: User
   onClickDeleteButton: (rankingId: number) => void
 }
 
@@ -182,7 +184,10 @@ export const RankingFooter: React.FC<RankingFooterProps> = (props) => {
         </Link>
       </Typography>
       <Typography variant={"body1"}>
-        Updated by <MUILink>User2</MUILink>
+        Updated by{" "}
+        <Link href={Routes.UserPage({ userId: props.lastEditor.id })}>
+          <MUILink>{props.lastEditor.name}</MUILink>
+        </Link>
       </Typography>
     </>
   )

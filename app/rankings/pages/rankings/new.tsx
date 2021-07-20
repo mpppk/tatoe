@@ -22,7 +22,6 @@ const NewRankingPage: BlitzPage = () => {
         schema={CreateRankingForm}
         initialValues={{
           canBeEditedByAnotherUser: true,
-          ownerId: session.userId!,
           items: [{ title: "" }],
         }}
         onSubmit={async (rankingForm) => {

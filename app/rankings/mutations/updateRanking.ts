@@ -17,11 +17,11 @@ export default resolver.pipe(
   resolver.zod(UpdateRanking),
   resolver.authorize(),
   isEditableRankingResolver,
-  async ({ id, ...data }) => {
+  async ({ id, ...data }, ctx) => {
     // TODO: in multi-tenant app, you must add validation to ensure correct tenant
     return await db.ranking.update({
       where: { id },
-      include: { items: true, owner: true },
+      include: { items: true, owner: true, lastEditor: true },
       data: {
         ...data,
         items: {
@@ -31,7 +31,7 @@ export default resolver.pipe(
             update: item,
           })),
         },
-        owner: {},
+        lastEditorId: ctx.session.userId,
       },
     })
   }

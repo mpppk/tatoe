@@ -11,7 +11,7 @@ export default resolver.pipe(resolver.zod(GetRanking), resolver.authorize(), asy
   // TODO: in multi-tenant app, you must add validation to ensure correct tenant
   const ranking = await db.ranking.findFirst({
     where: { id },
-    include: { items: true, owner: true },
+    include: { items: true, owner: true, lastEditor: true },
   })
 
   if (!ranking) throw new NotFoundError()
