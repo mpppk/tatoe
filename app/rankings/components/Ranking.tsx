@@ -1,10 +1,12 @@
 import { Link, Routes, useRouter, useSession } from "blitz"
 import {
+  ClickAwayListener,
   IconButton,
   Link as MUILink,
   makeStyles,
   Menu,
   MenuItem,
+  Tooltip,
   Typography,
 } from "@material-ui/core"
 import React from "react"
@@ -27,6 +29,9 @@ const useStyles = makeStyles((theme) => ({
   },
   editButton: {
     marginRight: theme.spacing(1),
+  },
+  lockIcon: {
+    verticalAlign: "middle",
   },
 }))
 
@@ -54,6 +59,29 @@ const toCompares = (
       }
     })
     .filter((c) => c.cItemName !== "")
+}
+
+const Lock: React.FC = () => {
+  const classes = useStyles()
+  const [openCheckBoxToolTip, setOpenCheckBoxToolTip] = React.useState(false)
+  return (
+    <ClickAwayListener onClickAway={setOpenCheckBoxToolTip.bind(null, false)}>
+      <Tooltip
+        PopperProps={{
+          disablePortal: true,
+        }}
+        onClose={setOpenCheckBoxToolTip.bind(null, false)}
+        open={openCheckBoxToolTip}
+        arrow
+        disableFocusListener
+        disableHoverListener
+        disableTouchListener
+        title="このランキングはあなただけが編集できます"
+      >
+        <LockIcon onClick={setOpenCheckBoxToolTip.bind(null, true)} className={classes.lockIcon} />
+      </Tooltip>
+    </ClickAwayListener>
+  )
 }
 
 interface RankingMenuProps {
@@ -131,7 +159,7 @@ export const Ranking: React.FC<Props> = (props) => {
   return (
     <>
       <Typography variant={"h5"}>
-        {showLockIcon ? <LockIcon /> : null}
+        {showLockIcon ? <Lock /> : null}
         {props.title}
         {showMoreHoriz ? (
           <RankingMoreHoriz
