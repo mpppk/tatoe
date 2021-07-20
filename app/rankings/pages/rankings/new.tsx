@@ -1,4 +1,4 @@
-import { useRouter, useMutation, BlitzPage, useSession } from "blitz"
+import { useRouter, useMutation, BlitzPage } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import createRanking from "app/rankings/mutations/createRanking"
 import { RankingForm, FORM_ERROR } from "app/rankings/components/RankingForm"
@@ -9,7 +9,6 @@ import { reRankItems } from "../../../ranking-items/validations"
 const NewRankingPage: BlitzPage = () => {
   const router = useRouter()
   const [createRankingMutation] = useMutation(createRanking)
-  const session = useSession()
 
   return (
     <div>
@@ -18,6 +17,7 @@ const NewRankingPage: BlitzPage = () => {
       </Typography>
 
       <RankingForm
+        disableToChangeEditability={false}
         submitText="作成"
         schema={CreateRankingForm}
         initialValues={{
