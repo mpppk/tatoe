@@ -1,4 +1,4 @@
-import { Suspense } from "react"
+import React, { Suspense } from "react"
 import {
   Head,
   Link,
@@ -17,7 +17,11 @@ import { RankingForm, FORM_ERROR } from "app/rankings/components/RankingForm"
 import deleteRankingItems from "../../../../ranking-items/mutations/deleteRankingItems"
 import { toUpdateRankingFromForm, UpdateRankingForm } from "../../../validations"
 
-export const EditRanking = () => {
+interface Props {
+  disableToChangeEditability: boolean
+}
+
+export const EditRanking: React.FC<Props> = (props) => {
   const router = useRouter()
   const rankingId = useParam("rankingId", "number")
   const [ranking, { setQueryData }] = useQuery(getRanking, { id: rankingId })
@@ -34,6 +38,7 @@ export const EditRanking = () => {
         <h1>{ranking.title}</h1>
 
         <RankingForm
+          disableToChangeEditability={props.disableToChangeEditability}
           submitText="更新"
           schema={UpdateRankingForm}
           initialValues={ranking}
@@ -72,7 +77,11 @@ const EditRankingPage: BlitzPage = () => {
   return (
     <div>
       <Suspense fallback={<div>Loading...</div>}>
-        {canEdit ? <EditRanking /> : <DisallowEditing />}
+        {canEdit ? (
+          <EditRanking disableToChangeEditability={session.userId !== ranking.ownerId} />
+        ) : (
+          <DisallowEditing />
+        )}
       </Suspense>
 
       <p>
