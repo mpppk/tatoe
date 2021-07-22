@@ -250,7 +250,6 @@ const RankingFormMain: React.FC<RankingMainProps> = (props) => {
         </div>
       )}
 
-      <Field name="test">{({ input }) => <input placeholder="Test" {...input} />}</Field>
       <AppTextField
         name="title"
         label={"タイトル"}
@@ -285,16 +284,21 @@ const RankingFormMain: React.FC<RankingMainProps> = (props) => {
 export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(
   props: FormProps<S> & { disableToChangeEditability: boolean }
 ) {
-  // FIXME: use clear
   const { persistDecorator, clear } = useMemo(
     () =>
       createPersistDecorator({
-        name: "newRankingForm",
+        name: "rankingForm",
         debounceTime: 500,
         blacklist: [],
       }),
     []
   )
+
+  const handleSubmit = (...props2: Parameters<typeof props.onSubmit>) => {
+    props.onSubmit(...props2)
+    clear()
+  }
+
   return (
     <FinalForm
       decorators={[persistDecorator]}
@@ -307,7 +311,7 @@ export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(
         }
       }}
       mutators={{ ...arrayMutators }}
-      onSubmit={props.onSubmit}
+      onSubmit={handleSubmit}
       render={(formProps) => {
         return (
           <RankingFormMain
