@@ -11,7 +11,7 @@ import {
   Tooltip,
 } from "@material-ui/core"
 import DeleteIcon from "@material-ui/icons/Delete"
-import { Field, Form as FinalForm } from "react-final-form"
+import { Field, Form as FinalForm, useFormState } from "react-final-form"
 import { AppTextField } from "../../core/components/AppTextField"
 import arrayMutators from "final-form-arrays"
 import { FieldArray, useFieldArray } from "react-final-form-arrays"
@@ -230,6 +230,58 @@ const rankingItemValidator = (rankingItemSchema: z.ZodType<any, any>, items) => 
   })
 }
 
+interface RankingMainProps {
+  onSubmit: () => void
+  rankingItemSchema: z.ZodType<any, any>
+  disableToChangeEditability: boolean
+}
+
+const RankingFormMain: React.FC<RankingMainProps> = (props) => {
+  const { submitting, errors, submitError } = useFormState()
+  console.log("errors", errors)
+  if (errors?.items?.filter((i) => i)?.length === 0) {
+    delete errors.items
+  }
+  return (
+    <form onSubmit={props.onSubmit}>
+      {submitError && (
+        <div role="alert" style={{ color: "red" }}>
+          {submitError}
+        </div>
+      )}
+
+      <Field name="test">{({ input }) => <input placeholder="Test" {...input} />}</Field>
+      <AppTextField
+        name="title"
+        label={"タイトル"}
+        error={errors?.["title"]?.[0] !== undefined}
+        helperText={errors?.["title"]?.[0]}
+        fullWidth
+      />
+      <AppTextField
+        name="description"
+        label={"説明"}
+        error={errors?.["description"]?.[0] !== undefined}
+        helperText={errors?.["description"]?.[0]}
+        fullWidth
+      />
+      <AppTextField name="source" label={"引用元"} fullWidth />
+      <FieldArray
+        name="items"
+        validate={rankingItemValidator.bind(null, props.rankingItemSchema)}
+        render={() => {
+          return (
+            <RankItems
+              disableToChangeEditability={props.disableToChangeEditability}
+              disableSubmitButton={submitting || Object.keys(errors ?? {}).length > 0}
+            />
+          )
+        }}
+      />
+    </form>
+  )
+}
+
 export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(
   props: FormProps<S> & { disableToChangeEditability: boolean }
 ) {
@@ -249,7 +301,6 @@ export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(
       initialValues={props.initialValues}
       validate={(values) => {
         console.log(values)
-        if (!props.schema) return
         const result = props.schema.safeParse(values)
         if (!result.success) {
           return result.error.formErrors.fieldErrors
@@ -257,56 +308,13 @@ export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(
       }}
       mutators={{ ...arrayMutators }}
       onSubmit={props.onSubmit}
-      render={({
-        handleSubmit,
-        submitting,
-        errors,
-        submitError,
-        form: {
-          mutators: { _pop },
-        },
-      }) => {
-        console.log("errors", errors)
-        if (errors?.items?.filter((i) => i)?.length === 0) {
-          delete errors.items
-        }
+      render={(formProps) => {
         return (
-          <form onSubmit={handleSubmit}>
-            {submitError && (
-              <div role="alert" style={{ color: "red" }}>
-                {submitError}
-              </div>
-            )}
-
-            <Field name="test">{({ input }) => <input placeholder="Test" {...input} />}</Field>
-            <AppTextField
-              name="title"
-              label={"タイトル"}
-              error={errors?.["title"]?.[0] !== undefined}
-              helperText={errors?.["title"]?.[0]}
-              fullWidth
-            />
-            <AppTextField
-              name="description"
-              label={"説明"}
-              error={errors?.["description"]?.[0] !== undefined}
-              helperText={errors?.["description"]?.[0]}
-              fullWidth
-            />
-            <AppTextField name="source" label={"引用元"} fullWidth />
-            <FieldArray
-              name="items"
-              validate={rankingItemValidator.bind(null, props.schema?.shape.items.element)}
-              render={() => {
-                return (
-                  <RankItems
-                    disableToChangeEditability={props.disableToChangeEditability}
-                    disableSubmitButton={submitting || Object.keys(errors ?? {}).length > 0}
-                  />
-                )
-              }}
-            />
-          </form>
+          <RankingFormMain
+            onSubmit={formProps.handleSubmit}
+            rankingItemSchema={props.schema.shape.items.element}
+            disableToChangeEditability={props.disableToChangeEditability}
+          />
         )
       }}
     />
