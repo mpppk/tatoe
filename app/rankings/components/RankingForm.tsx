@@ -1,6 +1,6 @@
 import { FormProps } from "app/core/components/Form"
 import * as z from "zod"
-import React, { useState } from "react"
+import React, { useMemo, useState } from "react"
 import {
   Button,
   Checkbox,
@@ -16,6 +16,7 @@ import { AppTextField } from "../../core/components/AppTextField"
 import arrayMutators from "final-form-arrays"
 import { FieldArray } from "react-final-form-arrays"
 import { RankingItem } from "../../ranking-items/validations"
+import { createPersistDecorator } from "final-form-persist"
 
 export { FORM_ERROR } from "app/core/components/Form"
 
@@ -146,8 +147,21 @@ export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(
 ) {
   const classes = useStyles()
   const [hasRankingItemError, setHasRankingItemError] = useState(true)
+  console.log("has ranking item error", hasRankingItemError)
+  // FIXME: use clear
+  const { persistDecorator, clear } = useMemo(
+    () =>
+      createPersistDecorator({
+        name: "newRankingForm",
+        debounceTime: 500,
+        blacklist: [],
+        // whitelist: ["title"]
+      }),
+    []
+  )
   return (
     <FinalForm
+      decorators={[persistDecorator]}
       initialValues={props.initialValues}
       validate={(values) => {
         console.log(values)
@@ -181,6 +195,7 @@ export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(
               </div>
             )}
 
+            <Field name="test">{({ input }) => <input placeholder="Test" {...input} />}</Field>
             <AppTextField
               name="title"
               label={"タイトル"}

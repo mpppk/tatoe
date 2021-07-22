@@ -5017,6 +5017,13 @@ final-form-arrays@3.0.2:
   resolved "https://registry.yarnpkg.com/final-form-arrays/-/final-form-arrays-3.0.2.tgz#9f3bef778dec61432357744eb6f3abef7e7f3847"
   integrity sha512-TfO8aZNz3RrsZCDx8GHMQcyztDNpGxSSi9w4wpSNKlmv2PfFWVVM8P7Yj5tj4n0OWax+x5YwTLhT5BnqSlCi+w==
 
+final-form-persist@1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/final-form-persist/-/final-form-persist-1.0.4.tgz#b0a5abb7e1476e9f264a40645ad3acf58b394031"
+  integrity sha512-h2YSR/N0nvpPtaqTW5Fo9hfSnnyuiwKZEwUnNDuZaNqv3ycWHIby5kGV2IwSFmbOp2RGY0dF4AT8pEzfrq+rbQ==
+  dependencies:
+    lodash.debounce "^4.0.8"
+
 final-form@4.20.2:
   version "4.20.2"
   resolved "https://registry.yarnpkg.com/final-form/-/final-form-4.20.2.tgz#c820b37d7ebb73d71169480256a36c7e6e6c9155"
@@ -7424,6 +7431,11 @@ lodash.clonedeep@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
   integrity sha1-4j8/nE+Pvd6HJSnBBxhXoIblzO8=
+
+lodash.debounce@^4.0.8:
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
+  integrity sha1-gteb/zCmfEAF/9XiUVMArZyk168=
 
 lodash.defaults@^4.2.0:
   version "4.2.0"
