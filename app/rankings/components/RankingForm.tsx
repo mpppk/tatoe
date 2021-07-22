@@ -1,4 +1,3 @@
-import { FormProps } from "app/core/components/Form"
 import * as z from "zod"
 import React, { useCallback, useEffect, useMemo } from "react"
 import {
@@ -11,14 +10,18 @@ import {
   Tooltip,
 } from "@material-ui/core"
 import DeleteIcon from "@material-ui/icons/Delete"
-import { Field, Form as FinalForm, useFormState } from "react-final-form"
+import {
+  Field,
+  Form as FinalForm,
+  FormProps as FinalFormProps,
+  useFormState,
+} from "react-final-form"
 import { AppTextField } from "../../core/components/AppTextField"
 import arrayMutators from "final-form-arrays"
 import { FieldArray, useFieldArray } from "react-final-form-arrays"
 import { RankingItem } from "../../ranking-items/validations"
 import { createPersistDecorator } from "final-form-persist"
-
-export { FORM_ERROR } from "app/core/components/Form"
+import { CreateRankingForm, UpdateRankingForm } from "../validations"
 
 const useStyles = makeStyles((theme) => ({
   buttonWrapper: {
@@ -148,6 +151,7 @@ interface FormControlProps {
   disableSubmitButton: boolean
   onClickMoreRankButton: () => void
   currentItemNum: number
+  submitText: string
 }
 
 const RankingFormControl: React.FC<FormControlProps> = (props) => {
@@ -173,7 +177,7 @@ const RankingFormControl: React.FC<FormControlProps> = (props) => {
           variant={"contained"}
           color={"primary"}
         >
-          作成
+          {props.submitText}
         </Button>
       </div>
     </>
@@ -183,6 +187,7 @@ const RankingFormControl: React.FC<FormControlProps> = (props) => {
 interface RanksProps {
   disableToChangeEditability: boolean
   disableSubmitButton: boolean
+  submitText: string
 }
 
 const RankItems: React.FC<RanksProps> = (props) => {
@@ -211,6 +216,7 @@ const RankItems: React.FC<RanksProps> = (props) => {
         disableSubmitButton={props.disableSubmitButton}
         onClickMoreRankButton={handleMoreRankButton}
         currentItemNum={fields.length ?? 0}
+        submitText={props.submitText}
       />
     </>
   )
@@ -234,6 +240,7 @@ interface RankingMainProps {
   onSubmit: () => void
   rankingItemSchema: z.ZodType<any, any>
   disableToChangeEditability: boolean
+  submitText: string
 }
 
 const RankingFormMain: React.FC<RankingMainProps> = (props) => {
@@ -273,6 +280,7 @@ const RankingFormMain: React.FC<RankingMainProps> = (props) => {
             <RankItems
               disableToChangeEditability={props.disableToChangeEditability}
               disableSubmitButton={submitting || Object.keys(errors ?? {}).length > 0}
+              submitText={props.submitText}
             />
           )
         }}
@@ -281,13 +289,26 @@ const RankingFormMain: React.FC<RankingMainProps> = (props) => {
   )
 }
 
-export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(
-  props: FormProps<S> & { disableToChangeEditability: boolean }
-) {
+interface RankingFormBaseProps<S extends z.ZodObject<{ items: any }, any>> {
+  schema: S
+  onSubmit: FinalFormProps<z.infer<S>>["onSubmit"]
+  initialValues?: FinalFormProps<z.infer<S>>["initialValues"]
+  disableToChangeEditability: boolean
+}
+
+interface RankingFormNewProps extends RankingFormBaseProps<typeof CreateRankingForm> {
+  mode: "new"
+}
+
+interface RankingFormEditProps extends RankingFormBaseProps<typeof UpdateRankingForm> {
+  mode: "edit"
+}
+
+export const RankingForm: React.FC<RankingFormNewProps | RankingFormEditProps> = (props) => {
   const { persistDecorator, clear } = useMemo(
     () =>
       createPersistDecorator({
-        name: "rankingForm",
+        name: "rankingForm/new",
         debounceTime: 500,
         blacklist: [],
       }),
@@ -295,13 +316,13 @@ export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(
   )
 
   const handleSubmit = (...props2: Parameters<typeof props.onSubmit>) => {
-    props.onSubmit(...props2)
+    props.onSubmit.apply(null, props2)
     clear()
   }
 
   return (
     <FinalForm
-      decorators={[persistDecorator]}
+      decorators={props.mode === "new" ? [persistDecorator] : []}
       initialValues={props.initialValues}
       validate={(values) => {
         console.log(values)
@@ -318,6 +339,7 @@ export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(
             onSubmit={formProps.handleSubmit}
             rankingItemSchema={props.schema.shape.items.element}
             disableToChangeEditability={props.disableToChangeEditability}
+            submitText={props.mode === "new" ? "作成" : "更新"}
           />
         )
       }}

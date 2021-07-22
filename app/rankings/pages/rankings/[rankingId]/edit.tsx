@@ -13,9 +13,10 @@ import {
 import Layout from "app/core/layouts/Layout"
 import getRanking from "app/rankings/queries/getRanking"
 import updateRanking from "app/rankings/mutations/updateRanking"
-import { RankingForm, FORM_ERROR } from "app/rankings/components/RankingForm"
+import { RankingForm } from "app/rankings/components/RankingForm"
 import deleteRankingItems from "../../../../ranking-items/mutations/deleteRankingItems"
 import { toUpdateRankingFromForm, UpdateRankingForm } from "../../../validations"
+import { FORM_ERROR } from "final-form"
 
 interface Props {
   disableToChangeEditability: boolean
@@ -38,10 +39,10 @@ export const EditRanking: React.FC<Props> = (props) => {
         <h1>{ranking.title}</h1>
 
         <RankingForm
+          mode="edit"
           disableToChangeEditability={props.disableToChangeEditability}
-          submitText="更新"
           schema={UpdateRankingForm}
-          initialValues={ranking}
+          initialValues={UpdateRankingForm.parse(ranking)}
           onSubmit={async (rankingForm) => {
             const newRanking = toUpdateRankingFromForm(ranking, rankingForm)
             const deleteItemIDList = ranking.items
