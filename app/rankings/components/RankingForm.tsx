@@ -1,6 +1,6 @@
 import { FormProps } from "app/core/components/Form"
 import * as z from "zod"
-import React, { useCallback, useEffect, useMemo, useState } from "react"
+import React, { useCallback, useEffect, useMemo } from "react"
 import {
   Button,
   Checkbox,
@@ -216,10 +216,23 @@ const RankItems: React.FC<RanksProps> = (props) => {
   )
 }
 
+const rankingItemValidator = (rankingItemSchema: z.ZodType<any, any>, items) => {
+  if (!items) return
+  return items.map((item) => {
+    const result = rankingItemSchema.safeParse(item)
+    if (result.success) {
+      return null
+    }
+    const issues = result.error.issues.reduce((prev, issue) => {
+      return { ...prev, [issue.path.join("/")]: issue.message }
+    }, {})
+    return result.success ? null : issues
+  })
+}
+
 export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(
   props: FormProps<S> & { disableToChangeEditability: boolean }
 ) {
-  const [hasRankingItemError, setHasRankingItemError] = useState(true)
   // FIXME: use clear
   const { persistDecorator, clear } = useMemo(
     () =>
@@ -227,7 +240,6 @@ export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(
         name: "newRankingForm",
         debounceTime: 500,
         blacklist: [],
-        // whitelist: ["title"]
       }),
     []
   )
@@ -284,25 +296,7 @@ export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(
             <AppTextField name="source" label={"引用元"} fullWidth />
             <FieldArray
               name="items"
-              validate={(items) => {
-                if (!props.schema) return
-                if (!items) return
-                const errs = items.map((item) => {
-                  const result = props.schema?.shape.items.element.safeParse(item)
-                  if (result.success) {
-                    return null
-                  }
-                  const issues = result.error.issues.reduce((prev, issue) => {
-                    return { ...prev, [issue.path]: issue.message }
-                  }, {})
-                  return result.success ? null : issues
-                })
-                const hasErr = Object.keys(errs).length !== 0
-                if (hasErr !== hasRankingItemError) {
-                  setHasRankingItemError(hasErr)
-                }
-                return errs
-              }}
+              validate={rankingItemValidator.bind(null, props.schema?.shape.items.element)}
               render={() => {
                 return (
                   <RankItems
@@ -311,7 +305,7 @@ export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(
                   />
                 )
               }}
-            ></FieldArray>
+            />
           </form>
         )
       }}
