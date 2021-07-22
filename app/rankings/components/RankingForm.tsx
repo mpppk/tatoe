@@ -290,7 +290,6 @@ const RankingFormMain: React.FC<RankingMainProps> = (props) => {
 }
 
 interface RankingFormBaseProps<S extends z.ZodObject<{ items: any }, any>> {
-  schema: S
   onSubmit: FinalFormProps<z.infer<S>>["onSubmit"]
   initialValues?: FinalFormProps<z.infer<S>>["initialValues"]
   disableToChangeEditability: boolean
@@ -320,13 +319,15 @@ export const RankingForm: React.FC<RankingFormNewProps | RankingFormEditProps> =
     clear()
   }
 
+  const schema = props.mode === "new" ? CreateRankingForm : UpdateRankingForm
+
   return (
     <FinalForm
       decorators={props.mode === "new" ? [persistDecorator] : []}
       initialValues={props.initialValues}
       validate={(values) => {
         console.log(values)
-        const result = props.schema.safeParse(values)
+        const result = schema.safeParse(values)
         if (!result.success) {
           return result.error.formErrors.fieldErrors
         }
@@ -337,7 +338,7 @@ export const RankingForm: React.FC<RankingFormNewProps | RankingFormEditProps> =
         return (
           <RankingFormMain
             onSubmit={formProps.handleSubmit}
-            rankingItemSchema={props.schema.shape.items.element}
+            rankingItemSchema={schema.shape.items.element}
             disableToChangeEditability={props.disableToChangeEditability}
             submitText={props.mode === "new" ? "作成" : "更新"}
           />

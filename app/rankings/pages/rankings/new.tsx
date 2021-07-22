@@ -3,7 +3,6 @@ import Layout from "app/core/layouts/Layout"
 import createRanking from "app/rankings/mutations/createRanking"
 import { RankingForm } from "app/rankings/components/RankingForm"
 import { Typography } from "@material-ui/core"
-import { CreateRankingForm } from "../../validations"
 import { reRankItems } from "../../../ranking-items/validations"
 import { useCallback } from "react"
 import { FORM_ERROR } from "final-form"
@@ -40,7 +39,6 @@ const NewRankingPage: BlitzPage = () => {
       <RankingForm
         mode="new"
         disableToChangeEditability={false}
-        schema={CreateRankingForm}
         initialValues={{
           canBeEditedByAnotherUser: true,
         }}

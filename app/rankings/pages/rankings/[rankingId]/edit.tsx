@@ -41,7 +41,6 @@ export const EditRanking: React.FC<Props> = (props) => {
         <RankingForm
           mode="edit"
           disableToChangeEditability={props.disableToChangeEditability}
-          schema={UpdateRankingForm}
           initialValues={UpdateRankingForm.parse(ranking)}
           onSubmit={async (rankingForm) => {
             const newRanking = toUpdateRankingFromForm(ranking, rankingForm)
