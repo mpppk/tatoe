@@ -1,5 +1,5 @@
 import * as z from "zod"
-import { baseSchema, baseSchemaKeyObject, deleteBaseSchema } from "../core/baseModel"
+import { baseSchema, baseSchemaKeyObject } from "../core/baseModel"
 
 const baseRankingItemSchema = z.object({
   id: z.number(),
@@ -42,9 +42,14 @@ export const UpdateRankingItem = rankingItemSchema
   })
 type UpdateRankingItemModel = z.infer<typeof UpdateRankingItem>
 
-export const UpdateRankingItemForm = rankingItemSchema.partial().extend({
-  title: rankingItemSchema.shape.title,
-})
+export const UpdateRankingItemForm = rankingItemSchema
+  .omit({
+    ...baseSchemaKeyObject,
+  })
+  .partial()
+  .extend({
+    title: rankingItemSchema.shape.title,
+  })
 type UpdateRankingItemFormModel = z.infer<typeof UpdateRankingItemForm>
 
 export const toUpdateRankingItemsFromForms = (
@@ -64,7 +69,7 @@ const toUpdateRankingItemFromForm = (
     description: form.description ?? null,
   }
   delete ret.rankingId
-  return deleteBaseSchema(ret)
+  return ret
 }
 
 export const reRankItems = (items: CreateRankingItemFormModel[]): CreateRankingItemModel[] => {

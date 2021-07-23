@@ -1,6 +1,5 @@
-import { FormProps } from "app/core/components/Form"
 import * as z from "zod"
-import React, { useState } from "react"
+import React, { useCallback, useEffect, useMemo } from "react"
 import {
   Button,
   Checkbox,
@@ -11,13 +10,18 @@ import {
   Tooltip,
 } from "@material-ui/core"
 import DeleteIcon from "@material-ui/icons/Delete"
-import { Field, Form as FinalForm } from "react-final-form"
+import {
+  Field,
+  Form as FinalForm,
+  FormProps as FinalFormProps,
+  useFormState,
+} from "react-final-form"
 import { AppTextField } from "../../core/components/AppTextField"
 import arrayMutators from "final-form-arrays"
-import { FieldArray } from "react-final-form-arrays"
+import { FieldArray, useFieldArray } from "react-final-form-arrays"
 import { RankingItem } from "../../ranking-items/validations"
-
-export { FORM_ERROR } from "app/core/components/Form"
+import { createPersistDecorator } from "final-form-persist"
+import { CreateRankingForm, UpdateRankingForm } from "../validations"
 
 const useStyles = makeStyles((theme) => ({
   buttonWrapper: {
@@ -109,6 +113,7 @@ const CheckBoxField = (props: CheckBoxFieldProps) => {
 
 const RankFields: React.FC<RankFieldsProps> = (props) => {
   const classes = useStyles()
+
   return (
     <>
       <div className={classes.rankTextFieldWrapper}>
@@ -141,123 +146,202 @@ const RankFields: React.FC<RankFieldsProps> = (props) => {
   )
 }
 
-export function RankingForm<S extends z.ZodObject<{ items: any }, any>>(
-  props: FormProps<S> & { disableToChangeEditability: boolean }
-) {
+interface FormControlProps {
+  disableToChangeEditability: boolean
+  disableSubmitButton: boolean
+  onClickMoreRankButton: () => void
+  currentItemNum: number
+  submitText: string
+}
+
+const RankingFormControl: React.FC<FormControlProps> = (props) => {
   const classes = useStyles()
-  const [hasRankingItemError, setHasRankingItemError] = useState(true)
+  return (
+    <>
+      <CheckBoxField
+        name={"canBeEditedByAnotherUser"}
+        label={"他ユーザによる編集を許可"}
+        disabled={props.disableToChangeEditability}
+      />
+      <div className={classes.buttonWrapper}>
+        <Button
+          className={classes.moreRankButton}
+          variant={"outlined"}
+          onClick={props.onClickMoreRankButton}
+        >
+          {props.currentItemNum + 1 + "位を追加"}
+        </Button>
+        <Button
+          type="submit"
+          disabled={props.disableSubmitButton}
+          variant={"contained"}
+          color={"primary"}
+        >
+          {props.submitText}
+        </Button>
+      </div>
+    </>
+  )
+}
+
+interface RanksProps {
+  disableToChangeEditability: boolean
+  disableSubmitButton: boolean
+  submitText: string
+}
+
+const RankItems: React.FC<RanksProps> = (props) => {
+  const { fields, meta } = useFieldArray("items")
+  const handleMoreRankButton = useCallback(() => fields.push({}), [fields])
+
+  useEffect(() => {
+    if (fields.length === 0) {
+      fields.push({})
+    }
+  }, [fields])
+
+  return (
+    <>
+      {fields.map((name, index) => (
+        <RankFields
+          key={"RankFields" + index}
+          namePrefix={name}
+          rank={index + 1}
+          onClickDeleteButton={() => fields.remove(index)}
+          error={meta.error?.[index]}
+        />
+      ))}
+      <RankingFormControl
+        disableToChangeEditability={props.disableToChangeEditability}
+        disableSubmitButton={props.disableSubmitButton}
+        onClickMoreRankButton={handleMoreRankButton}
+        currentItemNum={fields.length ?? 0}
+        submitText={props.submitText}
+      />
+    </>
+  )
+}
+
+const rankingItemValidator = (rankingItemSchema: z.ZodType<any, any>, items) => {
+  if (!items) return
+  return items.map((item) => {
+    const result = rankingItemSchema.safeParse(item)
+    if (result.success) {
+      return null
+    }
+    const issues = result.error.issues.reduce((prev, issue) => {
+      return { ...prev, [issue.path.join("/")]: issue.message }
+    }, {})
+    return result.success ? null : issues
+  })
+}
+
+interface RankingMainProps {
+  onSubmit: () => void
+  rankingItemSchema: z.ZodType<any, any>
+  disableToChangeEditability: boolean
+  submitText: string
+}
+
+const RankingFormMain: React.FC<RankingMainProps> = (props) => {
+  const { submitting, errors, submitError } = useFormState()
+  console.log("errors", errors)
+  if (errors?.items?.filter((i) => i)?.length === 0) {
+    delete errors.items
+  }
+  return (
+    <form onSubmit={props.onSubmit}>
+      {submitError && (
+        <div role="alert" style={{ color: "red" }}>
+          {submitError}
+        </div>
+      )}
+
+      <AppTextField
+        name="title"
+        label={"タイトル"}
+        error={errors?.["title"]?.[0] !== undefined}
+        helperText={errors?.["title"]?.[0]}
+        fullWidth
+      />
+      <AppTextField
+        name="description"
+        label={"説明"}
+        error={errors?.["description"]?.[0] !== undefined}
+        helperText={errors?.["description"]?.[0]}
+        fullWidth
+      />
+      <AppTextField name="source" label={"引用元"} fullWidth />
+      <FieldArray
+        name="items"
+        validate={rankingItemValidator.bind(null, props.rankingItemSchema)}
+        render={() => {
+          return (
+            <RankItems
+              disableToChangeEditability={props.disableToChangeEditability}
+              disableSubmitButton={submitting || Object.keys(errors ?? {}).length > 0}
+              submitText={props.submitText}
+            />
+          )
+        }}
+      />
+    </form>
+  )
+}
+
+interface RankingFormBaseProps<S extends z.ZodObject<{ items: any }, any>> {
+  onSubmit: FinalFormProps<z.infer<S>>["onSubmit"]
+  initialValues?: FinalFormProps<z.infer<S>>["initialValues"]
+  disableToChangeEditability: boolean
+}
+
+interface RankingFormNewProps extends RankingFormBaseProps<typeof CreateRankingForm> {
+  mode: "new"
+}
+
+interface RankingFormEditProps extends RankingFormBaseProps<typeof UpdateRankingForm> {
+  mode: "edit"
+}
+
+export const RankingForm: React.FC<RankingFormNewProps | RankingFormEditProps> = (props) => {
+  const { persistDecorator, clear } = useMemo(
+    () =>
+      createPersistDecorator({
+        name: "rankingForm/new",
+        debounceTime: 500,
+        blacklist: [],
+      }),
+    []
+  )
+
+  const handleSubmit = (...props2: Parameters<typeof props.onSubmit>) => {
+    props.onSubmit.apply(null, props2)
+    clear()
+  }
+
+  const schema = props.mode === "new" ? CreateRankingForm : UpdateRankingForm
+
   return (
     <FinalForm
+      decorators={props.mode === "new" ? [persistDecorator] : []}
       initialValues={props.initialValues}
       validate={(values) => {
         console.log(values)
-        if (!props.schema) return
-        const result = props.schema.safeParse(values)
+        const result = schema.safeParse(values)
         if (!result.success) {
           return result.error.formErrors.fieldErrors
         }
       }}
       mutators={{ ...arrayMutators }}
-      onSubmit={props.onSubmit}
-      render={({
-        handleSubmit,
-        submitting,
-        errors,
-        submitError,
-        form: {
-          mutators: { push, _pop },
-        },
-      }) => {
-        const err = { ...errors }
-        if (Array.isArray(err.items) && err.items.length === 0) {
-          delete err.items
-        }
-        delete err.items
+      onSubmit={handleSubmit}
+      render={(formProps) => {
         return (
-          <form onSubmit={handleSubmit}>
-            {submitError && (
-              <div role="alert" style={{ color: "red" }}>
-                {submitError}
-              </div>
-            )}
-
-            <AppTextField
-              name="title"
-              label={"タイトル"}
-              error={errors?.["title"]?.[0] !== undefined}
-              helperText={errors?.["title"]?.[0]}
-              fullWidth
-            />
-            <AppTextField
-              name="description"
-              label={"説明"}
-              error={errors?.["description"]?.[0] !== undefined}
-              helperText={errors?.["description"]?.[0]}
-              fullWidth
-            />
-            <AppTextField name="source" label={"引用元"} fullWidth />
-            <FieldArray
-              name="items"
-              validate={(items) => {
-                if (!props.schema) return
-                const errs = items.reduce((err, item, index) => {
-                  const result = props.schema?.shape.items.element.safeParse(item)
-                  if (!result.success) {
-                    err[index] = result.error.formErrors.fieldErrors
-                  }
-                  return err
-                }, {})
-                console.log("errs", errs)
-                setHasRankingItemError(Object.keys(errs).length !== 0)
-                return errs
-              }}
-            >
-              {({ fields, meta }) => {
-                const handleMoreRankButton = () => push("items", {})
-                return (
-                  <>
-                    {fields.map((name, index) => (
-                      <RankFields
-                        key={"RankFields" + index}
-                        namePrefix={name}
-                        rank={index + 1}
-                        onClickDeleteButton={() => fields.remove(index)}
-                        error={meta.error?.[index]}
-                      />
-                    ))}
-                    <CheckBoxField
-                      name={"canBeEditedByAnotherUser"}
-                      label={"他ユーザによる編集を許可"}
-                      disabled={props.disableToChangeEditability}
-                    />
-                    <div className={classes.buttonWrapper}>
-                      <Button
-                        className={classes.moreRankButton}
-                        variant={"outlined"}
-                        onClick={handleMoreRankButton}
-                      >
-                        {(fields.length ?? 0) + 1 + "位を追加"}
-                      </Button>
-                      {props.submitText && (
-                        <Button
-                          type="submit"
-                          disabled={
-                            submitting ||
-                            (err && Object.keys(err).length > 0) ||
-                            hasRankingItemError
-                          }
-                          variant={"contained"}
-                          color={"primary"}
-                        >
-                          {props.submitText}
-                        </Button>
-                      )}
-                    </div>
-                  </>
-                )
-              }}
-            </FieldArray>
-          </form>
+          <RankingFormMain
+            onSubmit={formProps.handleSubmit}
+            rankingItemSchema={schema.shape.items.element}
+            disableToChangeEditability={props.disableToChangeEditability}
+            submitText={props.mode === "new" ? "作成" : "更新"}
+          />
         )
       }}
     />

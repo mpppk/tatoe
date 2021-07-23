@@ -1,14 +1,34 @@
 import { useRouter, useMutation, BlitzPage } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import createRanking from "app/rankings/mutations/createRanking"
-import { RankingForm, FORM_ERROR } from "app/rankings/components/RankingForm"
+import { RankingForm } from "app/rankings/components/RankingForm"
 import { Typography } from "@material-ui/core"
-import { CreateRankingForm } from "../../validations"
 import { reRankItems } from "../../../ranking-items/validations"
+import { useCallback } from "react"
+import { FORM_ERROR } from "final-form"
 
 const NewRankingPage: BlitzPage = () => {
   const router = useRouter()
   const [createRankingMutation] = useMutation(createRanking)
+
+  const handleSubmit = useCallback(
+    async (rankingForm) => {
+      try {
+        const ranking = await createRankingMutation({
+          ...rankingForm,
+          source: rankingForm.source ?? null,
+          items: reRankItems(rankingForm.items),
+        })
+        router.push(`/rankings/${ranking.id}`)
+      } catch (error) {
+        console.error(error)
+        return {
+          [FORM_ERROR]: error.toString(),
+        }
+      }
+    },
+    [router, createRankingMutation]
+  )
 
   return (
     <div>
@@ -17,28 +37,12 @@ const NewRankingPage: BlitzPage = () => {
       </Typography>
 
       <RankingForm
+        mode="new"
         disableToChangeEditability={false}
-        submitText="作成"
-        schema={CreateRankingForm}
         initialValues={{
           canBeEditedByAnotherUser: true,
-          items: [{ title: "" }],
         }}
-        onSubmit={async (rankingForm) => {
-          try {
-            const ranking = await createRankingMutation({
-              ...rankingForm,
-              source: rankingForm.source ?? null,
-              items: reRankItems(rankingForm.items),
-            })
-            router.push(`/rankings/${ranking.id}`)
-          } catch (error) {
-            console.error(error)
-            return {
-              [FORM_ERROR]: error.toString(),
-            }
-          }
-        }}
+        onSubmit={handleSubmit}
       />
     </div>
   )

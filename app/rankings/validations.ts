@@ -1,5 +1,5 @@
 import * as z from "zod"
-import { baseSchema, baseSchemaKeyObject, deleteBaseSchema } from "../core/baseModel"
+import { baseSchema, baseSchemaKeyObject } from "../core/baseModel"
 import {
   CreateRankingItem,
   CreateRankingItemForm,
@@ -54,18 +54,25 @@ export const UpdateRanking = rankingSchema
   })
   .extend({ items: UpdateRankingItem.array() })
 
-export const UpdateRankingForm = rankingSchema.partial().extend({
-  title: rankingSchema.shape.title,
-  description: rankingSchema.shape.description,
-  items: UpdateRankingItemForm.array(),
-})
+export const UpdateRankingForm = rankingSchema
+  .omit({
+    ...baseSchemaKeyObject,
+    owner: true,
+    lastEditor: true,
+  })
+  .partial()
+  .extend({
+    title: rankingSchema.shape.title,
+    description: rankingSchema.shape.description,
+    items: UpdateRankingItemForm.array(),
+  })
 
 export const toUpdateRankingFromForm = (
   org: z.infer<typeof UpdateRanking>,
   form: z.infer<typeof UpdateRankingForm>
 ): z.infer<typeof UpdateRanking> => {
   const items = toUpdateRankingItemsFromForms(form.items)
-  return deleteBaseSchema({ ...org, ...form, items })
+  return { ...org, ...form, items }
 }
 
 export type Ranking = z.infer<typeof rankingSchema>
