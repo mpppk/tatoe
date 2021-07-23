@@ -1,4 +1,4 @@
-import { resolver } from "blitz"
+import { AuthorizationError, NotFoundError, resolver } from "blitz"
 import db from "db"
 import * as z from "zod"
 
@@ -8,12 +8,23 @@ const DeleteRanking = z
   })
   .nonstrict()
 
-export default resolver.pipe(resolver.zod(DeleteRanking), resolver.authorize(), async ({ id }) => {
-  // TODO: in multi-tenant app, you must add validation to ensure correct tenant
-  const deleteRankingItems = db.rankingItem.deleteMany({
-    where: { rankingId: id },
-  })
-  const deleteRanking = db.ranking.delete({ where: { id } })
+export default resolver.pipe(
+  resolver.zod(DeleteRanking),
+  resolver.authorize(),
+  async ({ id }, ctx) => {
+    const ranking = await db.ranking.findUnique({ where: { id } })
+    if (!ranking) {
+      throw new NotFoundError(`ranking(id: ${id}) does not found`)
+    }
+    if (ranking.ownerId !== ctx.session.userId) {
+      throw new AuthorizationError()
+    }
 
-  await db.$transaction([deleteRankingItems, deleteRanking])
-})
+    const deleteRankingItems = db.rankingItem.deleteMany({
+      where: { rankingId: id },
+    })
+    const deleteRanking = db.ranking.delete({ where: { id } })
+
+    await db.$transaction([deleteRankingItems, deleteRanking])
+  }
+)
