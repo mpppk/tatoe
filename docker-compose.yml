@@ -15,5 +15,11 @@ services:
     ports:
       - 5433:5432
 
+  app:
+    image: tatoe
+    env_file: ./.env.docker.local
+    ports:
+      - 3000:3000
+
 volumes:
   data:
