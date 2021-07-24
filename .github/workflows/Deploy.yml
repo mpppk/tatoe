@@ -1,7 +1,4 @@
-# on:
-#   push:
-#     branches:
-#       - example-build-deploy
+on: push
 
 name: Build and Deploy a Container
 env:
