@@ -5,7 +5,7 @@
     "predev": "docker-compose up -d db",
     "dev": "blitz dev",
     "build": "blitz build",
-    "build:docker": "docker build -t tatoe .",
+    "build:docker": "docker build -t mpppk/tatoe .",
     "codegen": "blitz prisma generate && blitz codegen",
     "start": "blitz start",
     "start:docker": "docker-compose up app",

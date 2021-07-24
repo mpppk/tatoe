@@ -3,3 +3,6 @@ node_modules
 .husky
 .vscode
 .blitz
+*.log
+Dockerfile
+.dockerignore

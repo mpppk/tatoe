@@ -16,7 +16,7 @@ services:
       - 5433:5432
 
   app:
-    image: tatoe
+    image: mpppk/tatoe
     env_file: ./.env.docker.local
     ports:
       - 3000:3000
