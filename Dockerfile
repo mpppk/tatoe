@@ -9,8 +9,6 @@ RUN yarn --frozen-lockfile
 COPY . .
 RUN yarn codegen
 RUN yarn build
-#EXPOSE 3000
-#CMD ["yarn", "start"]
 
 ## Production Run Layer
 FROM node:16.5.0-slim
@@ -27,4 +25,4 @@ COPY --from=base /app/.next ./.next
 COPY --from=base /app/.blitz ./.blitz
 
 EXPOSE 3000
-CMD ["./node_modules/.bin/blitz", "start"]
+CMD ["/bin/bash", "-c", "/app/node_modules/.bin/blitz start -p ${PORT}"]
