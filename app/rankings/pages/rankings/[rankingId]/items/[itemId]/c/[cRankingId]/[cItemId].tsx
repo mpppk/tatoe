@@ -194,7 +194,6 @@ const ComparePage: BlitzPage = () => {
   )
 }
 
-ComparePage.authenticate = true
 ComparePage.getLayout = (page) => <Layout>{page}</Layout>
 
 export default ComparePage
