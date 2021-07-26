@@ -43,7 +43,12 @@ export const SourceLink: React.FC<SourceLinkProps> = (props) => {
           <DialogContentText>
             よろしければ下記URLをクリックしてください。
             <br />
-            <MUILink className={classes.link} href={props.source ?? "#"}>
+            <MUILink
+              className={classes.link}
+              href={props.source ?? "#"}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {props.source}
             </MUILink>
           </DialogContentText>
