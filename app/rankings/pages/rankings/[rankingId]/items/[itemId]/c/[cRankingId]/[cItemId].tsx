@@ -2,9 +2,10 @@ import { BlitzPage, Head, useParams, useQuery, Link, useRouter, Routes } from "b
 import Layout from "../../../../../../../../core/layouts/Layout"
 import getRanking from "../../../../../../../queries/getRanking"
 import React, { Suspense } from "react"
-import { Button, makeStyles, Typography, Link as MUILink } from "@material-ui/core"
+import { Button, makeStyles, Typography } from "@material-ui/core"
 import TwitterIcon from "@material-ui/icons/Twitter"
 import { RankingItem } from "../../../../../../../../ranking-items/validations"
+import { AppLink } from "../../../../../../../../core/components/AppLink"
 
 interface Params {
   rankingId: number
@@ -57,18 +58,6 @@ const TweetButton: React.FC<TweetButtonProps> = (props) => {
       >
         Tweet
       </Button>
-    </Link>
-  )
-}
-
-interface AppLinkProps {
-  href: string | ReturnType<typeof Routes.RankingsPage>
-}
-
-const AppLink: React.FC<AppLinkProps> = (props) => {
-  return (
-    <Link href={props.href}>
-      <MUILink>{props.children}</MUILink>
     </Link>
   )
 }

@@ -62,7 +62,7 @@ const CompareListItem: React.FC<CompareListItemProps> = (props) => {
   return (
     // FIXME
     <Link href={props.href}>
-      <MUILink>
+      <MUILink href="#">
         <ListItem>
           <ListItemText
             primary={`${props.cRankingName}の${props.cItemName}ぐらい`}

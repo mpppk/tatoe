@@ -1,9 +1,10 @@
 import React, { Suspense } from "react"
-import { Head, Link, usePaginatedQuery, useRouter, BlitzPage, Routes } from "blitz"
+import { Head, usePaginatedQuery, useRouter, BlitzPage, Routes } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import getRankings from "app/rankings/queries/getRankings"
-import { Button, Link as MUILink, Typography } from "@material-ui/core"
+import { Button, Typography } from "@material-ui/core"
 import { RankingList } from "../../components/RankingList"
+import { AppLink } from "../../../core/components/AppLink"
 
 const ITEMS_PER_PAGE = 10
 
@@ -45,9 +46,7 @@ const RankingsPage: BlitzPage = () => {
         </Suspense>
       </div>
       <p>
-        <Link href={Routes.NewRankingPage()}>
-          <MUILink>ランキングを作る</MUILink>
-        </Link>
+        <AppLink href={Routes.NewRankingPage()}>ランキングを作る</AppLink>
       </p>
     </>
   )
