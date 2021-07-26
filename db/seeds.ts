@@ -3,12 +3,16 @@ import { reRankItems } from "../app/ranking-items/validations"
 import { CreateRankingFormModel } from "../app/rankings/validations"
 import { User } from "../types"
 
-const user: User = { id: "id1", name: "test-user1", pictureUrl: null }
+const user: User = {
+  id: "aIkJIHvdD4d7pHvEkou2EOLR1kc2",
+  name: "にぼし",
+  pictureUrl: "https://pbs.twimg.com/profile_images/790008715256528896/JnoqTTI2_normal.jpg",
+}
 
 const rankings: CreateRankingFormModel[] = [
   {
     title: "2020セリーグ安打数",
-    description: "2020セリーグ安打数です",
+    description: "2020年度セントラル・リーグの安打数ランキングです",
     source: "https://npb.jp/bis/2020/stats/lb_h_c.html",
     canBeEditedByAnotherUser: true,
     items: [
@@ -28,11 +32,11 @@ const rankings: CreateRankingFormModel[] = [
   {
     title: "ガンダム人気キャラクター",
     description: "ガンダム人気キャラクターです",
-    source: "参考: https://www.nhk.or.jp/anime/gundam/ranking/",
+    source: "https://www.nhk.or.jp/anime/gundam/ranking/",
     canBeEditedByAnotherUser: true,
     items: [
       {
-        title: "シャア・アズナブル（クワトロ・バジーナ／キャスバル・レム・ダイクン）",
+        title: "シャア・アズナブル",
         subtitle:
           "機動戦士ガンダム／機動戦士Zガンダム／機動戦士ガンダム逆襲のシャア／機動戦士ガンダム THE ORIGIN／機動戦士ガンダムUC",
       },
@@ -66,8 +70,8 @@ const rankings: CreateRankingFormModel[] = [
     ],
   },
   {
-    title: "2016 声優知名度",
-    description: "2016 声優知名度です",
+    title: "2016年の声優知名度",
+    description: "2016年の声優知名度です",
     source:
       "https://jp.xn--eqro0w6nu.net/directory/%E6%97%A5%E6%9C%AC%E3%81%AE%E5%A3%B0%E5%84%AA%20(%E7%B7%8F%E5%90%88)",
     canBeEditedByAnotherUser: false,
@@ -84,8 +88,8 @@ const rankings: CreateRankingFormModel[] = [
     ],
   },
   {
-    title: "2020 Spotify国内バイラルチャート",
-    description: "2020 Spotify国内バイラルチャートです",
+    title: "2020年Spotify国内バイラルチャート",
+    description: "2020年Spotify国内バイラルチャートです",
     source:
       "https://open.spotify.com/playlist/37i9dQZF1DX63PbGTNfT1W?si=Jdy--JyBROyo4tLBH_z4Hw&nd=1",
     canBeEditedByAnotherUser: false,
@@ -107,8 +111,8 @@ const rankings: CreateRankingFormModel[] = [
 ]
 
 const seed = async () => {
-  // Insert User
-  await db.user.create({ data: user })
+  // Create user if not exists
+  await db.user.upsert({ where: { id: user.id }, update: {}, create: user })
 
   for (let i = 0; i < rankings.length; i++) {
     const ranking = rankings[i]

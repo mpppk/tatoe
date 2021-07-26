@@ -13,7 +13,8 @@
     "lint": "eslint --ignore-path .gitignore --ext .js,.ts,.tsx .",
     "test": "jest",
     "test:watch": "jest --watch",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "cloud-sql-proxy": "cloud_sql_proxy -instances=tatoe-app:asia-northeast1:common=tcp:5432"
   },
   "prisma": {
     "schema": "db/schema.prisma"
