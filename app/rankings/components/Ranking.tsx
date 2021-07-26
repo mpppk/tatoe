@@ -2,7 +2,6 @@ import { Routes, useRouter, useSession } from "blitz"
 import {
   ClickAwayListener,
   IconButton,
-  Link as MUILink,
   makeStyles,
   Menu,
   MenuItem,
@@ -18,6 +17,7 @@ import MoreHorizIcon from "@material-ui/icons/MoreHoriz"
 import LockIcon from "@material-ui/icons/Lock"
 import { useAnchor } from "../../core/hooks/useAnchor"
 import { AppLink } from "app/core/components/AppLink"
+import { SourceLink } from "./SourceLink"
 
 const useStyles = makeStyles((theme) => ({
   description: {
@@ -183,9 +183,7 @@ export const Ranking: React.FC<Props> = (props) => {
           compares={toCompares(props.rankings, rank, props.id, item.id)}
         />
       ))}
-      <Typography className={classes.description} variant={"subtitle1"}>
-        <MUILink href={props.source ?? "#"}>引用元</MUILink>
-      </Typography>
+      <SourceLink source={props.source} />
       <RankingFooter
         onClickDeleteButton={props.onClickDeleteButton}
         rankingId={props.id}
