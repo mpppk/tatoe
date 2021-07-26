@@ -9,7 +9,7 @@ type Props = {
 export const LinkListItem: React.FC<Props> = (props) => {
   return (
     <Link href={props.href}>
-      <MUILink>
+      <MUILink href="#">
         <ListItem>
           <ListItemText primary={props.text} color={"primary"} />
         </ListItem>

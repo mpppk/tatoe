@@ -1,4 +1,4 @@
-import { Link, Routes, useRouter, useSession } from "blitz"
+import { Routes, useRouter, useSession } from "blitz"
 import {
   ClickAwayListener,
   IconButton,
@@ -17,6 +17,7 @@ import { User } from "../../../types"
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz"
 import LockIcon from "@material-ui/icons/Lock"
 import { useAnchor } from "../../core/hooks/useAnchor"
+import { AppLink } from "app/core/components/AppLink"
 
 const useStyles = makeStyles((theme) => ({
   description: {
@@ -207,15 +208,13 @@ export const RankingFooter: React.FC<RankingFooterProps> = (props) => {
     <>
       <Typography variant={"body1"}>
         Created by{" "}
-        <Link href={Routes.UserPage({ userId: props.owner.id })}>
-          <MUILink>{props.owner.name}</MUILink>
-        </Link>
+        <AppLink href={Routes.UserPage({ userId: props.owner.id })}>{props.owner.name}</AppLink>
       </Typography>
       <Typography variant={"body1"}>
         Updated by{" "}
-        <Link href={Routes.UserPage({ userId: props.lastEditor.id })}>
-          <MUILink>{props.lastEditor.name}</MUILink>
-        </Link>
+        <AppLink href={Routes.UserPage({ userId: props.lastEditor.id })}>
+          {props.lastEditor.name}
+        </AppLink>
       </Typography>
     </>
   )
