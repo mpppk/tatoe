@@ -8862,10 +8862,10 @@ prelude-ls@~1.1.2:
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.1.2.tgz#21932a549f5e52ffd9a827f570e04be62a97da54"
   integrity sha1-IZMqVJ9eUv/ZqCf1cOBL5iqX2lQ=
 
-prettier-plugin-prisma@0.15.0:
-  version "0.15.0"
-  resolved "https://registry.yarnpkg.com/prettier-plugin-prisma/-/prettier-plugin-prisma-0.15.0.tgz#c3afd7b011e8a247ec55662ac506b4dd092fc13b"
-  integrity sha512-BMXs0Eaq0v0fHxSvGxjRAegn6Xq+QqfApb4lFEUfw1Bi1f2py6CP1a2hCgWrzLx7G9qI3lUSNJ8yy/bX0Cju/w==
+prettier-plugin-prisma@2.28.0:
+  version "2.28.0"
+  resolved "https://registry.yarnpkg.com/prettier-plugin-prisma/-/prettier-plugin-prisma-2.28.0.tgz#bef89410aae688bcb4a5cb72c0bf2bdfb0eda17f"
+  integrity sha512-1wurRMbBQa8S+Lx/4JRRcU/Cgk38rqsIZAHDm4HE4wx/8n/91KCo6IYxU2n3hFbbjI0X7zvkaLIbZFyTMfJJPg==
 
 prettier@2.3.2:
   version "2.3.2"
