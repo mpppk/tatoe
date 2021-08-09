@@ -8,7 +8,8 @@
 $ yarn install
 $ yarn global add blitz
 $ docker-compose up -d db # Launch PostgreSQL
-$ touch .env.local .env.docker.local
+$ touch env.docker.local
+$ echo "GOOGLE_APPLICATION_CREDENTIALS=$PWD/tatoe-app-firebase-adminsdk.json" > .env.local
 $ blitz prisma migrate dev
 $ blitz db seed
 $ blitz dev
