@@ -1,6 +1,8 @@
 import React, { Suspense } from "react"
-import { Head, usePaginatedQuery, useRouter, BlitzPage, Routes } from "blitz"
+import Meta from "../../../components/Meta"
+import { usePaginatedQuery, useRouter, BlitzPage, Routes } from "blitz"
 import Layout from "app/core/layouts/Layout"
+import Loading from "app/components/Loading"
 import getRankings from "app/rankings/queries/getRankings"
 import { Button, Typography } from "@material-ui/core"
 import { RankingList } from "../../components/RankingList"
@@ -35,13 +37,10 @@ export const PaginatedRankingList = () => {
 const RankingsPage: BlitzPage = () => {
   return (
     <>
-      <Head>
-        <title>Rankings</title>
-      </Head>
-
+      <Meta title="新着ランキング" />
       <div>
         <Typography variant={"h5"}>新着ランキング</Typography>
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<Loading />}>
           <PaginatedRankingList />
         </Suspense>
       </div>

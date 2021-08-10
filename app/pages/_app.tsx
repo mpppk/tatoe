@@ -17,6 +17,7 @@ import {
 } from "@material-ui/core/styles"
 import React, { Suspense } from "react"
 import "../wdyr"
+import Loading from "app/components/Loading"
 
 //You can customize this as you want and even move it out to a separate file
 const theme = createMuiTheme({
@@ -30,7 +31,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
 
   return (
-    <Suspense fallback={<div>loading app...</div>}>
+    <Suspense fallback={<Loading />}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <ErrorBoundary

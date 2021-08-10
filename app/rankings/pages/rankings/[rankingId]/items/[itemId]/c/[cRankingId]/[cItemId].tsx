@@ -1,4 +1,5 @@
-import { BlitzPage, Head, useParams, useQuery, Link, useRouter, Routes } from "blitz"
+import { BlitzPage, useParams, useQuery, Link, useRouter, Routes } from "blitz"
+import Meta from "../../../../../../../../components/Meta"
 import Layout from "../../../../../../../../core/layouts/Layout"
 import getRanking from "../../../../../../../queries/getRanking"
 import React, { Suspense } from "react"
@@ -156,9 +157,7 @@ const Compare: React.FC = () => {
   const title = item && cRanking ? `${item.title}を${cRanking.title}で例える` : "tatoe"
   return (
     <>
-      <Head>
-        <title>{title}</title>
-      </Head>
+      <Meta title={title} />
       {ranking && item && cRanking && cItem ? (
         <CompareText
           rankingId={ranking.id}
