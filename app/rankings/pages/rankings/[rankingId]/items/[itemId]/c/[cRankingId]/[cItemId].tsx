@@ -154,7 +154,7 @@ const Compare: React.FC = () => {
       : undefined
   const text = `「${ranking?.title}」の「${item?.title}」を「${cRanking?.title}」で例えると「${cItem?.title}」ぐらいです`
   const tweetText = text + "\nhttps://tatoe.nibo.sh" + router.asPath
-  const title = item && cRanking ? `${item.title}を${cRanking.title}で例える` : "tatoe"
+  const title = item && cRanking ? `${item.title}を${cRanking.title}で例える` : ""
   return (
     <>
       <Meta title={title} />
