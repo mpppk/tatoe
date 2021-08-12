@@ -6,6 +6,7 @@ import { Typography } from "@material-ui/core"
 import { reRankItems } from "../../../ranking-items/validations"
 import { useCallback } from "react"
 import { FORM_ERROR } from "final-form"
+import Meta from "app/components/Meta"
 
 const NewRankingPage: BlitzPage = () => {
   const router = useRouter()
@@ -32,6 +33,7 @@ const NewRankingPage: BlitzPage = () => {
 
   return (
     <div>
+      <Meta title="ランキングを作る" />
       <Typography variant={"h5"} gutterBottom>
         ランキングを作る
       </Typography>
@@ -49,6 +51,6 @@ const NewRankingPage: BlitzPage = () => {
 }
 
 NewRankingPage.authenticate = true
-NewRankingPage.getLayout = (page) => <Layout title={"ランキングを作る"}>{page}</Layout>
+NewRankingPage.getLayout = (page) => <Layout>{page}</Layout>
 
 export default NewRankingPage

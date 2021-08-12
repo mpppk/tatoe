@@ -1,6 +1,5 @@
 import React, { Suspense } from "react"
 import {
-  Head,
   Link,
   useRouter,
   useQuery,
@@ -10,6 +9,8 @@ import {
   Routes,
   useSession,
 } from "blitz"
+import Loading from "app/components/Loading"
+import Meta from "../../../../components/Meta"
 import Layout from "app/core/layouts/Layout"
 import getRanking from "app/rankings/queries/getRanking"
 import updateRanking from "app/rankings/mutations/updateRanking"
@@ -31,10 +32,7 @@ export const EditRanking: React.FC<Props> = (props) => {
 
   return (
     <>
-      <Head>
-        <title>{ranking.title}を編集</title>
-      </Head>
-
+      <Meta title={`${ranking.title}を編集`} />
       <div>
         <h1>{ranking.title}</h1>
 
@@ -76,7 +74,7 @@ const EditRankingPage: BlitzPage = () => {
   const canEdit = ranking.canBeEditedByAnotherUser || session.userId === ranking.ownerId
   return (
     <div>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loading />}>
         {canEdit ? (
           <EditRanking disableToChangeEditability={session.userId !== ranking.ownerId} />
         ) : (

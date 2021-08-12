@@ -37,6 +37,13 @@ class MyDocument extends Document {
   render() {
     return (
       <Html lang="en">
+        {/* metaタグ: 検索対策, スマホ最適化, 文字化け対策  */}
+        <meta name="application-name" content="たぶんアレくらい" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+        <meta httpEquiv="content-type" content="text/html" charSet="UTF-8" />
+        <meta httpEquiv="content-type" content="text/html; charset=UTF-8" />
+        <meta charSet="UTF-8" />
+        <link rel="icon" href="/favicon.ico" />
         <DocumentHead />
         <body>
           <Main />

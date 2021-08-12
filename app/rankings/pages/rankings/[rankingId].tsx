@@ -1,5 +1,7 @@
 import { Suspense } from "react"
-import { Head, useRouter, useQuery, useParam, BlitzPage, useMutation, Routes } from "blitz"
+import Meta from "../../../components/Meta"
+import Loading from "app/components/Loading"
+import { useRouter, useQuery, useParam, BlitzPage, useMutation, Routes } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import getRanking from "app/rankings/queries/getRanking"
 import deleteRanking from "app/rankings/mutations/deleteRanking"
@@ -25,10 +27,8 @@ const RankingPage: BlitzPage = () => {
 
   return (
     <div>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Head>
-          <title>{ranking.title}ランキング</title>
-        </Head>
+      <Suspense fallback={<Loading />}>
+        <Meta title={`${ranking.title}ランキング`} />
         <Ranking
           id={ranking.id}
           title={ranking.title}

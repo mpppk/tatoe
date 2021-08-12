@@ -16,6 +16,7 @@ import MenuIcon from "@material-ui/icons/Menu"
 import React, { useState, Suspense } from "react"
 import { Link, Routes, useRouter, useSession } from "blitz"
 import { useAnchor } from "../core/hooks/useAnchor"
+import Loading from "../components/Loading"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,7 +47,7 @@ const AppDrawer: React.FC<AppDrawerProps> = (props) => {
           {/*FIXME*/}
           <Link href={"/"}>
             <ListItem button>
-              <ListItemText primary={"tatoeとは"} />
+              <ListItemText primary={"たぶんアレくらいとは"} />
             </ListItem>
           </Link>
           <Link href={Routes.RankingsPage()}>
@@ -145,7 +146,7 @@ export const Header = () => {
   }
   return (
     <Toolbar>
-      <Suspense fallback={<div>loading header...</div>}>
+      <Suspense fallback={<Loading />}>
         <AppDrawer open={open} onClose={closeDrawer} />
         <IconButton
           edge="start"
@@ -158,7 +159,7 @@ export const Header = () => {
         </IconButton>
         <Link href={"/"}>
           <Typography variant="h6" className={classes.title}>
-            tatoe
+            たぶんアレくらい
           </Typography>
         </Link>
         {session.userId ? (

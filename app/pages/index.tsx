@@ -9,6 +9,8 @@ import {
   Typography,
 } from "@material-ui/core"
 import React, { Suspense } from "react"
+import Meta from "../components/Meta"
+import Loading from "app/components/Loading"
 import { Header } from "../components/Header"
 import getRankings from "../rankings/queries/getRankings"
 import { LinkListItem } from "../core/components/LinkListItem"
@@ -43,8 +45,9 @@ const Top: BlitzPage = () => {
     <>
       <Header />
       <Container>
+        <Meta />
         <Typography variant={"h5"}>新着ランキング</Typography>
-        <Suspense fallback={<div>loading...</div>}>
+        <Suspense fallback={<Loading />}>
           <LatestRankings />
         </Suspense>
         <div className={classes.moreButtonWrapper}>
