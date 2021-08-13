@@ -5,7 +5,6 @@ import {
   Card,
   CardHeader,
   Collapse,
-  IconButton,
   Link as MUILink,
   List,
   ListItem,
@@ -14,8 +13,6 @@ import {
   Typography,
 } from "@material-ui/core"
 import LooksOneIcon from "@material-ui/icons/LooksOne"
-import clsx from "clsx"
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import {
   Filter4,
   Filter5,
@@ -39,16 +36,6 @@ const useStyles = makeStyles((theme) => ({
   },
   card: {
     marginTop: theme.spacing(1),
-  },
-  expand: {
-    transform: "rotate(0deg)",
-    marginLeft: "auto",
-    transition: theme.transitions.create("transform", {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-  expandOpen: {
-    transform: "rotate(180deg)",
   },
 }))
 
@@ -137,15 +124,7 @@ export const RankingItemCard: React.FC<ItemCardProps> = (props) => {
     <Card className={classes.card}>
       <CardHeader
         avatar={<RankAvatar rank={props.rank} />}
-        action={
-          <IconButton
-            className={clsx(classes.expand, { [classes.expandOpen]: expand })}
-            aria-label="expand more"
-            onClick={() => setExpand(!expand)}
-          >
-            <ExpandMoreIcon />
-          </IconButton>
-        }
+        onClick={() => setExpand(!expand)}
         title={<Typography variant={"h6"}>{props.title}</Typography>}
         subheader={props.subheader}
       />
