@@ -4,11 +4,37 @@ import { usePaginatedQuery, useRouter, BlitzPage, Routes } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import Loading from "app/components/Loading"
 import getRankings from "app/rankings/queries/getRankings"
-import { Button, Typography } from "@material-ui/core"
+import { Button, Typography, makeStyles } from "@material-ui/core"
+import { NewReleases, Create } from "@material-ui/icons"
 import { RankingList } from "../../components/RankingList"
 import { AppLink } from "../../../core/components/AppLink"
 
 const ITEMS_PER_PAGE = 10
+
+const useStyles = makeStyles((_theme) => ({
+  listTitle: {
+    backgroundColor: "#d3d3d3",
+    fontSize: "18px",
+    fontWeight: "bold",
+    padding: _theme.spacing(1),
+  },
+  listTitleIcon: {
+    position: "absolute",
+  },
+  listTitleText: {
+    marginLeft: _theme.spacing(4),
+  },
+  buttonPrimary: {
+    margin: "0px auto",
+    marginTop: _theme.spacing(1),
+    width: "100%",
+    backgroundColor: "#3f51b5",
+    color: "white",
+  },
+  buttonText: {
+    marginLeft: "2px",
+  },
+}))
 
 export const PaginatedRankingList = () => {
   const router = useRouter()
@@ -35,17 +61,26 @@ export const PaginatedRankingList = () => {
 }
 
 const RankingsPage: BlitzPage = () => {
+  const classes = useStyles()
   return (
     <>
       <Meta title="新着ランキング" />
       <div>
-        <Typography variant={"h5"}>新着ランキング</Typography>
+        <Typography className={classes.listTitle}>
+          <NewReleases className={classes.listTitleIcon} />
+          <span className={classes.listTitleText}>新着ランキング</span>
+        </Typography>
         <Suspense fallback={<Loading />}>
           <PaginatedRankingList />
         </Suspense>
       </div>
       <p>
-        <AppLink href={Routes.NewRankingPage()}>ランキングを作る</AppLink>
+        <AppLink href={Routes.NewRankingPage()}>
+          <Button className={classes.buttonPrimary}>
+            <Create />
+            <span className={classes.buttonText}>ランキングを作る</span>
+          </Button>
+        </AppLink>
       </p>
     </>
   )
