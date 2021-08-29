@@ -21,19 +21,40 @@ const useAppParams = (): Partial<Params> => {
 
 const useStyles = makeStyles((theme) => ({
   tweetButtonWrapper: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(2),
     display: "flex",
     justifyContent: "center",
   },
   tweetButton: {
     backgroundColor: "#00acee",
+    width: "36%",
+  },
+  tweetCard: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    marginBottom: theme.spacing(2),
+    padding: theme.spacing(1),
+    borderRadius: "4px",
+    fontSize: "16px",
+    boxShadow: "1px 1px 2px rgba(0,0,0,.3)",
+  },
+  tweetText: {
+    fontSize: "16px",
+    fontWeight: "bold",
   },
   subHeader: {
     marginTop: theme.spacing(1),
   },
   itemInfoWrapper: {
     marginBottom: theme.spacing(1),
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    fontSize: "12px",
+  },
+  itemInfoTitle: {
+    fontSize: "14px",
+    fontWeight: "bold",
+    marginTop: theme.spacing(1),
   },
   itemSubTitle: {
     fontStyle: "oblique",
@@ -101,15 +122,18 @@ interface CompareTextProps {
 }
 
 const CompareText: React.FC<CompareTextProps> = (props) => {
+  const classes = useStyles()
   return (
-    <Typography variant={"h5"}>
-      <RankingLink id={props.rankingId} title={props.rankingTitle} />の
-      <RankingItemLink rankingId={props.rankingId} title={props.itemTitle} />を
-      <RankingLink id={props.cRankingId} title={props.cRankingTitle} />
-      で例えると
-      <RankingItemLink rankingId={props.cRankingId} title={props.cItemTitle} />
-      ぐらいです
-    </Typography>
+    <div className={classes.tweetCard}>
+      <Typography className={classes.tweetText}>
+        <RankingLink id={props.rankingId} title={props.rankingTitle} />の
+        <RankingItemLink rankingId={props.rankingId} title={props.itemTitle} />を
+        <RankingLink id={props.cRankingId} title={props.cRankingTitle} />
+        で例えると
+        <RankingItemLink rankingId={props.cRankingId} title={props.cItemTitle} />
+        ぐらいです
+      </Typography>
+    </div>
   )
 }
 
@@ -124,7 +148,7 @@ const RankingItemInfo: React.FC<RankingItemProps> = (props) => {
   return (
     <>
       <div className={classes.itemInfoWrapper}>
-        <Typography variant={"h6"}>{props.item.title}</Typography>
+        <Typography className={classes.itemInfoTitle}>{props.item.title}</Typography>
         <RankingLink id={props.rankingId} title={props.rankingTitle} />の{props.item.rank}位(
         <span className={classes.itemSubTitle}>{props.item.subtitle}</span>)
       </div>
