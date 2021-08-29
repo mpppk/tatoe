@@ -1,5 +1,6 @@
 import React, { ReactNode } from "react"
 import { Header } from "../../components/Header"
+import { Footer } from "../../components/Footer"
 import { Container } from "@material-ui/core"
 
 type LayoutProps = {
@@ -12,6 +13,7 @@ const Layout = ({ children }: LayoutProps) => {
       <Header />
       {/* FIXME */}
       <Container>{children as any}</Container>
+      <Footer />
     </>
   )
 }
