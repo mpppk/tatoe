@@ -1,10 +1,13 @@
 import React, { useState } from "react"
 import { Link, Routes } from "blitz"
+import clsx from "clsx"
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import {
   Avatar,
   Card,
   CardHeader,
   Collapse,
+  IconButton,
   Link as MUILink,
   List,
   ListItem,
@@ -36,6 +39,16 @@ const useStyles = makeStyles((theme) => ({
   },
   card: {
     marginTop: theme.spacing(1),
+  },
+  expand: {
+    transform: "rotate(0deg)",
+    marginLeft: "auto",
+    transition: theme.transitions.create("transform", {
+      duration: theme.transitions.duration.shortest,
+    }),
+  },
+  expandOpen: {
+    transform: "rotate(180deg)",
   },
 }))
 
@@ -125,6 +138,14 @@ export const RankingItemCard: React.FC<ItemCardProps> = (props) => {
       <CardHeader
         avatar={<RankAvatar rank={props.rank} />}
         onClick={() => setExpand(!expand)}
+        action={
+          <IconButton
+            className={clsx(classes.expand, { [classes.expandOpen]: expand })}
+            aria-label="expand more"
+          >
+            <ExpandMoreIcon />
+          </IconButton>
+        }
         title={<Typography variant={"h6"}>{props.title}</Typography>}
         subheader={props.subheader}
       />
