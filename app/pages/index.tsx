@@ -140,13 +140,6 @@ const Top: BlitzPage = () => {
             <ListItemText primary="Coming soon..." />
           </ListItem>
         </List>
-        {/* <div className={classes.moreButtonWrapper}>
-          <Link href={"/"}>
-            <Button color={"inherit"} className={classes.listMoreButton}>
-              <ArrowForwardIos className={classes.listMoreIcon} />もっと見る
-            </Button>
-          </Link>
-        </div> */}
       </Container>
     </>
   )
