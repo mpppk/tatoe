@@ -31,7 +31,7 @@
   "dependencies": {
     "@material-ui/core": "4.12.3",
     "@material-ui/icons": "4.11.2",
-    "@prisma/client": "2.30.0",
+    "@prisma/client": "2.30.2",
     "blitz": "0.39.0",
     "final-form": "4.20.2",
     "final-form-arrays": "3.0.2",
@@ -39,7 +39,7 @@
     "firebase": "8.10.0",
     "firebase-admin": "9.11.1",
     "mui-rff": "3.0.13",
-    "prisma": "2.30.0",
+    "prisma": "2.30.2",
     "react": "0.0.0-experimental-6a589ad71",
     "react-dom": "0.0.0-experimental-6a589ad71",
     "react-error-boundary": "3.1.3",
