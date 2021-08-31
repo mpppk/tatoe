@@ -1,13 +1,12 @@
 import React, { Suspense } from "react"
 import Meta from "../../../components/Meta"
-import { usePaginatedQuery, useRouter, BlitzPage, Routes } from "blitz"
+import { usePaginatedQuery, useRouter, BlitzPage, Routes, Link } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import Loading from "app/components/Loading"
 import getRankings from "app/rankings/queries/getRankings"
 import { Button, Typography, makeStyles } from "@material-ui/core"
 import { NewReleases, Create } from "@material-ui/icons"
 import { RankingList } from "../../components/RankingList"
-import { AppLink } from "../../../core/components/AppLink"
 
 const ITEMS_PER_PAGE = 10
 
@@ -28,8 +27,6 @@ const useStyles = makeStyles((_theme) => ({
     margin: "0px auto",
     marginTop: _theme.spacing(1),
     width: "100%",
-    backgroundColor: "#3f51b5",
-    color: "white",
   },
   buttonText: {
     marginLeft: "2px",
@@ -75,12 +72,12 @@ const RankingsPage: BlitzPage = () => {
         </Suspense>
       </div>
       <p>
-        <AppLink href={Routes.NewRankingPage()}>
-          <Button className={classes.buttonPrimary}>
+        <Link href={Routes.NewRankingPage()}>
+          <Button color={"primary"} variant={"contained"} className={classes.buttonPrimary}>
             <Create />
             <span className={classes.buttonText}>ランキングを作る</span>
           </Button>
-        </AppLink>
+        </Link>
       </p>
     </>
   )

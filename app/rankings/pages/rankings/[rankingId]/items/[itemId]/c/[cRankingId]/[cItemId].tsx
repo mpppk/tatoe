@@ -27,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
   },
   tweetButton: {
-    backgroundColor: "#00acee",
     width: "36%",
   },
   tweetCard: {

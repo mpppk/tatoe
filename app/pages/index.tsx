@@ -15,7 +15,6 @@ import Loading from "app/components/Loading"
 import { Header } from "../components/Header"
 import getRankings from "../rankings/queries/getRankings"
 import { LinkListItem } from "../core/components/LinkListItem"
-import { AppLink } from "../core/components/AppLink"
 
 const useStyles = makeStyles((_theme) => ({
   mainContentWrapper: {
@@ -67,8 +66,6 @@ const useStyles = makeStyles((_theme) => ({
     top: "-0.5px",
   },
   buttonPrimary: {
-    backgroundColor: "#3f51b5",
-    color: "white",
     marginTop: _theme.spacing(2),
     marginBottom: _theme.spacing(2),
   },
@@ -108,12 +105,12 @@ const Top: BlitzPage = () => {
           </Typography>
         </Container>
         <Container className={classes.contentWrapper}>
-          <AppLink href={Routes.NewRankingPage()}>
-            <Button className={classes.buttonPrimary}>
+          <Link href={Routes.NewRankingPage()}>
+            <Button color={"primary"} variant={"contained"} className={classes.buttonPrimary}>
               <Create />
               <span className={classes.buttonText}>ランキングを作る</span>
             </Button>
-          </AppLink>
+          </Link>
         </Container>
 
         <Typography className={classes.listTitle}>
