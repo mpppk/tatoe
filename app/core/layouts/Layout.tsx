@@ -1,18 +1,25 @@
 import React, { ReactNode } from "react"
 import { Header } from "../../components/Header"
 import { Footer } from "../../components/Footer"
-import { Container } from "@material-ui/core"
+import { Container, makeStyles } from "@material-ui/core"
 
 type LayoutProps = {
   children: ReactNode
 }
 
+const useStyles = makeStyles((theme) => ({
+  contentWrapp: {
+    paddingBottom: "60px",
+  },
+}))
+
 const Layout = ({ children }: LayoutProps) => {
+  const classes = useStyles()
   return (
     <>
       <Header />
       {/* FIXME */}
-      <Container>{children as any}</Container>
+      <Container className={classes.contentWrapp}>{children as any}</Container>
       <Footer />
     </>
   )
