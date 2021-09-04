@@ -101,7 +101,7 @@ const Top: BlitzPage = () => {
         <Container className={classes.mainContentWrapper}>
           <Typography className={classes.siteTitle}>たぶんアレくらいとは</Typography>
           <Typography className={classes.description}>
-            ダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキスト
+            「○○をガンダムで例えると?」、「○○ってドラゴンボールで言うところの何?」を簡単に調べたりシェアできるサイトです。
           </Typography>
         </Container>
         <Container className={classes.contentWrapper}>
