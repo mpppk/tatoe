@@ -5,6 +5,7 @@ import getRanking from "../../../../../../../queries/getRanking"
 import React, { Suspense } from "react"
 import { Button, makeStyles, Typography } from "@material-ui/core"
 import TwitterIcon from "@material-ui/icons/Twitter"
+import Loading from "app/components/Loading"
 import { RankingItem } from "../../../../../../../../ranking-items/validations"
 import { AppLink } from "../../../../../../../../core/components/AppLink"
 
@@ -26,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
   },
   tweetButton: {
-    backgroundColor: "#00acee",
     width: "36%",
   },
   tweetCard: {
@@ -210,7 +210,7 @@ const Compare: React.FC = () => {
 const ComparePage: BlitzPage = () => {
   return (
     <>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loading />}>
         <Compare />
       </Suspense>
     </>

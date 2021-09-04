@@ -8,6 +8,7 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core"
+import { NewReleases, Star, ArrowForwardIos, Create } from "@material-ui/icons"
 import React, { Suspense } from "react"
 import Meta from "../components/Meta"
 import Loading from "app/components/Loading"
@@ -16,9 +17,60 @@ import getRankings from "../rankings/queries/getRankings"
 import { LinkListItem } from "../core/components/LinkListItem"
 
 const useStyles = makeStyles((_theme) => ({
+  mainContentWrapper: {
+    textAlign: "center",
+    border: "1px solid #808080",
+    borderRadius: "4px",
+  },
   moreButtonWrapper: {
     display: "flex",
     justifyContent: "flex-end",
+  },
+  contentWrapper: {
+    display: "flex",
+    justifyContent: "center",
+  },
+  siteTitle: {
+    fontSize: "16px",
+    fontWeight: "bold",
+    padding: _theme.spacing(1),
+    borderBottom: "1px solid #808080",
+  },
+  description: {
+    padding: _theme.spacing(1),
+    textAlign: "left",
+  },
+  listTitle: {
+    backgroundColor: "#d3d3d3",
+    fontSize: "18px",
+    fontWeight: "bold",
+    padding: _theme.spacing(1),
+  },
+  listTitleIcon: {
+    position: "absolute",
+  },
+  listTitleText: {
+    marginLeft: _theme.spacing(4),
+  },
+  listMoreButton: {
+    fontSize: "8px",
+    color: "#808080",
+    marginBottom: _theme.spacing(2),
+    borderRadius: "4px",
+    border: "1px solid #808080",
+  },
+  listMoreIcon: {
+    fontSize: "10px",
+    marginRight: "2px",
+    position: "relative",
+    top: "-0.5px",
+  },
+  buttonPrimary: {
+    marginTop: _theme.spacing(2),
+    marginBottom: _theme.spacing(2),
+  },
+  buttonText: {
+    marginLeft: "2px",
   },
 }))
 
@@ -46,28 +98,45 @@ const Top: BlitzPage = () => {
       <Header />
       <Container>
         <Meta />
-        <Typography variant={"h5"}>新着ランキング</Typography>
+        <Container className={classes.mainContentWrapper}>
+          <Typography className={classes.siteTitle}>たぶんアレくらいとは</Typography>
+          <Typography className={classes.description}>
+            ダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキストダミーテキスト
+          </Typography>
+        </Container>
+        <Container className={classes.contentWrapper}>
+          <Link href={Routes.NewRankingPage()}>
+            <Button color={"primary"} variant={"contained"} className={classes.buttonPrimary}>
+              <Create />
+              <span className={classes.buttonText}>ランキングを作る</span>
+            </Button>
+          </Link>
+        </Container>
+
+        <Typography className={classes.listTitle}>
+          <NewReleases className={classes.listTitleIcon} />
+          <span className={classes.listTitleText}>新着ランキング</span>
+        </Typography>
         <Suspense fallback={<Loading />}>
           <LatestRankings />
         </Suspense>
         <div className={classes.moreButtonWrapper}>
           <Link href={Routes.RankingsPage()}>
-            <Button color={"inherit"}>もっと見る</Button>
+            <Button color={"inherit"} className={classes.listMoreButton}>
+              <ArrowForwardIos className={classes.listMoreIcon} />
+              もっと見る
+            </Button>
           </Link>
         </div>
-        <Typography variant={"h5"}>人気ランキング</Typography>
+        <Typography className={classes.listTitle}>
+          <Star className={classes.listTitleIcon} />
+          <span className={classes.listTitleText}>人気ランキング</span>
+        </Typography>
         <List dense={true}>
           <ListItem>
             <ListItemText primary="Coming soon..." />
           </ListItem>
         </List>
-        <div className={classes.moreButtonWrapper}>
-          <Link href={"/"}>
-            <Button disabled={true} color={"inherit"}>
-              もっと見る
-            </Button>
-          </Link>
-        </div>
       </Container>
     </>
   )

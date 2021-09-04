@@ -18,11 +18,14 @@ import {
 import React, { Suspense } from "react"
 import "../wdyr"
 import Loading from "app/components/Loading"
+import { blue } from "@material-ui/core/colors"
 
 //You can customize this as you want and even move it out to a separate file
 const theme = createMuiTheme({
   palette: {
-    type: "light",
+    primary: {
+      main: blue["500"],
+    },
   },
 })
 

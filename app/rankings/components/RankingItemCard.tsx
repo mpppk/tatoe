@@ -1,5 +1,7 @@
 import React, { useState } from "react"
 import { Link, Routes } from "blitz"
+import clsx from "clsx"
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import {
   Avatar,
   Card,
@@ -14,8 +16,6 @@ import {
   Typography,
 } from "@material-ui/core"
 import LooksOneIcon from "@material-ui/icons/LooksOne"
-import clsx from "clsx"
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import {
   Filter4,
   Filter5,
@@ -137,11 +137,11 @@ export const RankingItemCard: React.FC<ItemCardProps> = (props) => {
     <Card className={classes.card}>
       <CardHeader
         avatar={<RankAvatar rank={props.rank} />}
+        onClick={() => setExpand(!expand)}
         action={
           <IconButton
             className={clsx(classes.expand, { [classes.expandOpen]: expand })}
             aria-label="expand more"
-            onClick={() => setExpand(!expand)}
           >
             <ExpandMoreIcon />
           </IconButton>
