@@ -18,11 +18,11 @@ module.exports = {
         headers: [cacheHeader],
       },
       {
-        source: "/rankings/*",
+        source: "/rankings/:ranking*",
         headers: [cacheHeader],
       },
       {
-        source: "/users/*",
+        source: "/users/:user*",
         headers: [cacheHeader],
       },
     ]
