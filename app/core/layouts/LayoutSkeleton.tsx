@@ -1,6 +1,5 @@
 import { Button, IconButton, makeStyles, Toolbar, Typography } from "@material-ui/core"
-import React, { Suspense } from "react"
-import Loading from "../../components/Loading"
+import React from "react"
 import MenuIcon from "@material-ui/icons/Menu"
 import { Link, Routes } from "blitz"
 import { Skeleton } from "@material-ui/lab"
@@ -20,27 +19,25 @@ const HeaderSkeleton = () => {
   const classes = useStyles()
   return (
     <Toolbar>
-      <Suspense fallback={<Loading />}>
-        <IconButton
-          edge="start"
-          className={classes.menuButton}
-          color={"inherit"}
-          aria-label="menu"
-          disabled={true}
-        >
-          <MenuIcon />
-        </IconButton>
-        <Link href={"/"}>
-          <Typography variant="h6" className={classes.title}>
-            たぶんアレくらい
-          </Typography>
-        </Link>
-        <Link href={Routes.LoginPage()}>
-          <Button color="inherit">
-            <Skeleton width={"100%"} />
-          </Button>
-        </Link>
-      </Suspense>
+      <IconButton
+        edge="start"
+        className={classes.menuButton}
+        color={"inherit"}
+        aria-label="menu"
+        disabled={true}
+      >
+        <MenuIcon />
+      </IconButton>
+      <Link href={"/"}>
+        <Typography variant="h6" className={classes.title}>
+          たぶんアレくらい
+        </Typography>
+      </Link>
+      <Link href={Routes.LoginPage()}>
+        <Button color="inherit">
+          <Skeleton width={"100%"} />
+        </Button>
+      </Link>
     </Toolbar>
   )
 }
