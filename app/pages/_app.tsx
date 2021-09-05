@@ -34,18 +34,16 @@ export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
 
   return (
-    <Suspense fallback={<Loading />}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <ErrorBoundary
-          FallbackComponent={RootErrorFallback}
-          resetKeys={[router.asPath]}
-          onReset={useQueryErrorResetBoundary().reset}
-        >
-          {getLayout(<Component {...pageProps} />)}
-        </ErrorBoundary>
-      </ThemeProvider>
-    </Suspense>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <ErrorBoundary
+        FallbackComponent={RootErrorFallback}
+        resetKeys={[router.asPath]}
+        onReset={useQueryErrorResetBoundary().reset}
+      >
+        <Suspense fallback={<Loading />}>{getLayout(<Component {...pageProps} />)}</Suspense>
+      </ErrorBoundary>
+    </ThemeProvider>
   )
 }
 

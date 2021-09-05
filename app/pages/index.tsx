@@ -11,11 +11,11 @@ import {
 import { NewReleases, Star, ArrowForwardIos, Create } from "@material-ui/icons"
 import React, { Suspense } from "react"
 import Meta from "../components/Meta"
-import Loading from "app/components/Loading"
 import { Header } from "../components/Header"
 import { Footer } from "../components/Footer"
 import getRankings from "../rankings/queries/getRankings"
 import { LinkListItem } from "../core/components/LinkListItem"
+import { Skeleton } from "@material-ui/lab"
 
 const useStyles = makeStyles((_theme) => ({
   contentWrap: {
@@ -69,6 +69,10 @@ const useStyles = makeStyles((_theme) => ({
     position: "relative",
     top: "-0.5px",
   },
+  skeletonList: {
+    borderBottom: "1px solid #dcdcdc",
+    padding: _theme.spacing(1),
+  },
   buttonPrimary: {
     marginTop: _theme.spacing(2),
     marginBottom: _theme.spacing(2),
@@ -84,6 +88,7 @@ const LatestRankings: React.FC<LatestRankingsProps> = () => {
   const [rankings] = useQuery(getRankings, { take: 5 })
   return (
     <List dense={true}>
+      {" "}
       {rankings.rankings.map((ranking) => (
         <LinkListItem
           key={ranking.id}
@@ -91,6 +96,23 @@ const LatestRankings: React.FC<LatestRankingsProps> = () => {
           text={ranking.title}
         />
       ))}
+    </List>
+  )
+}
+
+const RankingsSkeleton: React.FC = () => {
+  const classes = useStyles()
+  return (
+    <List dense={true}>
+      {Array(5)
+        .fill(undefined)
+        .map((_, i) => (
+          <ListItem className={classes.skeletonList} key={`ranking_skeleton_${i}`}>
+            <ListItemText color={"primary"}>
+              <Skeleton width={"100%"} variant={"text"} />
+            </ListItemText>
+          </ListItem>
+        ))}
     </List>
   )
 }
@@ -121,7 +143,7 @@ const Top: BlitzPage = () => {
           <NewReleases className={classes.listTitleIcon} />
           <span className={classes.listTitleText}>新着ランキング</span>
         </Typography>
-        <Suspense fallback={<Loading />}>
+        <Suspense fallback={<RankingsSkeleton />}>
           <LatestRankings />
         </Suspense>
         <div className={classes.moreButtonWrapper}>
