@@ -15,7 +15,7 @@ import { Header } from "../components/Header"
 import { Footer } from "../components/Footer"
 import getRankings from "../rankings/queries/getRankings"
 import { LinkListItem } from "../core/components/LinkListItem"
-import { Skeleton } from "@material-ui/lab"
+import { RankingsSkeleton } from "app/rankings/components/RankingsSkeleton"
 
 const useStyles = makeStyles((_theme) => ({
   contentWrap: {
@@ -100,23 +100,6 @@ const LatestRankings: React.FC<LatestRankingsProps> = () => {
   )
 }
 
-const RankingsSkeleton: React.FC = () => {
-  const classes = useStyles()
-  return (
-    <List dense={true}>
-      {Array(5)
-        .fill(undefined)
-        .map((_, i) => (
-          <ListItem className={classes.skeletonList} key={`ranking_skeleton_${i}`}>
-            <ListItemText color={"primary"}>
-              <Skeleton width={"100%"} variant={"text"} />
-            </ListItemText>
-          </ListItem>
-        ))}
-    </List>
-  )
-}
-
 const Top: BlitzPage = () => {
   const classes = useStyles()
   return (
@@ -143,7 +126,7 @@ const Top: BlitzPage = () => {
           <NewReleases className={classes.listTitleIcon} />
           <span className={classes.listTitleText}>新着ランキング</span>
         </Typography>
-        <Suspense fallback={<RankingsSkeleton />}>
+        <Suspense fallback={<RankingsSkeleton length={5} />}>
           <LatestRankings />
         </Suspense>
         <div className={classes.moreButtonWrapper}>
