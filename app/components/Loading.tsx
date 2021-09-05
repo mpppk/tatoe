@@ -8,6 +8,7 @@ const Loading = () => {
       marginRight: "auto",
       width: "max-content",
       marginTop: "10vh",
+      marginBottom: "10vh",
       display: "block",
     },
   }))

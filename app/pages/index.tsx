@@ -13,10 +13,14 @@ import React, { Suspense } from "react"
 import Meta from "../components/Meta"
 import Loading from "app/components/Loading"
 import { Header } from "../components/Header"
+import { Footer } from "../components/Footer"
 import getRankings from "../rankings/queries/getRankings"
 import { LinkListItem } from "../core/components/LinkListItem"
 
 const useStyles = makeStyles((_theme) => ({
+  contentWrap: {
+    paddingBottom: "60px",
+  },
   mainContentWrapper: {
     textAlign: "center",
     border: "1px solid #808080",
@@ -96,7 +100,7 @@ const Top: BlitzPage = () => {
   return (
     <>
       <Header />
-      <Container>
+      <Container className={classes.contentWrap}>
         <Meta />
         <Container className={classes.mainContentWrapper}>
           <Typography className={classes.siteTitle}>たぶんアレくらいとは</Typography>
@@ -138,6 +142,7 @@ const Top: BlitzPage = () => {
           </ListItem>
         </List>
       </Container>
+      <Footer />
     </>
   )
 }
