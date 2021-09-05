@@ -2,12 +2,13 @@ import { BlitzPage, useParams, useQuery, Link, useRouter, Routes } from "blitz"
 import Meta from "../../../../../../../../components/Meta"
 import Layout from "../../../../../../../../core/layouts/Layout"
 import getRanking from "../../../../../../../queries/getRanking"
-import React, { Suspense } from "react"
+import React, { Suspense, useCallback, useMemo } from "react"
 import { Button, makeStyles, Typography } from "@material-ui/core"
 import TwitterIcon from "@material-ui/icons/Twitter"
 import { RankingItem } from "../../../../../../../../ranking-items/validations"
 import { AppLink } from "../../../../../../../../core/components/AppLink"
 import { Skeleton } from "@material-ui/lab"
+import { newLogger } from "../../../../../../../../auth/firebaseClient"
 
 interface Params {
   rankingId: number
@@ -65,6 +66,7 @@ const useStyles = makeStyles((theme) => ({
 interface TweetButtonProps {
   text: string
   disabled?: boolean
+  onClick?: () => void
 }
 
 const TweetButton: React.FC<TweetButtonProps> = (props) => {
@@ -79,6 +81,7 @@ const TweetButton: React.FC<TweetButtonProps> = (props) => {
         startIcon={<TwitterIcon />}
         color="primary"
         variant={"contained"}
+        onClick={props.onClick}
       >
         Tweet
       </Button>
@@ -173,6 +176,7 @@ const RankingItemInfoSkeleton = () => {
 }
 
 const Compare: React.FC = () => {
+  const logEvent = useMemo(() => newLogger(), [])
   const classes = useStyles()
   const router = useRouter()
   const params = useAppParams()
@@ -195,6 +199,12 @@ const Compare: React.FC = () => {
   const text = `「${ranking?.title}」の「${item?.title}」を「${cRanking?.title}」で例えると「${cItem?.title}」ぐらいです`
   const tweetText = text + "\nhttps://tatoe.nibo.sh" + router.asPath
   const title = item && cRanking ? `${item.title}を${cRanking.title}で例える` : ""
+  const handleClickTweetButton = useCallback(() => {
+    logEvent("share", {
+      method: "Twitter",
+      ...params,
+    })
+  }, [logEvent, params])
 
   if (!ranking || !item || !cRanking || !cItem) {
     return null
@@ -214,7 +224,7 @@ const Compare: React.FC = () => {
         cItemTitle={cItem.title}
       />
       <div className={classes.tweetButtonWrapper}>
-        <TweetButton text={tweetText} />
+        <TweetButton text={tweetText} onClick={handleClickTweetButton} />
       </div>
       <RankingItemInfo rankingId={ranking.id} rankingTitle={ranking.title} item={item} />
       <RankingItemInfo rankingId={cRanking.id} rankingTitle={cRanking.title} item={cItem} />
