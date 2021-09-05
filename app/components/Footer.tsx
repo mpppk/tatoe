@@ -1,9 +1,9 @@
 import { makeStyles } from "@material-ui/core"
 import { Home, Create, PermIdentity } from "@material-ui/icons"
-import React, { useState, Suspense } from "react"
-import { Link, Routes, useRouter, useSession } from "blitz"
+import React from "react"
+import { Link, Routes, useSession } from "blitz"
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((_theme) => ({
   footer: {
     display: "flex",
     justifyContent: "space-around",
@@ -30,9 +30,8 @@ const useStyles = makeStyles((theme) => ({
 
 export const Footer = () => {
   const classes = useStyles()
-  const session = useSession()
+  const session = useSession({ suspense: false })
 
-  const router = useRouter()
   return (
     <div className={classes.footer}>
       <Link href={"/"}>
