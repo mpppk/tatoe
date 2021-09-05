@@ -18,7 +18,7 @@ import getRankings from "../rankings/queries/getRankings"
 import { LinkListItem } from "../core/components/LinkListItem"
 
 const useStyles = makeStyles((_theme) => ({
-  contentWrapp: {
+  contentWrap: {
     paddingBottom: "60px",
   },
   mainContentWrapper: {
@@ -100,7 +100,7 @@ const Top: BlitzPage = () => {
   return (
     <>
       <Header />
-      <Container className={classes.contentWrapp}>
+      <Container className={classes.contentWrap}>
         <Meta />
         <Container className={classes.mainContentWrapper}>
           <Typography className={classes.siteTitle}>たぶんアレくらいとは</Typography>

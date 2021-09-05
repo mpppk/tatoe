@@ -8,7 +8,7 @@ type LayoutProps = {
 }
 
 const useStyles = makeStyles((theme) => ({
-  contentWrapp: {
+  contentWrap: {
     paddingBottom: "60px",
   },
 }))
@@ -19,7 +19,7 @@ const Layout = ({ children }: LayoutProps) => {
     <>
       <Header />
       {/* FIXME */}
-      <Container className={classes.contentWrapp}>{children as any}</Container>
+      <Container className={classes.contentWrap}>{children as any}</Container>
       <Footer />
     </>
   )

@@ -47,21 +47,18 @@ export const Footer = () => {
           <p className={classes.label}>新規作成</p>
         </div>
       </Link>
-      {session.userId ? (
-        <Link href={Routes.UserPage({ userId: session.userId as string })}>
-          <div className={classes.iconItem}>
-            <PermIdentity className={classes.icon} />
-            <p className={classes.label}>マイページ</p>
-          </div>
-        </Link>
-      ) : (
-        <Link href={Routes.LoginPage()}>
-          <div className={classes.iconItem}>
-            <PermIdentity className={classes.icon} />
-            <p className={classes.label}>マイページ</p>
-          </div>
-        </Link>
-      )}
+      <Link
+        href={
+          session.userId
+            ? Routes.UserPage({ userId: session.userId as string })
+            : Routes.LoginPage()
+        }
+      >
+        <div className={classes.iconItem}>
+          <PermIdentity className={classes.icon} />
+          <p className={classes.label}>マイページ</p>
+        </div>
+      </Link>
     </div>
   )
 }
