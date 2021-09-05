@@ -4,11 +4,13 @@ import createRanking from "app/rankings/mutations/createRanking"
 import { RankingForm } from "app/rankings/components/RankingForm"
 import { Typography } from "@material-ui/core"
 import { reRankItems } from "../../../ranking-items/validations"
-import { useCallback } from "react"
+import { useCallback, useMemo } from "react"
 import { FORM_ERROR } from "final-form"
 import Meta from "app/components/Meta"
+import { newLogger } from "../../../auth/firebaseClient"
 
 const NewRankingPage: BlitzPage = () => {
+  const logEvent = useMemo(() => newLogger(), [])
   const router = useRouter()
   const [createRankingMutation] = useMutation(createRanking)
 
@@ -20,6 +22,9 @@ const NewRankingPage: BlitzPage = () => {
           source: rankingForm.source ?? null,
           items: reRankItems(rankingForm.items),
         })
+        logEvent("create_ranking", {
+          id: ranking.id,
+        })
         router.push(`/rankings/${ranking.id}`)
       } catch (error) {
         console.error(error)
@@ -28,7 +33,7 @@ const NewRankingPage: BlitzPage = () => {
         }
       }
     },
-    [router, createRankingMutation]
+    [logEvent, router, createRankingMutation]
   )
 
   return (
