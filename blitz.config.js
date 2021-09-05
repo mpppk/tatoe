@@ -2,9 +2,12 @@ const { sessionMiddleware, simpleRolesIsAuthorized } = require("blitz")
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true",
 })
-const cacheHeader = {
-  key: "Cache-Control",
-  value: "public, max-age3600",
+
+const newCacheHeader = (maxAge) => {
+  return {
+    key: "Cache-Control",
+    value: `public, max-age=${maxAge}`,
+  }
 }
 
 const config = {
@@ -17,15 +20,19 @@ const config = {
     return [
       {
         source: "/",
-        headers: [cacheHeader],
+        headers: [newCacheHeader(3600)],
       },
       {
         source: "/rankings/:ranking*",
-        headers: [cacheHeader],
+        headers: [newCacheHeader(3600)],
       },
       {
         source: "/users/:user*",
-        headers: [cacheHeader],
+        headers: [newCacheHeader(3600)],
+      },
+      {
+        source: "/api/rankings/:queries*",
+        headers: [newCacheHeader(60)],
       },
     ]
   },
