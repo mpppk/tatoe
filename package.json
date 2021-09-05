@@ -14,7 +14,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "prepare": "husky install",
-    "cloud-sql-proxy": "cloud_sql_proxy -instances=tatoe-app:asia-northeast1:common=tcp:5432"
+    "cloud-sql-proxy": "cloud_sql_proxy -instances=tatoe-app:asia-northeast1:common=tcp:5432",
+    "bundle-analyzer": "ANALYZE=true blitz build"
   },
   "prisma": {
     "schema": "db/schema.prisma"
@@ -48,6 +49,7 @@
     "zod": "3.8.2"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "11.1.2",
     "@types/preview-email": "2.0.1",
     "@types/react": "17.0.19",
     "@welldone-software/why-did-you-render": "6.2.1",

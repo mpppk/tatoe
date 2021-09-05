@@ -1,11 +1,13 @@
 const { sessionMiddleware, simpleRolesIsAuthorized } = require("blitz")
-
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+})
 const cacheHeader = {
   key: "Cache-Control",
   value: "public, max-age3600",
 }
 
-module.exports = {
+const config = {
   middleware: [
     sessionMiddleware({
       isAuthorized: simpleRolesIsAuthorized,
@@ -36,3 +38,6 @@ module.exports = {
   },
   */
 }
+
+// module.exports = config
+module.exports = withBundleAnalyzer(config)
