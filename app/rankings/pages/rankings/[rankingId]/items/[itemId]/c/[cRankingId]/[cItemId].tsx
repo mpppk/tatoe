@@ -1,4 +1,4 @@
-import { BlitzPage, useParams, useQuery, Link, useRouter, Routes } from "blitz"
+import { BlitzPage, useParams, useQuery, useRouter, Routes } from "blitz"
 import Meta from "../../../../../../../../components/Meta"
 import Layout from "../../../../../../../../core/layouts/Layout"
 import getRanking from "../../../../../../../queries/getRanking"
@@ -74,18 +74,18 @@ const TweetButton: React.FC<TweetButtonProps> = (props) => {
   const baseTwitterUrl = "https://twitter.com/intent/tweet"
   const href = baseTwitterUrl + "?text=" + props.text
   return (
-    <Link href={href}>
-      <Button
-        disabled={props.disabled}
-        className={classes.tweetButton}
-        startIcon={<TwitterIcon />}
-        color="primary"
-        variant={"contained"}
-        onClick={props.onClick}
-      >
-        Tweet
-      </Button>
-    </Link>
+    <Button
+      href={href}
+      target={"_blank"}
+      disabled={props.disabled}
+      className={classes.tweetButton}
+      startIcon={<TwitterIcon />}
+      color="primary"
+      variant={"contained"}
+      onClick={props.onClick}
+    >
+      Tweet
+    </Button>
   )
 }
 
