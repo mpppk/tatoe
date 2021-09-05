@@ -18,6 +18,7 @@ import LockIcon from "@material-ui/icons/Lock"
 import { useAnchor } from "../../core/hooks/useAnchor"
 import { AppLink } from "app/core/components/AppLink"
 import { SourceLink } from "./SourceLink"
+import { Skeleton } from "@material-ui/lab"
 
 const useStyles = makeStyles((theme) => ({
   description: {
@@ -33,6 +34,9 @@ const useStyles = makeStyles((theme) => ({
   },
   lockIcon: {
     verticalAlign: "middle",
+  },
+  skeletonWrapper: {
+    padding: theme.spacing(1),
   },
 }))
 
@@ -149,6 +153,27 @@ type Props = Pick<
   items: Pick<RankingItem, "id" | "title" | "subtitle">[]
   rankings: RankingType[]
   onClickDeleteButton: () => void
+}
+
+export const RankingSkeleton: React.FC = () => {
+  const classes = useStyles()
+  return (
+    <>
+      <Typography variant={"h5"}>
+        <Skeleton />
+      </Typography>
+      <Typography className={classes.description} variant={"subtitle1"}>
+        <Skeleton />
+      </Typography>
+      {Array(3)
+        .fill(undefined)
+        .map((_, i) => (
+          <div key={"ranking_skeleton" + i} className={classes.skeletonWrapper}>
+            <Skeleton variant={"rect"} height={192} />
+          </div>
+        ))}
+    </>
+  )
 }
 
 export const Ranking: React.FC<Props> = (props) => {

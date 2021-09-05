@@ -5,9 +5,9 @@ import getRanking from "../../../../../../../queries/getRanking"
 import React, { Suspense } from "react"
 import { Button, makeStyles, Typography } from "@material-ui/core"
 import TwitterIcon from "@material-ui/icons/Twitter"
-import Loading from "app/components/Loading"
 import { RankingItem } from "../../../../../../../../ranking-items/validations"
 import { AppLink } from "../../../../../../../../core/components/AppLink"
+import { Skeleton } from "@material-ui/lab"
 
 interface Params {
   rankingId: number
@@ -64,6 +64,7 @@ const useStyles = makeStyles((theme) => ({
 
 interface TweetButtonProps {
   text: string
+  disabled?: boolean
 }
 
 const TweetButton: React.FC<TweetButtonProps> = (props) => {
@@ -73,6 +74,7 @@ const TweetButton: React.FC<TweetButtonProps> = (props) => {
   return (
     <Link href={href}>
       <Button
+        disabled={props.disabled}
         className={classes.tweetButton}
         startIcon={<TwitterIcon />}
         color="primary"
@@ -156,6 +158,20 @@ const RankingItemInfo: React.FC<RankingItemProps> = (props) => {
   )
 }
 
+const RankingItemInfoSkeleton = () => {
+  const classes = useStyles()
+  return (
+    <>
+      <div className={classes.itemInfoWrapper}>
+        <Typography className={classes.itemInfoTitle}>
+          <Skeleton width={"40%"} />
+        </Typography>
+        <Skeleton variant={"text"} />
+      </div>
+    </>
+  )
+}
+
 const Compare: React.FC = () => {
   const classes = useStyles()
   const router = useRouter()
@@ -179,30 +195,50 @@ const Compare: React.FC = () => {
   const text = `「${ranking?.title}」の「${item?.title}」を「${cRanking?.title}」で例えると「${cItem?.title}」ぐらいです`
   const tweetText = text + "\nhttps://tatoe.nibo.sh" + router.asPath
   const title = item && cRanking ? `${item.title}を${cRanking.title}で例える` : ""
+
+  if (!ranking || !item || !cRanking || !cItem) {
+    return null
+  }
+
   return (
     <>
       <Meta title={title} />
-      {ranking && item && cRanking && cItem ? (
-        <CompareText
-          rankingId={ranking.id}
-          rankingTitle={ranking.title}
-          itemId={item.id}
-          itemTitle={item.title}
-          cRankingId={cRanking.id}
-          cRankingTitle={cRanking.title}
-          cItemId={cItem.id}
-          cItemTitle={cItem.title}
-        />
-      ) : null}
+      <CompareText
+        rankingId={ranking.id}
+        rankingTitle={ranking.title}
+        itemId={item.id}
+        itemTitle={item.title}
+        cRankingId={cRanking.id}
+        cRankingTitle={cRanking.title}
+        cItemId={cItem.id}
+        cItemTitle={cItem.title}
+      />
       <div className={classes.tweetButtonWrapper}>
         <TweetButton text={tweetText} />
       </div>
-      {ranking && item ? (
-        <RankingItemInfo rankingId={ranking.id} rankingTitle={ranking.title} item={item} />
-      ) : null}
-      {cRanking && cItem ? (
-        <RankingItemInfo rankingId={cRanking.id} rankingTitle={cRanking.title} item={cItem} />
-      ) : null}
+      <RankingItemInfo rankingId={ranking.id} rankingTitle={ranking.title} item={item} />
+      <RankingItemInfo rankingId={cRanking.id} rankingTitle={cRanking.title} item={cItem} />
+    </>
+  )
+}
+
+const CompareSkeleton = () => {
+  const classes = useStyles()
+  return (
+    <>
+      <div className={classes.tweetCard}>
+        <Typography className={classes.tweetText}>
+          <Skeleton />
+        </Typography>
+        <Typography className={classes.tweetText}>
+          <Skeleton />
+        </Typography>
+      </div>
+      <div className={classes.tweetButtonWrapper}>
+        <TweetButton text={""} disabled={true} />
+      </div>
+      <RankingItemInfoSkeleton />
+      <RankingItemInfoSkeleton />
     </>
   )
 }
@@ -210,7 +246,7 @@ const Compare: React.FC = () => {
 const ComparePage: BlitzPage = () => {
   return (
     <>
-      <Suspense fallback={<Loading />}>
+      <Suspense fallback={<CompareSkeleton />}>
         <Compare />
       </Suspense>
     </>

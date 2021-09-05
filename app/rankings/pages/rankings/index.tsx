@@ -2,11 +2,11 @@ import React, { Suspense } from "react"
 import Meta from "../../../components/Meta"
 import { usePaginatedQuery, useRouter, BlitzPage, Routes, Link } from "blitz"
 import Layout from "app/core/layouts/Layout"
-import Loading from "app/components/Loading"
 import getRankings from "app/rankings/queries/getRankings"
 import { Button, Typography, makeStyles } from "@material-ui/core"
 import { NewReleases, Create } from "@material-ui/icons"
 import { RankingList } from "../../components/RankingList"
+import { RankingsSkeleton } from "../../components/RankingsSkeleton"
 
 const ITEMS_PER_PAGE = 10
 
@@ -67,7 +67,7 @@ const RankingsPage: BlitzPage = () => {
           <NewReleases className={classes.listTitleIcon} />
           <span className={classes.listTitleText}>新着ランキング</span>
         </Typography>
-        <Suspense fallback={<Loading />}>
+        <Suspense fallback={<RankingsSkeleton length={5} />}>
           <PaginatedRankingList />
         </Suspense>
       </div>

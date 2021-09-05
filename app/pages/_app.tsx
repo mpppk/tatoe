@@ -17,8 +17,8 @@ import {
 } from "@material-ui/core/styles"
 import React, { Suspense } from "react"
 import "../wdyr"
-import Loading from "app/components/Loading"
 import { blue } from "@material-ui/core/colors"
+import { LayoutSkeleton } from "../core/layouts/LayoutSkeleton"
 
 //You can customize this as you want and even move it out to a separate file
 const theme = createMuiTheme({
@@ -34,18 +34,16 @@ export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
 
   return (
-    <Suspense fallback={<Loading />}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <ErrorBoundary
-          FallbackComponent={RootErrorFallback}
-          resetKeys={[router.asPath]}
-          onReset={useQueryErrorResetBoundary().reset}
-        >
-          {getLayout(<Component {...pageProps} />)}
-        </ErrorBoundary>
-      </ThemeProvider>
-    </Suspense>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <ErrorBoundary
+        FallbackComponent={RootErrorFallback}
+        resetKeys={[router.asPath]}
+        onReset={useQueryErrorResetBoundary().reset}
+      >
+        <Suspense fallback={<LayoutSkeleton />}>{getLayout(<Component {...pageProps} />)}</Suspense>
+      </ErrorBoundary>
+    </ThemeProvider>
   )
 }
 

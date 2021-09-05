@@ -1,15 +1,5 @@
 import React, { Suspense } from "react"
-import {
-  Link,
-  useRouter,
-  useQuery,
-  useMutation,
-  useParam,
-  BlitzPage,
-  Routes,
-  useSession,
-} from "blitz"
-import Loading from "app/components/Loading"
+import { useRouter, useQuery, useMutation, useParam, BlitzPage, Routes, useSession } from "blitz"
 import Meta from "../../../../components/Meta"
 import Layout from "app/core/layouts/Layout"
 import getRanking from "app/rankings/queries/getRanking"
@@ -18,6 +8,8 @@ import { RankingForm } from "app/rankings/components/RankingForm"
 import deleteRankingItems from "../../../../ranking-items/mutations/deleteRankingItems"
 import { toUpdateRankingFromForm, UpdateRankingForm } from "../../../validations"
 import { FORM_ERROR } from "final-form"
+import { Typography } from "@material-ui/core"
+import { Skeleton } from "@material-ui/lab"
 
 interface Props {
   disableToChangeEditability: boolean
@@ -34,7 +26,7 @@ export const EditRanking: React.FC<Props> = (props) => {
     <>
       <Meta title={`${ranking.title}を編集`} />
       <div>
-        <h1>{ranking.title}</h1>
+        <Typography variant={"h5"}>{ranking.title}</Typography>
 
         <RankingForm
           mode="edit"
@@ -67,27 +59,38 @@ const DisallowEditing = () => {
   return <>このランキングの編集は許可されていません</>
 }
 
-const EditRankingPage: BlitzPage = () => {
+const EditRankingContentsSkeleton = () => {
+  return (
+    <div>
+      <Typography variant={"h5"}>
+        <Skeleton />
+      </Typography>
+      <Skeleton variant="rect" height={300} />
+    </div>
+  )
+}
+
+const EditRankingPageContents = () => {
   const session = useSession()
   const rankingId = useParam("rankingId", "number")
   const [ranking] = useQuery(getRanking, { id: rankingId })
   const canEdit = ranking.canBeEditedByAnotherUser || session.userId === ranking.ownerId
   return (
     <div>
-      <Suspense fallback={<Loading />}>
-        {canEdit ? (
-          <EditRanking disableToChangeEditability={session.userId !== ranking.ownerId} />
-        ) : (
-          <DisallowEditing />
-        )}
-      </Suspense>
-
-      <p>
-        <Link href={Routes.RankingsPage()}>
-          <a>Rankings</a>
-        </Link>
-      </p>
+      {canEdit ? (
+        <EditRanking disableToChangeEditability={session.userId !== ranking.ownerId} />
+      ) : (
+        <DisallowEditing />
+      )}
     </div>
+  )
+}
+
+const EditRankingPage: BlitzPage = () => {
+  return (
+    <Suspense fallback={<EditRankingContentsSkeleton />}>
+      <EditRankingPageContents />
+    </Suspense>
   )
 }
 
