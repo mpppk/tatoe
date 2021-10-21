@@ -54,7 +54,7 @@
     "@types/react": "17.0.31",
     "@welldone-software/why-did-you-render": "6.2.1",
     "eslint": "7.32.0",
-    "husky": "7.0.2",
+    "husky": "7.0.4",
     "lint-staged": "11.2.3",
     "prettier": "2.4.1",
     "prettier-plugin-prisma": "2.30.0",
