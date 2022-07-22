@@ -1482,10 +1482,10 @@
   dependencies:
     chevrotain "^9.0.1"
 
-"@next/bundle-analyzer@11.1.4":
-  version "11.1.4"
-  resolved "https://registry.yarnpkg.com/@next/bundle-analyzer/-/bundle-analyzer-11.1.4.tgz#cb1ebc6a7452a021cc34341e778c8c7219066f9a"
-  integrity sha512-tLQQcpttLthDpO1sTRlnZixJ09C4tZlFeYWvljMq1BbyWEOZB/QuqSjJY8055AiLAhcAbpm+qhvvYgk0zAWkGQ==
+"@next/bundle-analyzer@12.2.3":
+  version "12.2.3"
+  resolved "https://registry.yarnpkg.com/@next/bundle-analyzer/-/bundle-analyzer-12.2.3.tgz#8b4b934d28c09b9c11c4a074fbcc444402c8e017"
+  integrity sha512-tRgyo5afC02eofvnN9IerUvTJpxV+eQH4S02hc1U4oJJOhpHbwRinFUE3u4SNWbT5wSFofv1tnw5rYhyX7W8wQ==
   dependencies:
     webpack-bundle-analyzer "4.3.0"
 
