@@ -1,5 +1,5 @@
 # Base Layer
-FROM node:16.15.1-slim AS base
+FROM node:18.9.0-slim AS base
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install libssl-dev -y
 WORKDIR /app
@@ -11,7 +11,7 @@ RUN yarn codegen
 RUN yarn build
 
 ## Production Run Layer
-FROM node:16.15.1-slim
+FROM node:18.9.0-slim
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install libssl-dev -y
 WORKDIR /app
