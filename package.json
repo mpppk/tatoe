@@ -30,7 +30,7 @@
     ]
   },
   "dependencies": {
-    "@material-ui/core": "4.12.4",
+    "@mui/material": "5.0.0",
     "@material-ui/icons": "4.11.3",
     "@prisma/client": "2.30.3",
     "blitz": "0.39.0",
